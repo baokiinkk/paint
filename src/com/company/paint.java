@@ -1,21 +1,24 @@
 package com.company;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 public class paint  extends JFrame {
     public int mX = -1;
     public int mY = -1;
-    public boolean[][] drawingBoard = new boolean[800][1280];
+    public int spacing = 1;
+    public int rectSize = 5;
+    public boolean[][] drawingBoard = new boolean[220][155]; //150x217
+
+
     private JPanel activity_main;
     private JPanel leftPanel;
     private JButton button3;
     private JPanel mainArea;
     private JPanel drawArea;
-    private JButton button4;
+    private JButton clearButton;
     private JButton button5;
     private JButton button6;
     private JTable table1;
@@ -27,59 +30,80 @@ public class paint  extends JFrame {
         this.setVisible(true);
         this.setSize(1280,800);
         this.setResizable(false);
-
-        Move move = new Move();
-        drawArea.addMouseMotionListener(move);
-        Click click = new Click();
-        drawArea.addMouseListener(click);
-
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         drawArea = new Board();
-
+        drawArea.addMouseMotionListener(new Move());
+        drawArea.addMouseListener(new Click());
+        clearButton = new JButton("clearButton");
+        clearButton.addActionListener(new myButton());
     }
 
 
     public class Board extends JPanel
     {
+        @Override
         public void paintComponent(Graphics g)
         {
-            int spacing = 1;
-            int rectSize = 5;
+            super.paintComponent(g);
             g.setColor(Color.lightGray);
             g.fillRect(0,0, 1280, 800);
-
-            for (int i = 0; i < 1280/rectSize; i++)
+            //System.out.println(mX + "===" + mY);
+            for (int i = 0; i < 217; i++)
             {
-                for (int j = 0; j < 800/rectSize; j++)
+                for (int j = 0; j < 150; j++)
                 {
-                    g.setColor(Color.WHITE);
-                    if (mX >= (i*rectSize) && mX < (spacing + (i+1)*rectSize))
+                    if (drawingBoard[i][j] == true)
                     {
-                        System.out.println(mX + "===" + mY);
-
                         g.setColor(Color.BLACK);
+                    }
+                    else
+                    {
+                        g.setColor(Color.WHITE);
                     }
                     g.fillRect(spacing + i*rectSize, spacing + j*rectSize, rectSize - spacing, rectSize - spacing);
                 }
             }
         }
     }
+
+
+    private void setPoint(int cordX, int cordY)
+    {
+        drawingBoard[cordX/(rectSize)][cordY/(rectSize)] = true;
+    }
+
+    private void clearPoint(int cordX, int cordY)
+    {
+        drawingBoard[cordX/(rectSize)][cordY/(rectSize)] = true;
+    }
+
+    private void clearAll()
+    {
+        //Arrays.fill(drawingBoard, false);
+        for (int i = 0; i < 217; i++) {
+            for (int j = 0; j < 150; j++)
+            {
+                drawingBoard[i][j] = false;
+            }
+        }
+    }
+
     public class Move implements MouseMotionListener
     {
 
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-
+            mX = mouseEvent.getX();
+            mY = mouseEvent.getY();
+            setPoint(mX, mY);
+            repaint();
         }
 
         @Override
         public void mouseMoved(MouseEvent mouseEvent) {
-            mX = mouseEvent.getX();
-            mY = mouseEvent.getY();
-            System.out.println(mX + ", " + mY);
+
         }
     }
 
@@ -109,6 +133,19 @@ public class paint  extends JFrame {
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
 
+        }
+    }
+
+    public class myButton implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            String nameButton = actionEvent.getActionCommand();
+            if (nameButton.equals("clearButton"))
+            {
+                clearAll();
+                repaint();
+            }
         }
     }
 }
