@@ -3,19 +3,21 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 public class paint  extends JFrame {
     public int mX = -1;
     public int mY = -1;
     public int spacing = 1;
     public int rectSize = 5;
+    int choose=1;
+    public int xStart=-1;
+    public int yStart=-1;
     public boolean[][] drawingBoard = new boolean[220][155]; //150x217
 
 
     private JPanel activity_main;
     private JPanel leftPanel;
-    private JButton button3;
+    private JButton duongThang;
     private JPanel mainArea;
     private JPanel drawArea;
     private JButton clearButton;
@@ -30,6 +32,8 @@ public class paint  extends JFrame {
         this.setVisible(true);
         this.setSize(1280,800);
         this.setResizable(false);
+        clearButton.addActionListener(new myButton());
+        duongThang.addActionListener(new myButton());
     }
 
     private void createUIComponents() {
@@ -37,7 +41,7 @@ public class paint  extends JFrame {
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
         clearButton = new JButton("clearButton");
-        clearButton.addActionListener(new myButton());
+
     }
 
 
@@ -78,6 +82,17 @@ public class paint  extends JFrame {
     {
         drawingBoard[cordX/(rectSize)][cordY/(rectSize)] = true;
     }
+    private void MidpointLine(int x1, int y1, int x2, int y2)
+    {
+        float x=x1,y=y1,temp=(Math.abs(x2-x1)>=Math.abs(y2-y1))?Math.abs(x2-x1):Math.abs(y2-y1);
+        setPoint((int)(x+0.5),(int)(y+0.5));
+        for(int i=0;i<temp;i++)
+        {
+            x+=(x2-x1)/temp;
+            y+=(y2-y1)/temp;
+            setPoint((int)(x+0.5),(int)(y+0.5));
+        }
+    }
 
     private void clearAll()
     {
@@ -95,29 +110,48 @@ public class paint  extends JFrame {
 
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-            mX = mouseEvent.getX();
-            mY = mouseEvent.getY();
-            setPoint(mX, mY);
-            repaint();
+            if(choose ==1)
+            {
+                mX = mouseEvent.getX();
+                mY = mouseEvent.getY();
+                setPoint(mX, mY);
+                repaint();
+            }
+
         }
 
         @Override
         public void mouseMoved(MouseEvent mouseEvent) {
+            if(choose == 2)
+            {
+                mX = mouseEvent.getX();
+                mY = mouseEvent.getY();
+                clearAll();
+                if(xStart != -1 && yStart !=-1)
+                 MidpointLine(xStart,yStart,mX,mY);
+
+                repaint();
+            }
 
         }
     }
 
-    public static class Click implements MouseListener
+    public  class Click implements MouseListener
     {
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-
+            xStart = mouseEvent.getX();
+            yStart= mouseEvent.getY();
         }
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
+            mX = mouseEvent.getX();
+            mY = mouseEvent.getY();
 
+            setPoint(mX, mY);
+            repaint();
         }
 
         @Override
@@ -143,8 +177,15 @@ public class paint  extends JFrame {
             String nameButton = actionEvent.getActionCommand();
             if (nameButton.equals("clearButton"))
             {
+                choose =1;
                 clearAll();
                 repaint();
+            }
+            else if(nameButton.equals("duongThang"))
+            {
+                xStart=-1;
+                yStart=-1;
+                choose=2;
             }
         }
     }
