@@ -5,8 +5,16 @@ import java.awt.*;
 import java.awt.event.*;
 import javafx.util.Pair;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class paint  extends JFrame {
+import com.company.myFunction.*;
+
+public class paint<Width> extends JFrame {
+    //TEST COLOR
+    Random _rnd = new Random();
+    // size ảnh
+    private static int Width = 220;
+    private static int Height = 155;
     //toa do mouse
     private int mX = -1;
     private int mY = -1;
@@ -15,40 +23,49 @@ public class paint  extends JFrame {
     private int spacing = 1;
     private int rectSize = 5;
 
-    // trạng thái
+    // trạng thái nút đang chọn
     private Button choose = Button.MOUSE;
 
+    // biến phụ vị trí trỏ chuột
     private int xStart=-1;
     private int yStart=-1;
+    // biến xác định click chuột đầu giữa 2 lần click, (click để chọn)
     private boolean firstClick = false;
 
     //bảng trạng thái các pixel
-    private boolean[][] drawingBoard = new boolean[220][155]; //150x217
+    private boolean[][] drawingBoard = new boolean[Width][Height]; //150x217
+    private Color[][] colorBoard = new Color[Width][Height]; //150x217
+
+    //biến màu đang chọn
+    private Color chooseColor = Color.BLACK;
+
     // chứa các điểm đã set
     private ArrayList<Pair<Integer, Integer>> previousPoint = new ArrayList <Pair <Integer, Integer> > ();
+    // chứa các điểm dùng để quay lại
+    private ArrayList<Pair<Integer, Integer>> undoPoint = new ArrayList <Pair <Integer, Integer> > ();
 
     // khai báo biến
     private JPanel activity_main;
     private JPanel leftPanel;
-    private JButton duongThang;
+    private JButton lineButton;
     private JPanel mainArea;
     private JPanel drawArea;
-    private JButton clearButton;
-    private JButton pencil;
-    private JButton button6;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JButton button7;
-    private JButton button8;
-    private JButton button9;
-    private JButton button10;
-    private JComboBox comboBox1;
-    private JRadioButton radioButton1;
-    private JSpinner spinner1;
-    private JSlider slider1;
-    private JTable table1;
+    private JButton clearButton;            // xóa sạch
+    private JButton pencilButton;           // đè là vẽ
+    private JButton undoButton;             // xóa thao tác vừa làm
+    private JButton zigzagButton;           // vẽ đường gấp khúc
+    private JButton rectangleButton;        // vẽ hình chữ nhật
+    private JButton button3;                // chưa nghĩ ra
+    private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
+    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
+    private JButton circleButton;           // vẽ hình tròn
+    private JButton eraseButton;            // xóa 1 vùng nhỏ
+    private JButton AAAButton;            // chưa nghĩ ra
+    private JComboBox comboBox1;            // cho ngầu
+    private JRadioButton radioButton1;      // cho ngầu
+    private JSpinner spinner1;              // cho ngầu
+    private JSlider slider1;                // kéo cho vui tay
+    private JTable table1;                  // thằng Bảo khai dư
 
     // hàm chính
     public paint() {
@@ -59,16 +76,17 @@ public class paint  extends JFrame {
         this.setSize(1280,800);
         this.setResizable(false);
         clearButton.addActionListener(new myButton());
-        duongThang.addActionListener(new myButton());
-        pencil.addActionListener(new myButton() );
+        lineButton.addActionListener(new myButton());
+        pencilButton.addActionListener(new myButton());
+        mouseButton.addActionListener(new myButton());
     }
 
-    // hàm custom
+    // hàm custom cho các thành phần trong form
     private void createUIComponents() {
         drawArea = new Board();
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
-        clearButton = new JButton("clearButton");
+        //clearButton = new JButton("clearButton");
 
     }
 
@@ -88,14 +106,10 @@ public class paint  extends JFrame {
                 for (int j = 0; j < 150; j++)
                 {
                     // nếu bản trạng thái tồn tại thì set ô pixel đó màu đen còn ko thì màu trắng
-                    if (drawingBoard[i][j] == true)
-                    {
-                        g.setColor(Color.BLACK);
-                    }
+                    if (drawingBoard[i][j])
+                        g.setColor(colorBoard[i][j]);
                     else
-                    {
                         g.setColor(Color.WHITE);
-                    }
                     // cai lol này éo pk
                     g.fillRect(spacing + i*rectSize, spacing + j*rectSize, rectSize - spacing, rectSize - spacing);
                 }
@@ -104,20 +118,36 @@ public class paint  extends JFrame {
     }
 
     // set điểm pixel này đã được chọn
-    private void setPoint(int cordX, int cordY)
+    private void setPoint(int cordX, int cordY, Color color)
     {
-        drawingBoard[cordX/(rectSize)][cordY/(rectSize)] = true;
+        cordX /= rectSize;
+        cordY /= rectSize;
+        if (cordX >= 0 && cordX < Width && cordY >= 0 && cordY < Height)
+        {
+            drawingBoard[cordX][cordY] = true;
+            colorBoard[cordX][cordY] = color;
+        }
 
     }
     // kiểm tra pixel đã chọn chưa
     private boolean isSettedPoint(int cordX, int cordY)
     {
-        return drawingBoard[cordX/(rectSize)][cordY/(rectSize)];
+        cordX /= rectSize;
+        cordY /= rectSize;
+        if (cordX >= 0 && cordX < Width && cordY >= 0 && cordY < Height)
+            return (drawingBoard[cordX][cordY]);
+        return false;
     }
     // bỏ chọn pixel đó
     private void clearPoint(int cordX, int cordY)
     {
-        drawingBoard[cordX/(rectSize)][cordY/(rectSize)] = false;
+        cordX /= rectSize;
+        cordY /= rectSize;
+        if (cordX >= 0 && cordX < Width && cordY >= 0 && cordY < Height)
+        {
+            drawingBoard[cordX][cordY] = false;
+            colorBoard[cordX][cordY] = Color.WHITE;
+        }
     }
 
     // thuật vẽ đường thẳng
@@ -133,12 +163,12 @@ public class paint  extends JFrame {
         // nếu như điểm này chưa được chọn thì set chọn điểm đó và lưu vào mảng preiouspoint
         if (!isSettedPoint(tx, ty))
         {
-            setPoint(tx, ty);
+            setPoint(tx, ty, chooseColor);
             previousPoint.add(new Pair <Integer, Integer> (tx, ty));
         }
 
         // duyệt khoảng cách 2 điểm.
-        for(int i=0;i<temp;i++)
+        for(int i = 0; i < temp; i++)
         {
             // điểm kế tiếp nằm trên đường thẳng = điểm hiện tại + khoảng cách tọa độ x hoặc y / khoảng cách điểm
             x += (x2-x1)/temp;
@@ -151,7 +181,7 @@ public class paint  extends JFrame {
             // kiểm tra nếu điểm đó chưa được chọn thì sẽ set điểm đó và lưu vào bảng vẽ đường thẳng
             if (!isSettedPoint(tx, ty))
             {
-                setPoint(tx, ty);
+                setPoint(tx, ty, chooseColor);
                 previousPoint.add(new Pair <Integer, Integer> (tx, ty));
             }
         }
@@ -165,6 +195,7 @@ public class paint  extends JFrame {
             for (int j = 0; j < 150; j++)
             {
                 drawingBoard[i][j] = false;
+                colorBoard[i][j] = Color.WHITE;
             }
         }
     }
@@ -185,27 +216,24 @@ public class paint  extends JFrame {
         // nắm kéo thả chuột
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-            if(choose == Button.PENCIL)
+            switch (choose)
             {
-                mX = mouseEvent.getX();
-                mY = mouseEvent.getY();
-                setPoint(mX, mY);
-                repaint();
-            }
-
-        }
-
-        // di chuột
-        @Override
-        public void mouseMoved(MouseEvent mouseEvent) {
-            if(choose == Button.LINE)
-            {
-                if (firstClick == true)
+                case PENCIL:
                 {
-
-
+                    mX = mouseEvent.getX();
+                    mY = mouseEvent.getY();
+                    float r = _rnd.nextFloat();
+                    float g = _rnd.nextFloat();
+                    float b = _rnd.nextFloat();
+                    chooseColor = new Color(r, g, b);
+                    if(xStart != -1 && yStart !=-1)
+                        MidpointLine(xStart,yStart,mX,mY);
+                    xStart = mX;
+                    yStart = mY;
+                    repaint();
+                    break;
                 }
-                else
+                case LINE: // vẽ đường thẳng
                 {
                     clearPrevious();
                     mX = mouseEvent.getX();
@@ -213,6 +241,21 @@ public class paint  extends JFrame {
                     if(xStart != -1 && yStart !=-1)
                         MidpointLine(xStart,yStart,mX,mY);
                     repaint();
+                    break;
+                }
+            }
+
+        }
+
+        // di chuột
+        @Override
+        public void mouseMoved(MouseEvent mouseEvent) {
+            switch (choose)
+            {
+                case LINE: // vẽ đường thẳng
+                {
+                    // nothing
+                    break;
                 }
             }
 
@@ -231,20 +274,7 @@ public class paint  extends JFrame {
             {
                 case LINE: // vẽ đường thẳng
                 {
-                    // lấy tọa độ điểm bắt đầu
-                    xStart = mouseEvent.getX();
-                    yStart= mouseEvent.getY();
-
-                    // công tắc
-                    if (firstClick == true)
-                    {
-                        firstClick = false;
-                    }
-                    else
-                    {
-                        firstClick = true;
-                        previousPoint.clear();
-                    }
+                    // nothing
                     break;
                 }
             }
@@ -253,16 +283,31 @@ public class paint  extends JFrame {
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            mX = mouseEvent.getX();
-            mY = mouseEvent.getY();
-
-            setPoint(mX, mY);
-            repaint();
+            switch (choose)
+            {
+                case LINE: // vẽ đường thẳng
+                {
+                    // lấy tọa độ điểm bắt đầu
+                    xStart = mouseEvent.getX();
+                    yStart= mouseEvent.getY();
+                    previousPoint.clear();
+                    break;
+                }
+            }
         }
 
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-
+            switch (choose)
+            {
+                case PENCIL: // vẽ đường thẳng
+                {
+                    //nothing
+                    xStart=-1;
+                    yStart=-1;
+                    break;
+                }
+            }
         }
 
         @Override
@@ -282,23 +327,40 @@ public class paint  extends JFrame {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             String nameButton = actionEvent.getActionCommand();
-            if (nameButton.equals("clearButton"))
+            System.out.println(nameButton);
+            switch (nameButton)
             {
-                choose = Button.CLEAR;
-                clearAll();
-                repaint();
-            }
-            else if(nameButton.equals("duongThang"))
-            {
-                xStart=-1;
-                yStart=-1;
-                choose = Button.LINE;
-                firstClick = true;
-                previousPoint.clear();
-            }
-            else if(nameButton.equals("pencil"))
-            {
-                choose=Button.PENCIL;
+                case "Mouse":
+                {
+                    choose = Button.MOUSE;
+                    repaint();
+                    break;
+                }
+                case "Clear":
+                {
+                    choose = Button.CLEAR;
+                    clearAll();
+                    repaint();
+                    break;
+                }
+                case "Line":
+                {
+                    xStart=-1;
+                    yStart=-1;
+                    choose = Button.LINE;
+                    firstClick = true;
+                    previousPoint.clear();
+                    System.out.println(choose);
+                    break;
+                }
+                case "Pencil":
+                {
+                    xStart=-1;
+                    yStart=-1;
+                    choose=Button.PENCIL;
+                    System.out.println(choose);
+                    break;
+                }
             }
         }
     }

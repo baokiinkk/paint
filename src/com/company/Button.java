@@ -1,9 +1,17 @@
 package com.company;
 
 public enum Button {
+    DEFAULT,
     MOUSE,
     CLEAR,
     LINE,
-    PENCIL
+    PENCIL,
+    UNDO,
+    PAINT,
+    ZIGZAG,
+    RECTANGLE,
+    CIRCLE,
+    ERASE
 
 }
+
