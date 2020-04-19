@@ -9,9 +9,10 @@ import java.util.Random;
 
 import com.company.myFunction.*;
 
-public class paint<Width> extends JFrame {
+public class paint<Width> extends JFrame implements ActionListener {
     //TEST COLOR
     Random _rnd = new Random();
+    Color colors = Color.BLACK;
     // size ảnh
     private static int Width = 220;
     private static int Height = 155;
@@ -55,7 +56,7 @@ public class paint<Width> extends JFrame {
     private JButton undoButton;             // xóa thao tác vừa làm
     private JButton zigzagButton;           // vẽ đường gấp khúc
     private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton button3;                // chưa nghĩ ra
+    private JButton color;                // chưa nghĩ ra
     private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton circleButton;           // vẽ hình tròn
@@ -65,7 +66,6 @@ public class paint<Width> extends JFrame {
     private JRadioButton radioButton1;      // cho ngầu
     private JSpinner spinner1;              // cho ngầu
     private JSlider slider1;                // kéo cho vui tay
-    private JTable table1;                  // thằng Bảo khai dư
 
     // hàm chính
     public paint() {
@@ -75,10 +75,11 @@ public class paint<Width> extends JFrame {
         this.setVisible(true); // set hiện hay k
         this.setSize(1280,800);
         this.setResizable(false);
-        clearButton.addActionListener(new myButton());
-        lineButton.addActionListener(new myButton());
-        pencilButton.addActionListener(new myButton());
-        mouseButton.addActionListener(new myButton());
+        clearButton.addActionListener(this);
+        lineButton.addActionListener(this);
+        pencilButton.addActionListener(this);
+        mouseButton.addActionListener(this);
+        color.addActionListener(this);
     }
 
     // hàm custom cho các thành phần trong form
@@ -89,6 +90,8 @@ public class paint<Width> extends JFrame {
         //clearButton = new JButton("clearButton");
 
     }
+
+
 
     // quản lí các pixel
     public class Board extends JPanel
@@ -163,7 +166,7 @@ public class paint<Width> extends JFrame {
         // nếu như điểm này chưa được chọn thì set chọn điểm đó và lưu vào mảng preiouspoint
         if (!isSettedPoint(tx, ty))
         {
-            setPoint(tx, ty, chooseColor);
+            setPoint(tx, ty, colors);
             previousPoint.add(new Pair <Integer, Integer> (tx, ty));
         }
 
@@ -181,7 +184,7 @@ public class paint<Width> extends JFrame {
             // kiểm tra nếu điểm đó chưa được chọn thì sẽ set điểm đó và lưu vào bảng vẽ đường thẳng
             if (!isSettedPoint(tx, ty))
             {
-                setPoint(tx, ty, chooseColor);
+                setPoint(tx, ty, colors);
                 previousPoint.add(new Pair <Integer, Integer> (tx, ty));
             }
         }
@@ -222,10 +225,7 @@ public class paint<Width> extends JFrame {
                 {
                     mX = mouseEvent.getX();
                     mY = mouseEvent.getY();
-                    float r = _rnd.nextFloat();
-                    float g = _rnd.nextFloat();
-                    float b = _rnd.nextFloat();
-                    chooseColor = new Color(r, g, b);
+
                     if(xStart != -1 && yStart !=-1)
                         MidpointLine(xStart,yStart,mX,mY);
                     xStart = mX;
@@ -322,46 +322,45 @@ public class paint<Width> extends JFrame {
     }
 
     // click button
-    public class myButton implements ActionListener
-    {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            String nameButton = actionEvent.getActionCommand();
-            System.out.println(nameButton);
-            switch (nameButton)
-            {
-                case "Mouse":
-                {
-                    choose = Button.MOUSE;
-                    repaint();
-                    break;
-                }
-                case "Clear":
-                {
-                    choose = Button.CLEAR;
-                    clearAll();
-                    repaint();
-                    break;
-                }
-                case "Line":
-                {
-                    xStart=-1;
-                    yStart=-1;
-                    choose = Button.LINE;
-                    firstClick = true;
-                    previousPoint.clear();
-                    System.out.println(choose);
-                    break;
-                }
-                case "Pencil":
-                {
-                    xStart=-1;
-                    yStart=-1;
-                    choose=Button.PENCIL;
-                    System.out.println(choose);
-                    break;
-                }
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        String nameButton = actionEvent.getActionCommand();
+        System.out.println(nameButton);
+        switch (nameButton) {
+            case "Mouse": {
+                choose = Button.MOUSE;
+                repaint();
+                break;
             }
+            case "Clear": {
+                choose = Button.CLEAR;
+                clearAll();
+                repaint();
+                break;
+            }
+            case "Line": {
+                xStart = -1;
+                yStart = -1;
+                choose = Button.LINE;
+                firstClick = true;
+                previousPoint.clear();
+                System.out.println(choose);
+                break;
+            }
+            case "Pencil": {
+                xStart = -1;
+                yStart = -1;
+                choose = Button.PENCIL;
+                System.out.println(choose);
+                break;
+            }
+            case "color":
+            {
+                colors=JColorChooser.showDialog(this,"choose color",Color.WHITE);
+                color.setBackground(colors);
+                break;
+            }
+
         }
     }
 }

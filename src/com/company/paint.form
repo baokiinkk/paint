@@ -129,12 +129,12 @@
               <text value="Clear"/>
             </properties>
           </component>
-          <component id="5a2d4" class="javax.swing.JButton" binding="button3" default-binding="true">
+          <component id="5a2d4" class="javax.swing.JButton" binding="color">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="color"/>
             </properties>
           </component>
           <component id="d98a4" class="javax.swing.JButton" binding="eraseButton" default-binding="true">
