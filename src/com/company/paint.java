@@ -356,8 +356,12 @@ public class paint<Width> extends JFrame implements ActionListener {
             }
             case "color":
             {
-                colors=JColorChooser.showDialog(this,"choose color",Color.WHITE);
+                Color c=JColorChooser.showDialog(this,"choose color",Color.RED);
+                if(c != null)
+                    colors =c;
+                System.out.println(colors);
                 color.setBackground(colors);
+
                 break;
             }
 
