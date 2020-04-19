@@ -5,13 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javafx.util.Pair;
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.company.myFunction.*;
 
 public class paint<Width> extends JFrame implements ActionListener {
-    //TEST COLOR
-    Random _rnd = new Random();
     Color colors = Color.BLACK;
     // size ảnh
     private static int Width = 220;
@@ -34,16 +31,16 @@ public class paint<Width> extends JFrame implements ActionListener {
     private boolean firstClick = false;
 
     //bảng trạng thái các pixel
-    private boolean[][] drawingBoard = new boolean[Width][Height]; //150x217
-    private Color[][] colorBoard = new Color[Width][Height]; //150x217
+    private Color[][] drawingBoard = new Color[Width][Height]; //150x217
 
     //biến màu đang chọn
     private Color chooseColor = Color.BLACK;
 
     // chứa các điểm đã set
-    private ArrayList<Pair<Integer, Integer>> previousPoint = new ArrayList <Pair <Integer, Integer> > ();
+    private Color[][] nextPoint = new Color[Width][Height]; //150x217
+    private boolean[][] nextDrawing = new boolean[Width][Height]; //150x217
     // chứa các điểm dùng để quay lại
-    private ArrayList<Pair<Integer, Integer>> undoPoint = new ArrayList <Pair <Integer, Integer> > ();
+    private Color[][] undoPoint = new Color[Width][Height]; //150x217
 
     // khai báo biến
     private JPanel activity_main;
@@ -56,16 +53,17 @@ public class paint<Width> extends JFrame implements ActionListener {
     private JButton undoButton;             // xóa thao tác vừa làm
     private JButton zigzagButton;           // vẽ đường gấp khúc
     private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton color;                // chưa nghĩ ra
+    private JButton colorButton;                  // chưa nghĩ ra
     private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton circleButton;           // vẽ hình tròn
     private JButton eraseButton;            // xóa 1 vùng nhỏ
-    private JButton AAAButton;            // chưa nghĩ ra
-    private JComboBox comboBox1;            // cho ngầu
-    private JRadioButton radioButton1;      // cho ngầu
-    private JSpinner spinner1;              // cho ngầu
+    private JButton colorBox;              // chưa nghĩ ra
     private JSlider slider1;                // kéo cho vui tay
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
 
     // hàm chính
     public paint() {
@@ -79,7 +77,8 @@ public class paint<Width> extends JFrame implements ActionListener {
         lineButton.addActionListener(this);
         pencilButton.addActionListener(this);
         mouseButton.addActionListener(this);
-        color.addActionListener(this);
+        colorButton.addActionListener(this);
+        myFunction.clearArr(drawingBoard);
     }
 
     // hàm custom cho các thành phần trong form
@@ -92,7 +91,6 @@ public class paint<Width> extends JFrame implements ActionListener {
     }
 
 
-
     // quản lí các pixel
     public class Board extends JPanel
     {
@@ -100,7 +98,8 @@ public class paint<Width> extends JFrame implements ActionListener {
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
-            g.setColor(Color.lightGray); // set màu nền cho nền vẽ
+            //g.setColor(Color.lightGray); // set màu nền cho nền vẽ
+            g.setColor(new Color(235, 235, 235)); // set màu nền cho nền vẽ
             g.fillRect(0,0, 1280, 800); // kích thước nền vẽ
 
             // set màu cho các pixel
@@ -109,10 +108,10 @@ public class paint<Width> extends JFrame implements ActionListener {
                 for (int j = 0; j < 150; j++)
                 {
                     // nếu bản trạng thái tồn tại thì set ô pixel đó màu đen còn ko thì màu trắng
-                    if (drawingBoard[i][j])
-                        g.setColor(colorBoard[i][j]);
+                    if (nextDrawing[i][j])
+                        g.setColor(nextPoint[i][j]);
                     else
-                        g.setColor(Color.WHITE);
+                        g.setColor(drawingBoard[i][j]);
                     // cai lol này éo pk
                     g.fillRect(spacing + i*rectSize, spacing + j*rectSize, rectSize - spacing, rectSize - spacing);
                 }
@@ -120,38 +119,7 @@ public class paint<Width> extends JFrame implements ActionListener {
         }
     }
 
-    // set điểm pixel này đã được chọn
-    private void setPoint(int cordX, int cordY, Color color)
-    {
-        cordX /= rectSize;
-        cordY /= rectSize;
-        if (cordX >= 0 && cordX < Width && cordY >= 0 && cordY < Height)
-        {
-            drawingBoard[cordX][cordY] = true;
-            colorBoard[cordX][cordY] = color;
-        }
 
-    }
-    // kiểm tra pixel đã chọn chưa
-    private boolean isSettedPoint(int cordX, int cordY)
-    {
-        cordX /= rectSize;
-        cordY /= rectSize;
-        if (cordX >= 0 && cordX < Width && cordY >= 0 && cordY < Height)
-            return (drawingBoard[cordX][cordY]);
-        return false;
-    }
-    // bỏ chọn pixel đó
-    private void clearPoint(int cordX, int cordY)
-    {
-        cordX /= rectSize;
-        cordY /= rectSize;
-        if (cordX >= 0 && cordX < Width && cordY >= 0 && cordY < Height)
-        {
-            drawingBoard[cordX][cordY] = false;
-            colorBoard[cordX][cordY] = Color.WHITE;
-        }
-    }
 
     // thuật vẽ đường thẳng
     private void MidpointLine(int x1, int y1, int x2, int y2)
@@ -163,14 +131,16 @@ public class paint<Width> extends JFrame implements ActionListener {
         int tx = (int)(x+0.5);
         int ty = (int)(y+0.5);
 
-        // nếu như điểm này chưa được chọn thì set chọn điểm đó và lưu vào mảng preiouspoint
-        if (!isSettedPoint(tx, ty))
+        // lưu vị trí điểm và màu của điểm đó vào danh sách
+        if (myFunction.isSafe(nextPoint, tx, ty))
         {
-            setPoint(tx, ty, colors);
-            previousPoint.add(new Pair <Integer, Integer> (tx, ty));
+            nextDrawing[tx][ty] = true;
+            nextPoint[tx][ty] = chooseColor;
         }
 
+
         // duyệt khoảng cách 2 điểm.
+        //System.out.println("run");
         for(int i = 0; i < temp; i++)
         {
             // điểm kế tiếp nằm trên đường thẳng = điểm hiện tại + khoảng cách tọa độ x hoặc y / khoảng cách điểm
@@ -181,35 +151,13 @@ public class paint<Width> extends JFrame implements ActionListener {
             tx = (int)(x+0.5);
             ty = (int)(y+0.5);
 
-            // kiểm tra nếu điểm đó chưa được chọn thì sẽ set điểm đó và lưu vào bảng vẽ đường thẳng
-            if (!isSettedPoint(tx, ty))
+            // lưu vị trí điểm và màu của điểm đó vào danh sách
+            if (myFunction.isSafe(nextPoint, tx, ty))
             {
-                setPoint(tx, ty, colors);
-                previousPoint.add(new Pair <Integer, Integer> (tx, ty));
+                nextDrawing[tx][ty] = true;
+                nextPoint[tx][ty] = chooseColor;
             }
         }
-    }
-
-
-    private void clearAll()
-    {
-        //Arrays.fill(drawingBoard, false);
-        for (int i = 0; i < 217; i++) {
-            for (int j = 0; j < 150; j++)
-            {
-                drawingBoard[i][j] = false;
-                colorBoard[i][j] = Color.WHITE;
-            }
-        }
-    }
-
-    private void clearPrevious()
-    {
-        for (Pair<Integer, Integer> point : previousPoint)
-        {
-            clearPoint(point.getKey(), point.getValue());
-        }
-        previousPoint.clear();
     }
 
     // di chuột
@@ -223,11 +171,10 @@ public class paint<Width> extends JFrame implements ActionListener {
             {
                 case PENCIL:
                 {
-                    mX = mouseEvent.getX();
-                    mY = mouseEvent.getY();
-
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
                     if(xStart != -1 && yStart !=-1)
-                        MidpointLine(xStart,yStart,mX,mY);
+                        MidpointLine(xStart, yStart, mX, mY);
                     xStart = mX;
                     yStart = mY;
                     repaint();
@@ -235,11 +182,12 @@ public class paint<Width> extends JFrame implements ActionListener {
                 }
                 case LINE: // vẽ đường thẳng
                 {
-                    clearPrevious();
-                    mX = mouseEvent.getX();
-                    mY = mouseEvent.getY();
-                    if(xStart != -1 && yStart !=-1)
+                    myFunction.clearArr(nextDrawing);
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
+                    if(xStart != -1 && yStart !=-1) {
                         MidpointLine(xStart,yStart,mX,mY);
+                    }
                     repaint();
                     break;
                 }
@@ -288,9 +236,9 @@ public class paint<Width> extends JFrame implements ActionListener {
                 case LINE: // vẽ đường thẳng
                 {
                     // lấy tọa độ điểm bắt đầu
-                    xStart = mouseEvent.getX();
-                    yStart= mouseEvent.getY();
-                    previousPoint.clear();
+                    xStart = mouseEvent.getX()/rectSize;
+                    yStart= mouseEvent.getY()/rectSize;
+                    myFunction.clearArr(nextPoint);
                     break;
                 }
             }
@@ -305,7 +253,16 @@ public class paint<Width> extends JFrame implements ActionListener {
                     //nothing
                     xStart=-1;
                     yStart=-1;
+                    System.out.println("Released");
+                    myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                    myFunction.clearArr(nextDrawing);
                     break;
+                }
+                case LINE:
+                {
+                    myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                    myFunction.clearArr(nextDrawing);
+                    repaint();
                 }
             }
         }
@@ -333,8 +290,8 @@ public class paint<Width> extends JFrame implements ActionListener {
                 break;
             }
             case "Clear": {
-                choose = Button.CLEAR;
-                clearAll();
+                //choose = Button.CLEAR;
+                myFunction.clearArr(drawingBoard);
                 repaint();
                 break;
             }
@@ -342,8 +299,7 @@ public class paint<Width> extends JFrame implements ActionListener {
                 xStart = -1;
                 yStart = -1;
                 choose = Button.LINE;
-                firstClick = true;
-                previousPoint.clear();
+                myFunction.clearArr(nextPoint);
                 System.out.println(choose);
                 break;
             }
@@ -351,16 +307,18 @@ public class paint<Width> extends JFrame implements ActionListener {
                 xStart = -1;
                 yStart = -1;
                 choose = Button.PENCIL;
+                myFunction.clearArr(nextPoint);
                 System.out.println(choose);
                 break;
             }
-            case "color":
+            case "Color":
             {
-                Color c=JColorChooser.showDialog(this,"choose color",Color.RED);
+                Color c = JColorChooser.showDialog(this,"choose color",Color.RED);
                 if(c != null)
-                    colors =c;
-                System.out.println(colors);
-                color.setBackground(colors);
+                    chooseColor = c;
+                //System.out.println(colors);
+                colorBox.setBackground(chooseColor);
+                colorBox.setForeground(chooseColor);
 
                 break;
             }
