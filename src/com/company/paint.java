@@ -3,8 +3,6 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javafx.util.Pair;
-import java.util.ArrayList;
 
 import com.company.myFunction.*;
 
@@ -78,7 +76,10 @@ public class paint<Width> extends JFrame implements ActionListener {
         pencilButton.addActionListener(this);
         mouseButton.addActionListener(this);
         colorButton.addActionListener(this);
+        undoButton.addActionListener(this);
+        paintButton.addActionListener(this);
         myFunction.clearArr(drawingBoard);
+        myFunction.clearArr(undoPoint);
     }
 
     // hàm custom cho các thành phần trong form
@@ -241,6 +242,14 @@ public class paint<Width> extends JFrame implements ActionListener {
                     myFunction.clearArr(nextPoint);
                     break;
                 }
+                case PAINT:
+                {
+                    System.out.println("Pressed");
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
+                    myFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
+                    break;
+                }
             }
         }
 
@@ -254,15 +263,27 @@ public class paint<Width> extends JFrame implements ActionListener {
                     xStart=-1;
                     yStart=-1;
                     System.out.println("Released");
+                    myFunction.storePointColor(drawingBoard, undoPoint);
                     myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                     myFunction.clearArr(nextDrawing);
                     break;
                 }
                 case LINE:
                 {
+                    myFunction.storePointColor(drawingBoard, undoPoint);
                     myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                     myFunction.clearArr(nextDrawing);
                     repaint();
+                    break;
+                }
+                case PAINT:
+                {
+                    myFunction.storePointColor(drawingBoard, undoPoint);
+                    myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                    myFunction.storePointColor(drawingBoard, nextPoint);
+                    myFunction.clearArr(nextDrawing);
+                    repaint();
+                    break;
                 }
             }
         }
@@ -292,6 +313,7 @@ public class paint<Width> extends JFrame implements ActionListener {
             case "Clear": {
                 //choose = Button.CLEAR;
                 myFunction.clearArr(drawingBoard);
+                myFunction.clearArr(nextPoint);
                 repaint();
                 break;
             }
@@ -322,7 +344,19 @@ public class paint<Width> extends JFrame implements ActionListener {
 
                 break;
             }
-
+            case "Undo":
+            {
+                myFunction.storePointColor(undoPoint, drawingBoard);
+                repaint();
+                break;
+            }
+            case "Paint":
+            {
+                choose = Button.PAINT;
+                myFunction.storePointColor(drawingBoard, nextPoint);
+                myFunction.clearArr(nextDrawing);
+                break;
+            }
         }
     }
 }
