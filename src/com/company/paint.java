@@ -78,6 +78,7 @@ public class paint<Width> extends JFrame implements ActionListener {
         colorButton.addActionListener(this);
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
+        rectangleButton.addActionListener(this);
         myFunction.clearArr(drawingBoard);
         myFunction.clearArr(undoPoint);
     }
@@ -192,6 +193,20 @@ public class paint<Width> extends JFrame implements ActionListener {
                     repaint();
                     break;
                 }
+                case RECTANGLE: // vẽ đường thẳng
+                {
+                    myFunction.clearArr(nextDrawing);
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
+                    if(xStart != -1 && yStart !=-1) {
+                        MidpointLine(xStart,yStart,mX,yStart);
+                        MidpointLine(xStart,yStart,xStart,mY);
+                        MidpointLine(mX,yStart,mX,mY);
+                        MidpointLine(mX,mY,xStart,mY);
+                    }
+                    repaint();
+                    break;
+                }
             }
 
         }
@@ -242,6 +257,14 @@ public class paint<Width> extends JFrame implements ActionListener {
                     myFunction.clearArr(nextPoint);
                     break;
                 }
+                case RECTANGLE: // vẽ hinh cn
+                {
+                    // lấy tọa độ điểm bắt đầu
+                    xStart = mouseEvent.getX()/rectSize;
+                    yStart= mouseEvent.getY()/rectSize;
+                    myFunction.clearArr(nextPoint);
+                    break;
+                }
                 case PAINT:
                 {
                     System.out.println("Pressed");
@@ -269,6 +292,14 @@ public class paint<Width> extends JFrame implements ActionListener {
                     break;
                 }
                 case LINE:
+                {
+                    myFunction.storePointColor(drawingBoard, undoPoint);
+                    myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                    myFunction.clearArr(nextDrawing);
+                    repaint();
+                    break;
+                }
+                case RECTANGLE:
                 {
                     myFunction.storePointColor(drawingBoard, undoPoint);
                     myFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
@@ -321,8 +352,13 @@ public class paint<Width> extends JFrame implements ActionListener {
                 xStart = -1;
                 yStart = -1;
                 choose = Button.LINE;
-                myFunction.clearArr(nextPoint);
-                System.out.println(choose);
+                break;
+            }
+            case "Rectangle": {
+                xStart = -1;
+                yStart = -1;
+                choose = Button.RECTANGLE;
+
                 break;
             }
             case "Pencil": {
