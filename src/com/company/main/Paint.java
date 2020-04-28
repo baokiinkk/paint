@@ -1,17 +1,14 @@
 package com.company.main;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
 import com.company.xuli.xuliduongve.*;
-import com.company.xuli.xuliduongve.Rectangle;
-
+import com.company.xuli.xuliduongve.MyFunction;
 import static com.company.Button.*;
 
-public class Paint extends JFrame implements ActionListener
-{
+public class Paint extends JFrame implements ActionListener, ItemListener {
 
     // hàm chính
     public void run() {
@@ -21,91 +18,35 @@ public class Paint extends JFrame implements ActionListener
         this.setVisible(true); // set hiện hay k
         this.setSize(1280,800);
         this.setResizable(false);
-        clearButton.addActionListener(this);
-        lineButton.addActionListener(this);
         pencilButton.addActionListener(this);
-        mouseButton.addActionListener(this);
         colorButton.addActionListener(this);
-        undoButton.addActionListener(this);
-        paintButton.addActionListener(this);
-        rectangleButton.addActionListener(this);
-        button1.addActionListener(this);
-        button2.addActionListener(this);
-        //sizeSlider.addChangeListener((ChangeListener) this);
-        showSize.setText("Size: " + sizeLine);
+        axisCheckBox.addItemListener(this);
         MyFunction.clearArr(drawingBoard);
-        MyFunction.clearArr(undoPoint);
     }
 
     // hàm custom cho các thành phần trong form
     private void createUIComponents() {
         drawArea = new Board(nextDrawing,nextPoint,drawingBoard, Width, Height, spacing,rectSize);
-        drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
-        new HinhHoc(nextDrawing,nextPoint,chooseColor);
-        //
-        //clearButton = new JButton("clearButton");
+        drawArea.addMouseMotionListener(new Move());
 
+        //axisCheckBox.setSelected(true);
     }
 
-    // di chuột
-    public class Move implements MouseMotionListener
-    {
-
-        // nắm kéo thả chuột
-        @Override
-        public void mouseDragged(MouseEvent mouseEvent) {
-            switch (choose)
+    @Override
+    public void itemStateChanged(ItemEvent itemEvent) {
+        if (itemEvent.getSource() == axisCheckBox)
+        {
+            if(axisCheckBox.isSelected())
             {
-                case PENCIL:
-                {
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    if(xStart != -1 && yStart !=-1)
-                        new Line(nextDrawing,nextPoint,chooseColor).MidpointLine(xStart, yStart, mX, mY,false);
-                    xStart = mX;
-                    yStart = mY;
-                    drawArea.repaint();
-                    break;
-                }
-                case LINE: // vẽ đường thẳng
-                {
-                    MyFunction.clearArr(nextDrawing);
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    if(xStart != -1 && yStart !=-1) {
-                        new Line(nextDrawing,nextPoint,chooseColor).MidpointLine(xStart,yStart,mX,mY,false);
-                    }
-                    repaint();
-                    break;
-                }
-                case RECTANGLE: // vẽ đường thẳng
-                {
-                    MyFunction.clearArr(nextDrawing);
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    if(xStart != -1 && yStart !=-1) {
-                        new Rectangle(nextDrawing,nextPoint,chooseColor).PaintRectangle(xStart,yStart,mX,mY);
-                    }
-                    repaint();
-                    break;
-                }
+                ((Board) drawArea).showAxis();
             }
-
-        }
-
-        // di chuột
-        @Override
-        public void mouseMoved(MouseEvent mouseEvent) {
-            switch (choose)
+            else
             {
-                case LINE: // vẽ đường thẳng
-                {
-                    // nothing
-                    break;
-                }
+                //drawArea.hideAxis();
+                ((Board) drawArea).hideAxis();
             }
-
+            repaint();
         }
     }
 
@@ -114,17 +55,8 @@ public class Paint extends JFrame implements ActionListener
     public  class Click implements MouseListener
     {
 
-        // click chuột vào trạng thái nào
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-            switch (choose)
-            {
-                case LINE: // vẽ đường thẳng
-                {
-                    // nothing
-                    break;
-                }
-            }
 
         }
 
@@ -132,28 +64,12 @@ public class Paint extends JFrame implements ActionListener
         public void mousePressed(MouseEvent mouseEvent) {
             switch (choose)
             {
-                case LINE: // vẽ đường thẳng
+                case PENCIL: // vẽ điểm
                 {
-                    // lấy tọa độ điểm bắt đầu
                     xStart = mouseEvent.getX()/rectSize;
                     yStart= mouseEvent.getY()/rectSize;
-                    MyFunction.clearArr(nextPoint);
-                    break;
-                }
-                case RECTANGLE: // vẽ hinh cn
-                {
-                    // lấy tọa độ điểm bắt đầu
-                    xStart = mouseEvent.getX()/rectSize;
-                    yStart= mouseEvent.getY()/rectSize;
-                    MyFunction.clearArr(nextPoint);
-                    break;
-                }
-                case PAINT:
-                {
-                    System.out.println("Pressed");
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    MyFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
+                    MyFunction.setPoint(drawingBoard, xStart, yStart, chooseColor);
+                    repaint();
                     break;
                 }
             }
@@ -161,45 +77,7 @@ public class Paint extends JFrame implements ActionListener
 
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-            switch (choose)
-            {
-                case PENCIL: // vẽ đường thẳng
-                {
-                    //nothing
-                    xStart=-1;
-                    yStart=-1;
-                    System.out.println("Released");
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.clearArr(nextDrawing);
-                    break;
-                }
-                case LINE:
-                {
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.clearArr(nextDrawing);
-                    repaint();
-                    break;
-                }
-                case RECTANGLE:
-                {
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.clearArr(nextDrawing);
-                    repaint();
-                    break;
-                }
-                case PAINT:
-                {
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.storePointColor(drawingBoard, nextPoint);
-                    MyFunction.clearArr(nextDrawing);
-                    repaint();
-                    break;
-                }
-            }
+
         }
 
         @Override
@@ -213,37 +91,31 @@ public class Paint extends JFrame implements ActionListener
         }
     }
 
-    // click button
+    public class Move implements MouseMotionListener
+    {
+
+        @Override
+        public void mouseDragged(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent mouseEvent) {
+            coordX = mouseEvent.getX()/rectSize - Width/2;
+            coordY = mouseEvent.getY()/rectSize - Height/2;
+            showX.setText("X: " + coordX);
+            showY.setText("Y: " + coordY*(-1));
+            //System.out.println(coordX + " " + coordX);
+        }
+    }
+
+
+    // chọn nút
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String nameButton = actionEvent.getActionCommand();
         System.out.println(nameButton);
         switch (nameButton) {
-            case "Mouse": {
-                choose = MOUSE;
-                repaint();
-                break;
-            }
-            case "Clear": {
-                //choose = Button.CLEAR;
-                MyFunction.clearArr(drawingBoard);
-                MyFunction.clearArr(nextPoint);
-                repaint();
-                break;
-            }
-            case "Line": {
-                xStart = -1;
-                yStart = -1;
-                choose = LINE;
-                break;
-            }
-            case "Rectangle": {
-                xStart = -1;
-                yStart = -1;
-                choose = RECTANGLE;
-
-                break;
-            }
             case "Pencil": {
                 xStart = -1;
                 yStart = -1;
@@ -260,52 +132,32 @@ public class Paint extends JFrame implements ActionListener
                 //System.out.println(colors);
                 colorBox.setBackground(chooseColor);
                 colorBox.setForeground(chooseColor);
-
-                break;
-            }
-            case "Undo":
-            {
-                MyFunction.storePointColor(undoPoint, drawingBoard);
-                repaint();
-                break;
-            }
-            case "Paint":
-            {
-                choose = PAINT;
-                MyFunction.storePointColor(drawingBoard, nextPoint);
-                MyFunction.clearArr(nextDrawing);
-                break;
-            }
-            case "Button1":
-            {
-                sizeLine--;
-                showSize.setText("Size: " + sizeLine);
-                break;
-            }
-            case "Button2":
-            {
-                sizeLine++;
-                showSize.setText("Size: " + sizeLine);
                 break;
             }
         }
     }
 
 
-
-    Color colors = Color.BLACK;
+    //Color colors = Color.BLACK;
+    //
     // size ảnh
-    private static int Width = 220;     //220
-    private static int Height = 155;    //155
-    //toa do mouse
+    private static int Width = 189;     //225
+    private static int Height = 129;    //155
+
+    //tọa độ mouse
     private int mX = -1;
     private int mY = -1;
+
+    //tọa độ đổi qua hệ tọa độ có âm
+    //private Point xOy = new Point();
+    private int coordX = 0;
+    private int coordY = 0;
 
     //kích thước nét vẽ
     private int sizeLine = 1;
     //kich thuoc pixel va khoang cách giữa các pixel
     private int spacing = 1;
-    private int rectSize = 5;
+    private int rectSize = 6;
 
     // trạng thái nút đang chọn
     private com.company.Button choose = MOUSE;
@@ -337,17 +189,15 @@ public class Paint extends JFrame implements ActionListener
     private JButton clearButton;            // xóa sạch
     private JButton pencilButton;           // đè là vẽ
     private JButton undoButton;             // xóa thao tác vừa làm
-    private JButton zigzagButton;           // vẽ đường gấp khúc
     private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton colorButton;                  // chưa nghĩ ra
+    private JButton colorButton;            // chưa nghĩ ra
     private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
-    private JButton circleButton;           // vẽ hình tròn
-    private JButton eraseButton;            // xóa 1 vùng nhỏ
     private JButton colorBox;              // chưa nghĩ ra
-    private JSlider sizeSlider;                // kéo cho vui tay
     private JButton button1;
     private JButton button2;
     private JLabel showSize;
-    private JCheckBox axesCheckBox;
+    private JCheckBox axisCheckBox;
+    private JLabel showX;
+    private JLabel showY;
 }

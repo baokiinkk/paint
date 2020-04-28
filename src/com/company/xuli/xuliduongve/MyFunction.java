@@ -8,20 +8,36 @@ import java.util.Queue;
 import javafx.util.Pair;
 
 public class MyFunction {
-    // duyệt 4 vị trí kề cạnh 1 điểm
-    public static int XX[] = {-1, 0, 0, 1};
-    public static int YY[] = {0,-1, 1, 0};
 
     // code xử lí với pixel
-    static void setPoint(Color[][] board, int cordX, int cordY, Color color)
+    public static void setPoint(Color[][] board, int cordX, int cordY, Color color)
     {
         board[cordX][cordY] = color;
     }
     // bỏ chọn pixel đó
-    static void clearPoint(Color[][] board, int cordX, int cordY)
+    public static void clearPoint(Color[][] board, int cordX, int cordY)
     {
         board[cordX][cordY] = Color.WHITE;
     }
+
+
+    // phần code bên dưới không liên quan tới bài tập 1 nha cô :> khi tới bài khác tụi em sẽ giải thích sau.
+
+
+
+
+
+
+
+
+
+
+
+
+    // duyệt 4 vị trí kề cạnh 1 điểm
+    public static int XX[] = {-1, 0, 0, 1};
+    public static int YY[] = {0,-1, 1, 0};
+
 
     // gán toàn bộ mảng thảnh màu trắng
     public static void clearArr(Color[][] board)
