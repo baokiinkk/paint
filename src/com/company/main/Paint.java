@@ -1,6 +1,7 @@
 package com.company.main;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,7 +10,7 @@ import com.company.xuli.xuliduongve.Rectangle;
 
 import static com.company.Button.*;
 
-public class Paint<Width> extends JFrame implements ActionListener
+public class Paint extends JFrame implements ActionListener
 {
 
     // hàm chính
@@ -28,16 +29,21 @@ public class Paint<Width> extends JFrame implements ActionListener
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
         rectangleButton.addActionListener(this);
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        //sizeSlider.addChangeListener((ChangeListener) this);
+        showSize.setText("Size: " + sizeLine);
         MyFunction.clearArr(drawingBoard);
         MyFunction.clearArr(undoPoint);
     }
 
     // hàm custom cho các thành phần trong form
     private void createUIComponents() {
-        drawArea = new Board(nextDrawing,nextPoint,drawingBoard,spacing,rectSize);
+        drawArea = new Board(nextDrawing,nextPoint,drawingBoard, Width, Height, spacing,rectSize);
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
         new HinhHoc(nextDrawing,nextPoint,chooseColor);
+        //
         //clearButton = new JButton("clearButton");
 
     }
@@ -270,6 +276,18 @@ public class Paint<Width> extends JFrame implements ActionListener
                 MyFunction.clearArr(nextDrawing);
                 break;
             }
+            case "Button1":
+            {
+                sizeLine--;
+                showSize.setText("Size: " + sizeLine);
+                break;
+            }
+            case "Button2":
+            {
+                sizeLine++;
+                showSize.setText("Size: " + sizeLine);
+                break;
+            }
         }
     }
 
@@ -277,12 +295,14 @@ public class Paint<Width> extends JFrame implements ActionListener
 
     Color colors = Color.BLACK;
     // size ảnh
-    private static int Width = 220;
-    private static int Height = 155;
+    private static int Width = 220;     //220
+    private static int Height = 155;    //155
     //toa do mouse
     private int mX = -1;
     private int mY = -1;
 
+    //kích thước nét vẽ
+    private int sizeLine = 1;
     //kich thuoc pixel va khoang cách giữa các pixel
     private int spacing = 1;
     private int rectSize = 5;
@@ -325,9 +345,9 @@ public class Paint<Width> extends JFrame implements ActionListener
     private JButton circleButton;           // vẽ hình tròn
     private JButton eraseButton;            // xóa 1 vùng nhỏ
     private JButton colorBox;              // chưa nghĩ ra
-    private JSlider slider1;                // kéo cho vui tay
+    private JSlider sizeSlider;                // kéo cho vui tay
     private JButton button1;
     private JButton button2;
-    private JButton button3;
-    private JButton button4;
+    private JLabel showSize;
+    private JCheckBox axesCheckBox;
 }

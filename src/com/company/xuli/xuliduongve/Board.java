@@ -10,13 +10,17 @@ public class Board extends JPanel
     private Color[][] drawingBoard;
     private int spacing;
     private int rectSize;
-    public Board(boolean[][] nextDrawing,Color[][] nextPoint,Color[][] drawingBoard,int spacing,int rectSize)
+    private int width;
+    private int height;
+    public Board(boolean[][] nextDrawing,Color[][] nextPoint,Color[][] drawingBoard, int width, int height, int spacing,int rectSize)
     {
-        this.drawingBoard =drawingBoard;
-        this.nextDrawing=nextDrawing;
-        this.nextPoint=nextPoint;
-        this.rectSize=rectSize;
-        this.spacing=spacing;
+        this.drawingBoard = drawingBoard;
+        this.nextDrawing = nextDrawing;
+        this.nextPoint = nextPoint;
+        this.rectSize = rectSize;
+        this.spacing = spacing;
+        this.width = width;
+        this.height = height;
     }
     @Override
     public void paintComponent(Graphics g)
@@ -27,9 +31,9 @@ public class Board extends JPanel
         g.fillRect(0,0, 1280, 800); // kích thước nền vẽ
 
         // set màu cho các pixel
-        for (int i = 0; i < 217; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < 150; j++)
+            for (int j = 0; j < height; j++)
             {
                 // nếu bản trạng thái tồn tại thì set ô pixel đó màu đen còn ko thì màu trắng
                 if (nextDrawing[i][j])
