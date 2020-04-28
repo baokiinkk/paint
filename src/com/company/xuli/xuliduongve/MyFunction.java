@@ -1,4 +1,4 @@
-package com.company;
+package com.company.xuli.xuliduongve;
 
 import java.awt.Color;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import javafx.util.Pair;
 
-public class myFunction {
+public class MyFunction {
     // duyệt 4 vị trí kề cạnh 1 điểm
     public static int XX[] = {-1, 0, 0, 1};
     public static int YY[] = {0,-1, 1, 0};
@@ -24,7 +24,7 @@ public class myFunction {
     }
 
     // gán toàn bộ mảng thảnh màu trắng
-    static void clearArr(Color[][] board)
+    public static void clearArr(Color[][] board)
     {
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[0].length; j++)
@@ -32,7 +32,7 @@ public class myFunction {
     }
 
     // gán toàn bộ mảng thành false
-    static void clearArr(boolean[][] board)
+    public static void clearArr(boolean[][] board)
     {
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[0].length; j++)
@@ -40,13 +40,13 @@ public class myFunction {
     }
 
     // kiểm tra vị trí X, Y có nằm trong mảng hay k, tránh Runtime
-    static boolean isSafe(Color[][] board, int cordX, int cordY)
+    public static boolean isSafe(Color[][] board, int cordX, int cordY)
     {
         return (cordX >= 0 && cordX < board.length && cordY >= 0 && cordY < board[0].length);
     }
 
     // copy mảng màu Source sang mảng Des
-    static void storePointColor(Color[][] sourceColor, Color[][] desColor)
+    public static void storePointColor(Color[][] sourceColor, Color[][] desColor)
     {
         for (int i = 0; i < sourceColor.length; i++)
             for (int j = 0; j < sourceColor[0].length; j++)
@@ -56,7 +56,7 @@ public class myFunction {
     }
 
     // trộn mảng source vào mảng des, với điều kiện chỉ những pixel nào được đánh dấu ở mảng set mới được ghi đè
-    static void mergePointColor(Color[][] sourceColor, boolean[][] sourceSet, Color[][] desColor)
+    public static void mergePointColor(Color[][] sourceColor, boolean[][] sourceSet, Color[][] desColor)
     {
         for (int i = 0; i < sourceColor.length; i++)
             for (int j = 0; j < sourceColor[0].length; j++)
@@ -68,7 +68,7 @@ public class myFunction {
     }
 
     // dùng loang để tô màu vùng có màu [x][y] bằng màu được chọn
-    static void paintColor(Color[][] sourceColor, boolean[][] sourceSet, int cordX, int cordY, Color color)
+    public static void paintColor(Color[][] sourceColor, boolean[][] sourceSet, int cordX, int cordY, Color color)
     {
         // dùng hàng đợi để khử đệ quy loang
         Queue <Pair<Integer, Integer>> myQ = new LinkedList<>();
