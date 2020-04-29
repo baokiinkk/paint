@@ -52,9 +52,8 @@ public class Board extends JPanel
         {
             for (int j = 0; j < height; j++)
             {
-                // nếu bản trạng thái tồn tại thì set ô pixel đó màu đen còn ko thì màu trắng
+                // nếu bản trạng thái tồn tại thì set ô pixel đó được set màu còn ko thì màu trắng
                 g.setColor(drawingBoard[i][j]);
-                //
                 g.fillRect(spacing + i*rectSize, spacing + j*rectSize, rectSize - spacing, rectSize - spacing);
             }
         }
@@ -64,5 +63,24 @@ public class Board extends JPanel
             g.drawLine(0, OY, 1280, OY);
             g.drawLine(OX, 0, OX, 800);
         }
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (drawingBoard[i][j].equals(Color.WHITE) == false)
+                {
+                    g.setColor(drawingBoard[i][j]);
+                    int x = spacing + i*rectSize;
+                    int y = spacing + j*rectSize;
+                    if (y < 15)
+                        y = 15;
+                    if (x + 40 > (width-4)*rectSize)
+                        x -= 40;
+                    //System.out.println(x + " " + y);
+                    g.drawString("(" + (i-OX/rectSize) + ", " + (-(j-OY/rectSize)) + ")" , x, y);
+                }
+            }
+        }
+
     }
 }

@@ -66,8 +66,8 @@ public class Paint extends JFrame implements ActionListener, ItemListener {
             {
                 case PENCIL: // vẽ điểm
                 {
-                    xStart = mouseEvent.getX()/rectSize;
-                    yStart= mouseEvent.getY()/rectSize;
+                    xStart = (mouseEvent.getX()-spacing)/rectSize;
+                    yStart= (mouseEvent.getY()-spacing)/rectSize;
                     MyFunction.setPoint(drawingBoard, xStart, yStart, chooseColor);
                     repaint();
                     break;
@@ -169,7 +169,7 @@ public class Paint extends JFrame implements ActionListener, ItemListener {
     private boolean firstClick = false;
 
     //bảng trạng thái các pixel
-    private Color[][] drawingBoard = new Color[Width][Height]; //150x217
+    private Color[][] drawingBoard = new Color[Width][Height]; //129x189
 
     //biến màu đang chọn
     private Color chooseColor = Color.BLACK;
