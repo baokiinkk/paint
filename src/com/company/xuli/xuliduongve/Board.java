@@ -18,6 +18,10 @@ public class Board extends JPanel
         this.rectSize=rectSize;
         this.spacing=spacing;
     }
+    public void cc()
+    {
+
+    }
     @Override
     public void paintComponent(Graphics g)
     {
