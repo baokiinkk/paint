@@ -57,11 +57,11 @@ public class Line extends HinhHoc {
 
         // lưu vị trí điểm và màu của điểm đó vào danh sách
 
-        if (MyFunction.isSafe(nextPoint, tx, ty))
-        {
-            nextDrawing[tx][ty] = true;
-            nextPoint[tx][ty] = chooseColor;
-        }
+//        if (MyFunction.isSafe(nextPoint, tx, ty))
+//        {
+//            nextDrawing[tx][ty] = true;
+//            nextPoint[tx][ty] = chooseColor;
+//        }
 
 
         // duyệt khoảng cách 2 điểm.
