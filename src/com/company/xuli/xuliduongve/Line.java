@@ -2,7 +2,10 @@ package com.company.xuli.xuliduongve;
 
 import java.awt.*;
 
+import static java.lang.Math.atan2;
 import static java.lang.Math.sqrt;
+import static java.lang.Math.sin;
+import static java.lang.Math.cos;
 
 public class Line extends HinhHoc {
 
@@ -167,11 +170,6 @@ public class Line extends HinhHoc {
             // lm tròn lên điểm đó
             tx = (int) (x + 0.5);
             ty = (int) (y + 0.5);
-            if(i==temp-3)
-            {
-                x3=tx;
-                y3=ty;
-            }
 
             // lưu vị trí điểm và màu của điểm đó vào danh sách
             if (MyFunction.isSafe(nextPoint, tx, ty)) {
@@ -179,19 +177,37 @@ public class Line extends HinhHoc {
                 nextPoint[tx][ty] = chooseColor;
             }
         }
-        double l = 3;
-        double delta = (-2 * x2 + (-1.0 / (y1 - y2))) * (-2 * x2 + (-1.0 / (y1 - y2))) - 4 * (x2 * x2 + y3 - (-1.0 / (y1 - y2)) * x3 - l * l);
-        double b = (-2 * x2 + (-1.0 / (y1 - y2)));
-        double xxx = (-b - sqrt(delta)) / 2;
-        double xx = (-b + sqrt(delta)) / 2;
-        double yyy = (-1.0 / (y1 - y2)) * xxx + y3 - (-1.0 / (y1 - y2) * x3);
-        double yy = (-1.0 / (y1 - y2)) * xx + y3 - (-1.0 / (y1 - y2) * x3);
+        double vx = x1-x2;
+        double vy = y1-y2;
+        if(sqrt(vx*vx+vy*vy) != 0 && sqrt(vx*vx+vy*vy) != 0)
+        {
+            double l = 5;
+            double ux = (vx/(sqrt(vx*vx+vy*vy)));
+            double uy = (vy/ (sqrt(vx*vx+vy*vy)));
+            double cx = x2+l*ux;
+            double cy = y2+l*uy;
+            double alpha = atan2((y2-y1), (x2-x1));
+            System.out.println("alpha: " + alpha);
+            double cx1 = 0;
+            double cy1 = l;
+            double cx2 = 0;
+            double cy2 = -l;
+
+            //cx1 = cx1*cos(alpha) - cy1*sin(alpha);
+            //cy1 = cx1*sin(alpha) - cy1*cos(alpha);
+
+            //cx2 = cx2*cos(alpha) - cy2*sin(alpha);
+            //cy2 = cx2*sin(alpha) - cy2*cos(alpha);
+
+
+            MidpointLine(x2, y2, (int)(cx+cx1*cos(alpha) - cy1*sin(alpha)+0.5), (int)(cy+cx1*sin(alpha) + cy1*cos(alpha)+0.5));
+            MidpointLine(x2, y2, (int)(cx+cx2*cos(alpha) - cy2*sin(alpha)+0.5), (int)(cy+cx2*sin(alpha) + cy2*cos(alpha)+0.5));
+        }
+
 
 //
 //    MidpointLine(x1, y1, x2, y2);
 
-    MidpointLine(x2, y2, (int)xxx, (int)yyy);
 
-    MidpointLine(x2, y2, (int)xx, (int)yy);
     }
 }
