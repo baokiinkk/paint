@@ -34,6 +34,8 @@ public class Paint extends JFrame implements ActionListener {
     // trạng thái nút đang chọn
     private com.company.Button choose = MOUSE;
 
+    //trạng thái chuột
+
     // biến phụ vị trí trỏ chuột
     private int xStart = -1;
     private int yStart = -1;
@@ -284,73 +286,77 @@ public class Paint extends JFrame implements ActionListener {
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            switch (choose)
-            {
-                case LINE: // vẽ đường thẳng
-                {
-                    // lấy tọa độ điểm bắt đầu
-                    xStart = mouseEvent.getX()/rectSize;
-                    yStart= mouseEvent.getY()/rectSize;
-                    MyFunction.clearArr(nextPoint);
-                    break;
+            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+                switch (choose) {
+                    case LINE: // vẽ đường thẳng
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        xStart = mouseEvent.getX() / rectSize;
+                        yStart = mouseEvent.getY() / rectSize;
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case RECTANGLE: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        xStart = mouseEvent.getX() / rectSize;
+                        yStart = mouseEvent.getY() / rectSize;
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case PAINT: {
+                        System.out.println("Pressed");
+                        mX = mouseEvent.getX() / rectSize;
+                        mY = mouseEvent.getY() / rectSize;
+                        MyFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
+                        break;
+                    }
                 }
-                case RECTANGLE: // vẽ hinh cn
-                {
-                    // lấy tọa độ điểm bắt đầu
-                    xStart = mouseEvent.getX() / rectSize;
-                    yStart = mouseEvent.getY() / rectSize;
-                    MyFunction.clearArr(nextPoint);
-                    break;
-                }
-                case PAINT: {
-                    System.out.println("Pressed");
-                    mX = mouseEvent.getX() / rectSize;
-                    mY = mouseEvent.getY() / rectSize;
-                    MyFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
-                    break;
-                }
+            } else {
+//                MyFunction.storePointColor(drawingBoard, nextPoint);
+//                MyFunction.clearArr(nextDrawing);
+//                repaint();
             }
+
         }
 
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-            switch (choose)
-            {
-                case PENCIL: // vẽ đường thẳng
-                {
-                    //nothing
-                    xStart = -1;
-                    yStart = -1;
-                    System.out.println("Released");
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.clearArr(nextDrawing);
-                    break;
-                }
-                case LINE:
-                {
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.clearArr(nextDrawing);
-                    repaint();
-                    break;
-                }
-                case RECTANGLE:
-                {
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.clearArr(nextDrawing);
-                    repaint();
-                    break;
-                }
-                case PAINT:
-                {
-                    MyFunction.storePointColor(drawingBoard, undoPoint);
-                    MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                    MyFunction.storePointColor(drawingBoard, nextPoint);
-                    MyFunction.clearArr(nextDrawing);
-                    repaint();
-                    break;
+            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+                switch (choose) {
+                    case PENCIL: // vẽ đường thẳng
+                    {
+                        //nothing
+                        xStart = -1;
+                        yStart = -1;
+                        System.out.println("Released");
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                        MyFunction.clearArr(nextDrawing);
+                        break;
+                    }
+                    case LINE: {
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+                    case RECTANGLE: {
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+                    case PAINT: {
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                        MyFunction.storePointColor(drawingBoard, nextPoint);
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
                 }
             }
         }
