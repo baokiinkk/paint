@@ -45,6 +45,9 @@ public class Paint extends JFrame implements ActionListener {
     //biến màu đang chọn
     private Color chooseColor = Color.BLACK;
 
+    //biến chứa chế độ đường thẳng đang chọn
+    private lineMode chooseLineMode = lineMode.DEFAULT;
+    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
     // chứa các điểm đã set
     private Color[][] nextPoint = new Color[Width][Height]; //150x217
     private boolean[][] nextDrawing = new boolean[Width][Height]; //150x217
@@ -68,6 +71,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton button1;
     private JButton button2;
     private JLabel showSize;
+    private JComboBox comboBox1;
 
     // hàm chính
     public void run() {
@@ -87,6 +91,13 @@ public class Paint extends JFrame implements ActionListener {
         rectangleButton.addActionListener(this);
         button1.addActionListener(this);
         button2.addActionListener(this);
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
+                System.out.println(chooseLineMode);
+            }
+        });
         //sizeSlider.addChangeListener((ChangeListener) this);
         showSize.setText("Size: " + sizeLine);
         MyFunction.clearArr(drawingBoard);
@@ -98,7 +109,8 @@ public class Paint extends JFrame implements ActionListener {
         drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
-        new HinhHoc(nextDrawing, nextPoint, chooseColor);
+        comboBox1 = new JComboBox<lineMode>(lineModeArr);
+        //new HinhHoc(nextDrawing, nextPoint, chooseColor);
         //
         //clearButton = new JButton("clearButton");
 
@@ -110,6 +122,7 @@ public class Paint extends JFrame implements ActionListener {
         String nameButton = actionEvent.getActionCommand();
         System.out.println(nameButton);
         switch (nameButton) {
+
             case "Mouse": {
                 choose = MOUSE;
                 repaint();
@@ -188,7 +201,7 @@ public class Paint extends JFrame implements ActionListener {
                     mX = mouseEvent.getX() / rectSize;
                     mY = mouseEvent.getY() / rectSize;
                     if (xStart != -1 && yStart != -1)
-                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(xStart, yStart, mX, mY, false);
+                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(xStart, yStart, mX, mY, lineMode.DEFAULT);
                     xStart = mX;
                     yStart = mY;
                     drawArea.repaint();
@@ -200,7 +213,7 @@ public class Paint extends JFrame implements ActionListener {
                     mX = mouseEvent.getX() / rectSize;
                     mY = mouseEvent.getY() / rectSize;
                     if (xStart != -1 && yStart != -1) {
-                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(xStart, yStart, mX, mY, false);
+                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(xStart, yStart, mX, mY, chooseLineMode);
                     }
                     repaint();
                     break;
@@ -211,7 +224,7 @@ public class Paint extends JFrame implements ActionListener {
                     mX = mouseEvent.getX()/rectSize;
                     mY = mouseEvent.getY()/rectSize;
                     if(xStart != -1 && yStart !=-1) {
-                        new Rectangle(nextDrawing,nextPoint,chooseColor).PaintRectangle(xStart,yStart,mX,mY);
+                        new Rectangle(nextDrawing, nextPoint, chooseColor).PaintRectangle(xStart, yStart, mX, mY, chooseLineMode);
                     }
                     repaint();
                     break;

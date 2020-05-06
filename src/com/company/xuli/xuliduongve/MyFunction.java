@@ -22,9 +22,32 @@ public class MyFunction {
         board[cordX][cordY] = Color.WHITE;
     }
 
+
+    public static boolean chooseMode(int point, lineMode MODE) {
+        switch (MODE) {
+            case DEFAULT:
+            case ARROW: {
+                return true;
+            }
+            case DASH: {
+                return (point % 5 != 0);
+            }
+            case DOT: {
+                return (point % 2 == 0);
+            }
+            case DASHDOT: {
+                return (point % 6 != 4 && point % 6 != 0);
+            }
+            case DASHDOTDOT: {
+                return (point % 9 != 5 && point % 9 != 7 && point % 9 != 0);
+            }
+        }
+        return false;
+    }
+
+
     // gán toàn bộ mảng thảnh màu trắng
-    public static void clearArr(Color[][] board)
-    {
+    public static void clearArr(Color[][] board) {
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[0].length; j++)
                 board[i][j] = Color.WHITE;

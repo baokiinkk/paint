@@ -7,12 +7,12 @@ public class Rectangle extends Line {
         super(nextDrawing, nextPoint, chooseColor);
 
     }
-    public void PaintRectangle(int xStart, int yStart, int mX, int mY)
-    {
-        super.MidpointLine(xStart, yStart, mX, yStart, false);
-        super.MidpointLine(xStart, yStart, xStart, mY, false);
-        super.MidpointLine(mX, yStart, mX, mY, false);
-        super.MidpointLine(mX, mY, xStart, mY, false);
+
+    public void PaintRectangle(int xStart, int yStart, int mX, int mY, lineMode MODE) {
+        super.MidpointLine(xStart, yStart, mX, yStart, MODE);
+        super.MidpointLine(xStart, mY, xStart, yStart, MODE);
+        super.MidpointLine(mX, yStart, mX, mY, MODE);
+        super.MidpointLine(mX, mY, xStart, mY, MODE);
     }
 
 }
