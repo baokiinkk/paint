@@ -9,10 +9,10 @@ public class Rectangle extends Line {
     }
     public void PaintRectangle(int xStart, int yStart, int mX, int mY)
     {
-        super.MidpointLine(xStart,yStart,mX,yStart);
-        super. MidpointLine(xStart,yStart,xStart,mY);
-        super. MidpointLine(mX,yStart,mX,mY);
-        super. MidpointLine(mX,mY,xStart,mY);
+        super.MidpointLine(xStart, yStart, mX, yStart, false);
+        super.MidpointLine(xStart, yStart, xStart, mY, false);
+        super.MidpointLine(mX, yStart, mX, mY, false);
+        super.MidpointLine(mX, mY, xStart, mY, false);
     }
 
 }
