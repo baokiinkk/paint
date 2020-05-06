@@ -62,11 +62,11 @@ public class Line extends HinhHoc {
                     double cx2 = 0;
                     double cy2 = -l;
 
-//cx1 = cx1*cos(alpha) - cy1*sin(alpha);
-//cy1 = cx1*sin(alpha) - cy1*cos(alpha);
+                    //cx1 = cx1*cos(alpha) - cy1*sin(alpha);
+                    //cy1 = cx1*sin(alpha) - cy1*cos(alpha);
 
-//cx2 = cx2*cos(alpha) - cy2*sin(alpha);
-//cy2 = cx2*sin(alpha) - cy2*cos(alpha);
+                    //cx2 = cx2*cos(alpha) - cy2*sin(alpha);
+                    //cy2 = cx2*sin(alpha) - cy2*cos(alpha);
 
 
                     MidpointLine(x2, y2, (int) (cx + cx1 * cos(alpha) - cy1 * sin(alpha) + 0.5), (int) (cy + cx1 * sin(alpha) + cy1 * cos(alpha) + 0.5), lineMode.DEFAULT);

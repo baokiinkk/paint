@@ -1,7 +1,6 @@
 package com.company.main;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -13,22 +12,22 @@ import static com.company.Button.*;
 public class Paint extends JFrame implements ActionListener {
 
     // size ảnh
-    private static int Width = 220;     //220
-    private static int Height = 155;    //155
+    private static int Width = 258;     //220
+    private static int Height = 188;    //155
     Color colors = Color.BLACK;
     //toa do mouse
     private int mX = -1;
-    private int rectSize = 5;
+    private int mY = -1;
     //bảng trạng thái các pixel
     private Color[][] drawingBoard = new Color[Width][Height]; //150x217
     private JButton zigzagButton;           // vẽ đường gấp khúc
     private JButton colorButton;                  // chưa nghĩ ra
     private JButton circleButton;           // vẽ hình tròn
-    private int mY = -1;
 
     //kích thước nét vẽ
     private int sizeLine = 1;
     //kich thuoc pixel va khoang cách giữa các pixel
+    private int rectSize = 4;
     private int spacing = 1;
     private JButton eraseButton;            // xóa 1 vùng nhỏ
 
@@ -63,7 +62,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton clearButton;            // xóa sạch
     private JButton pencilButton;           // đè là vẽ
     private JButton undoButton;             // xóa thao tác vừa làm
-    private JCheckBox axesCheckBox;
+    private JCheckBox axisCheckBox2D;
     private JButton rectangleButton;        // vẽ hình chữ nhật
     private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
@@ -72,6 +71,11 @@ public class Paint extends JFrame implements ActionListener {
     private JButton button2;
     private JLabel showSize;
     private JComboBox comboBox1;
+    private JButton Import;
+    private JButton Export;
+    private JCheckBox a2DCoordCheckBox;
+    private JCheckBox a3DCoordCheckBox;
+    private JCheckBox axisCheckBox3D;
 
     // hàm chính
     public void run() {
@@ -81,6 +85,8 @@ public class Paint extends JFrame implements ActionListener {
         this.setVisible(true); // set hiện hay k
         this.setSize(1280, 800);
         this.setResizable(false);
+
+
         clearButton.addActionListener(this);
         lineButton.addActionListener(this);
         pencilButton.addActionListener(this);
@@ -91,15 +97,28 @@ public class Paint extends JFrame implements ActionListener {
         rectangleButton.addActionListener(this);
         button1.addActionListener(this);
         button2.addActionListener(this);
+
+        axisCheckBox2D.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+                if (itemEvent.getSource() == axisCheckBox2D) {
+                    if (axisCheckBox2D.isSelected()) {
+                        ((Board) drawArea).showAxis();
+                    } else {
+                        //drawArea.hideAxis();
+                        ((Board) drawArea).hideAxis();
+                    }
+                    repaint();
+                }
+            }
+        });
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
-                System.out.println(chooseLineMode);
             }
         });
         //sizeSlider.addChangeListener((ChangeListener) this);
-        showSize.setText("Size: " + sizeLine);
         MyFunction.clearArr(drawingBoard);
         MyFunction.clearArr(undoPoint);
     }

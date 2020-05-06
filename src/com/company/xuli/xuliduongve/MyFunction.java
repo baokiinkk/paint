@@ -33,7 +33,7 @@ public class MyFunction {
                 return (point % 5 != 0);
             }
             case DOT: {
-                return (point % 2 == 0);
+                return (point % 2 != 0);
             }
             case DASHDOT: {
                 return (point % 6 != 4 && point % 6 != 0);
