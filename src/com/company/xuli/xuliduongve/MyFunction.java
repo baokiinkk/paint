@@ -1,11 +1,17 @@
 package com.company.xuli.xuliduongve;
 
 import java.awt.Color;
+
+import com.company.xuli.xuliduongve.Point2D;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+
 import javafx.util.Pair;
+
+import static java.lang.Math.atan2;
 
 public class MyFunction {
     // duyệt 4 vị trí kề cạnh 1 điểm
@@ -20,6 +26,11 @@ public class MyFunction {
     // bỏ chọn pixel đó
     static void clearPoint(Color[][] board, int cordX, int cordY) {
         board[cordX][cordY] = Color.WHITE;
+    }
+
+    // tính góc tạo bởi vector ab và trục Ox
+    public static double calcVectorAngle(Point2D a, Point2D b) {
+        return atan2((b.Y - a.Y), (b.X - a.X));
     }
 
 
