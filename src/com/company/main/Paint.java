@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import com.company.Button;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Rectangle;
 
@@ -69,7 +70,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton colorBox;              // chưa nghĩ ra
-    private JButton button1;
+    private JButton ellipseButton;
     private JButton button2;
     private JLabel showSize;
     private JComboBox comboBox1;
@@ -88,7 +89,6 @@ public class Paint extends JFrame implements ActionListener {
         this.setSize(1280, 800);
         this.setResizable(false);
 
-
         clearButton.addActionListener(this);
         lineButton.addActionListener(this);
         pencilButton.addActionListener(this);
@@ -97,8 +97,10 @@ public class Paint extends JFrame implements ActionListener {
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
         rectangleButton.addActionListener(this);
-        button1.addActionListener(this);
+        ellipseButton.addActionListener(this);
         button2.addActionListener(this);
+        circleButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
 
         axisCheckBox2D.addItemListener(new ItemListener() {
             @Override
@@ -131,6 +133,7 @@ public class Paint extends JFrame implements ActionListener {
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
         comboBox1 = new JComboBox<lineMode>(lineModeArr);
+
         //new HinhHoc(nextDrawing, nextPoint, chooseColor);
         //
         //clearButton = new JButton("clearButton");
@@ -169,6 +172,12 @@ public class Paint extends JFrame implements ActionListener {
 
                 break;
             }
+            case "Circle":{
+                xStart = -1;
+                yStart = -1;
+                choose = Button.CIRCLE;
+                break;
+            }
             case "Pencil": {
                 xStart = -1;
                 yStart = -1;
@@ -198,9 +207,10 @@ public class Paint extends JFrame implements ActionListener {
                 MyFunction.clearArr(nextDrawing);
                 break;
             }
-            case "Button1": {
-                sizeLine--;
-                showSize.setText("Size: " + sizeLine);
+            case "Ellipse":{
+                xStart = -1;
+                yStart = -1;
+                choose = ELLIPSE;
                 break;
             }
             case "Button2": {
@@ -246,6 +256,26 @@ public class Paint extends JFrame implements ActionListener {
                     mY = mouseEvent.getY()/rectSize;
                     if(xStart != -1 && yStart !=-1) {
                         new Rectangle(nextDrawing, nextPoint, chooseColor).PaintRectangle(xStart, yStart, mX, mY, chooseLineMode);
+                    }
+                    repaint();
+                    break;
+                }
+                case CIRCLE:{
+                    MyFunction.clearArr(nextDrawing);
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
+                    if(xStart != -1 && yStart !=-1) {
+                      new Circle(nextDrawing,nextPoint,chooseColor).drawingCircle(xStart,yStart,mX,mY,chooseLineMode);
+                    }
+                    repaint();
+                    break;
+                }
+                case ELLIPSE:{
+                    MyFunction.clearArr(nextDrawing);
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
+                    if(xStart != -1 && yStart !=-1) {
+                        new Ellipseww(nextDrawing,nextPoint,chooseColor).drawEllipse(xStart,yStart,mX,mY,chooseLineMode);
                     }
                     repaint();
                     break;
@@ -311,6 +341,18 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
                         break;
                     }
+                    case CIRCLE:{
+                        xStart = mouseEvent.getX()/rectSize;
+                        yStart= mouseEvent.getY()/rectSize;
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case ELLIPSE:{
+                        xStart = mouseEvent.getX()/rectSize;
+                        yStart= mouseEvent.getY()/rectSize;
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                 }
             } else {
 //                MyFunction.storePointColor(drawingBoard, nextPoint);
@@ -353,6 +395,20 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.storePointColor(drawingBoard, undoPoint);
                         MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                         MyFunction.storePointColor(drawingBoard, nextPoint);
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+                    case CIRCLE:{
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+                    case ELLIPSE:{
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                         MyFunction.clearArr(nextDrawing);
                         repaint();
                         break;

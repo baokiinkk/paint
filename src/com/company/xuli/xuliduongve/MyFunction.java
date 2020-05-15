@@ -11,7 +11,7 @@ import java.util.Queue;
 
 import javafx.util.Pair;
 
-import static java.lang.Math.atan2;
+import static java.lang.Math.*;
 
 public class MyFunction {
     // duyệt 4 vị trí kề cạnh 1 điểm
@@ -142,5 +142,6 @@ public class MyFunction {
             }
         }
     }
+
 
 }

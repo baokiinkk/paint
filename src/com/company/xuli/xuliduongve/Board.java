@@ -30,13 +30,13 @@ public class Board extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g)
+    public void paintComponent(Graphics gg)
     {
-        super.paintComponent(g);
+        super.paintComponent(gg);
+        Graphics2D g = (Graphics2D)gg;
         //g.setColor(Color.lightGray); // set màu nền cho nền vẽ
         g.setColor(new Color(235, 235, 235)); // set màu nền cho nền vẽ
         g.fillRect(0,0, 1280, 800); // kích thước nền vẽ
-
         // set màu cho các pixel
         for (int i = 0; i < width; i++)
         {
@@ -54,22 +54,22 @@ public class Board extends JPanel {
             g.setColor(Color.RED);
             g.drawLine(0, OY, 1280, OY);
             g.drawLine(OX, 0, OX, 800);
-//            for (int i = 0; i < width; i++) {
-//                for (int j = 0; j < height; j++) {
-//                    if (drawingBoard[i][j].equals(Color.WHITE) == false)
-//                    {
-//                        g.setColor(drawingBoard[i][j]);
-//                        int x = spacing + i * rectSize;
-//                        int y = spacing + j * rectSize;
-//                        if (y < 15)
-//                            y = 15;
-//                        if (x + 40 > (width - 4) * rectSize)
-//                            x -= 40;
-//                        //System.out.println(x + " " + y);
-//                        g.drawString("(" + (i - OX / rectSize) + ", " + (-(j - OY / rectSize)) + ")", x, y);
-//                    }
-//                }
-//            }
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    if (drawingBoard[i][j].equals(Color.WHITE) == false)
+                    {
+                        g.setColor(drawingBoard[i][j]);
+                        int x = spacing + i * rectSize;
+                        int y = spacing + j * rectSize;
+                        if (y < 15)
+                            y = 15;
+                        if (x + 40 > (width - 4) * rectSize)
+                            x -= 40;
+                        //System.out.println(x + " " + y);
+                        g.drawString("(" + (i - OX / rectSize) + ", " + (-(j - OY / rectSize)) + ")", x, y);
+                    }
+                }
+            }
         }
     }
 
