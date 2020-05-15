@@ -11,7 +11,8 @@ public enum Button {
     ZIGZAG,
     RECTANGLE,
     CIRCLE,
-    ERASE
+    ERASE,
+    ELIP
 
 }
 

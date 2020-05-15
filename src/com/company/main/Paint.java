@@ -69,7 +69,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton colorBox;              // chưa nghĩ ra
-    private JButton button1;
+    private JButton Elip;
     private JButton button2;
     private JLabel showSize;
     private JComboBox comboBox1;
@@ -97,7 +97,7 @@ public class Paint extends JFrame implements ActionListener {
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
         rectangleButton.addActionListener(this);
-        button1.addActionListener(this);
+        Elip.addActionListener(this);
         button2.addActionListener(this);
 
         axisCheckBox2D.addItemListener(new ItemListener() {
@@ -208,6 +208,12 @@ public class Paint extends JFrame implements ActionListener {
                 showSize.setText("Size: " + sizeLine);
                 break;
             }
+            case "Elip":{
+                xStart = -1;
+                yStart = -1;
+                choose = ELIP;
+                break;
+            }
         }
     }
 
@@ -246,6 +252,16 @@ public class Paint extends JFrame implements ActionListener {
                     mY = mouseEvent.getY()/rectSize;
                     if(xStart != -1 && yStart !=-1) {
                         new Rectangle(nextDrawing, nextPoint, chooseColor).PaintRectangle(xStart, yStart, mX, mY, chooseLineMode);
+                    }
+                    repaint();
+                    break;
+                }
+                case ELIP: {
+                    MyFunction.clearArr(nextDrawing);
+                    mX = mouseEvent.getX()/rectSize;
+                    mY = mouseEvent.getY()/rectSize;
+                    if(xStart != -1 && yStart !=-1) {
+                        new Elip(nextDrawing, nextPoint, chooseColor).PaintElip(xStart, yStart, mX, mY, chooseLineMode);
                     }
                     repaint();
                     break;
@@ -311,6 +327,14 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
                         break;
                     }
+                    case ELIP:
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        xStart = mouseEvent.getX() / rectSize;
+                        yStart = mouseEvent.getY() / rectSize;
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                 }
             } else {
 //                MyFunction.storePointColor(drawingBoard, nextPoint);
@@ -353,6 +377,13 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.storePointColor(drawingBoard, undoPoint);
                         MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                         MyFunction.storePointColor(drawingBoard, nextPoint);
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+                    case ELIP: {
+                        MyFunction.storePointColor(drawingBoard, undoPoint);
+                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                         MyFunction.clearArr(nextDrawing);
                         repaint();
                         break;
