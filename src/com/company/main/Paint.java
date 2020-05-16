@@ -76,18 +76,17 @@ public class Paint extends JFrame implements ActionListener {
     private JComboBox comboBox1;
     private JButton Import;
     private JButton Export;
-    private JCheckBox a2DCoordCheckBox;
-    private JCheckBox a3DCoordCheckBox;
-    private JCheckBox axisCheckBox3D;
+    private JButton settingButton;
 
     // hàm chính
     public void run() {
         this.setContentPane(activity_main);// liên kết với màn hình form
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // close
         this.setTitle("Paint V1.0");
-        this.setVisible(true); // set hiện hay k
         this.setSize(1280, 800);
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true); // set hiện hay k
 
         clearButton.addActionListener(this);
         lineButton.addActionListener(this);
@@ -101,21 +100,22 @@ public class Paint extends JFrame implements ActionListener {
         button2.addActionListener(this);
         circleButton.addActionListener(this);
         ellipseButton.addActionListener(this);
+        settingButton.addActionListener(this);
 
-        axisCheckBox2D.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                if (itemEvent.getSource() == axisCheckBox2D) {
-                    if (axisCheckBox2D.isSelected()) {
-                        ((Board) drawArea).showAxis();
-                    } else {
-                        //drawArea.hideAxis();
-                        ((Board) drawArea).hideAxis();
-                    }
-                    repaint();
-                }
-            }
-        });
+//        axisCheckBox2D.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent itemEvent) {
+//                if (itemEvent.getSource() == axisCheckBox2D) {
+//                    if (axisCheckBox2D.isSelected()) {
+//                        ((Board) drawArea).showAxis();
+//                    } else {
+//                        //drawArea.hideAxis();
+//                        ((Board) drawArea).hideAxis();
+//                    }
+//                    repaint();
+//                }
+//            }
+//        });
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -187,7 +187,7 @@ public class Paint extends JFrame implements ActionListener {
                 break;
             }
             case "Color": {
-                Color c = JColorChooser.showDialog(this, "choose color", Color.RED);
+                Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
                 if (c != null)
                     chooseColor = c;
                 //System.out.println(colors);
@@ -207,7 +207,7 @@ public class Paint extends JFrame implements ActionListener {
                 MyFunction.clearArr(nextDrawing);
                 break;
             }
-            case "Ellipse":{
+            case "Ellipse": {
                 xStart = -1;
                 yStart = -1;
                 choose = ELLIPSE;
@@ -216,6 +216,14 @@ public class Paint extends JFrame implements ActionListener {
             case "Button2": {
                 sizeLine++;
                 showSize.setText("Size: " + sizeLine);
+                break;
+            }
+            case "Setting": {
+                System.out.println("Yes");
+                Setting dialog = new Setting();
+                dialog.pack();
+                dialog.setLocationRelativeTo(this);
+                dialog.setVisible(true);
                 break;
             }
         }
