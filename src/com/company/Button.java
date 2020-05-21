@@ -12,6 +12,7 @@ public enum Button {
     RECTANGLE,
     CIRCLE,
     ERASE,
-    ELLIPSE
+    ELLIPSE,
+    ROTATE
 }
 

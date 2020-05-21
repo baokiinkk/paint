@@ -16,9 +16,10 @@ public class Paint extends JFrame implements ActionListener {
     private static int Width = 258;     //220
     private static int Height = 188;    //155
     Color colors = Color.BLACK;
-    //toa do mouse
-    private int mX = -1;
-    private int mY = -1;
+
+    //biến trạng thái chọn loại bảng vẽ, true là vẽ 2D, false là vẽ 3D
+    private boolean currentBoardState = true;
+
     //bảng trạng thái các pixel
     private Color[][] drawingBoard = new Color[Width][Height]; //150x217
     private JButton zigzagButton;           // vẽ đường gấp khúc
@@ -33,16 +34,18 @@ public class Paint extends JFrame implements ActionListener {
     private JButton eraseButton;            // xóa 1 vùng nhỏ
 
     // trạng thái nút đang chọn
-    private com.company.Button choose = MOUSE;
+    private com.company.Button choose = PENCIL;
 
-    //trạng thái chuột
+    //trạng thái chuột ------------------------------------------------
+    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
+    private Point2D startXY;
+    private Point2D mouseXY;
 
-    // biến phụ vị trí trỏ chuột
-    private int xStart = -1;
-    private int yStart = -1;
-    // biến xác định click chuột đầu giữa 2 lần click, (click để chọn)
+    // biến xác định click chuột đầu trong 2 lần click
     private boolean firstClick = false;
+    //----------------------------------------------------------------
     private JSlider sizeSlider;                // kéo cho vui tay
+
 
     //biến màu đang chọn
     private Color chooseColor = Color.BLACK;
@@ -65,13 +68,12 @@ public class Paint extends JFrame implements ActionListener {
     private JButton clearButton;            // xóa sạch
     private JButton pencilButton;           // đè là vẽ
     private JButton undoButton;             // xóa thao tác vừa làm
-    private JCheckBox axisCheckBox2D;
     private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton mouseButton;            // nút vô dụng nhất, không có gì cả
+    private JButton redoButton;            // nút vô dụng nhất, không có gì cả
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton colorBox;              // chưa nghĩ ra
     private JButton ellipseButton;
-    private JButton button2;
+    private JButton rotateButton;
     private JLabel showSize;
     private JComboBox comboBox1;
     private JButton Import;
@@ -91,13 +93,13 @@ public class Paint extends JFrame implements ActionListener {
         clearButton.addActionListener(this);
         lineButton.addActionListener(this);
         pencilButton.addActionListener(this);
-        mouseButton.addActionListener(this);
+        redoButton.addActionListener(this);
         colorButton.addActionListener(this);
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
         rectangleButton.addActionListener(this);
         ellipseButton.addActionListener(this);
-        button2.addActionListener(this);
+        rotateButton.addActionListener(this);
         circleButton.addActionListener(this);
         ellipseButton.addActionListener(this);
         settingButton.addActionListener(this);
@@ -133,10 +135,8 @@ public class Paint extends JFrame implements ActionListener {
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
         comboBox1 = new JComboBox<lineMode>(lineModeArr);
-
-        //new HinhHoc(nextDrawing, nextPoint, chooseColor);
-        //
-        //clearButton = new JButton("clearButton");
+        mouseXY = new Point2D(-1, -1);
+        startXY = new Point2D(-1, -1);
 
     }
 
@@ -147,8 +147,10 @@ public class Paint extends JFrame implements ActionListener {
         System.out.println(nameButton);
         switch (nameButton) {
 
-            case "Mouse": {
-                choose = MOUSE;
+            case "Redo": {
+                Board.redo();
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
                 repaint();
                 break;
             }
@@ -160,27 +162,35 @@ public class Paint extends JFrame implements ActionListener {
                 break;
             }
             case "Line": {
-                xStart = -1;
-                yStart = -1;
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
                 choose = LINE;
                 break;
             }
             case "Rectangle": {
-                xStart = -1;
-                yStart = -1;
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
                 choose = RECTANGLE;
 
                 break;
             }
-            case "Circle":{
-                xStart = -1;
-                yStart = -1;
+            case "Circle": {
+                //startXY.set(-1, -1);
+                startXY.X = -1;
+                startXY.Y = -1;
+//                xStart = -1;
+//                yStart = -1;
                 choose = Button.CIRCLE;
                 break;
             }
             case "Pencil": {
-                xStart = -1;
-                yStart = -1;
+                //startXY.set(-1, -1);
+                startXY.X = -1;
+                startXY.Y = -1;
+//                xStart = -1;
+//                yStart = -1;
                 choose = PENCIL;
                 MyFunction.clearArr(nextPoint);
                 System.out.println(choose);
@@ -197,7 +207,9 @@ public class Paint extends JFrame implements ActionListener {
                 break;
             }
             case "Undo": {
-                MyFunction.storePointColor(undoPoint, drawingBoard);
+                Board.undo();
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
                 repaint();
                 break;
             }
@@ -208,22 +220,27 @@ public class Paint extends JFrame implements ActionListener {
                 break;
             }
             case "Ellipse": {
-                xStart = -1;
-                yStart = -1;
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
                 choose = ELLIPSE;
                 break;
             }
-            case "Button2": {
-                sizeLine++;
-                showSize.setText("Size: " + sizeLine);
+            case "Rotate": {
+                startXY.set(-1, -1);
+                choose = ROTATE;
+//                sizeLine++;
+//                showSize.setText("Size: " + sizeLine);
                 break;
             }
             case "Setting": {
                 System.out.println("Yes");
-                Setting dialog = new Setting();
+                Setting dialog = new Setting(currentBoardState);
                 dialog.pack();
                 dialog.setLocationRelativeTo(this);
                 dialog.setVisible(true);
+                currentBoardState = dialog.getState();
+                System.out.println(currentBoardState);
                 break;
             }
         }
@@ -237,55 +254,76 @@ public class Paint extends JFrame implements ActionListener {
         public void mouseDragged(MouseEvent mouseEvent) {
             switch (choose) {
                 case PENCIL: {
-                    mX = mouseEvent.getX() / rectSize;
-                    mY = mouseEvent.getY() / rectSize;
-                    if (xStart != -1 && yStart != -1)
-                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(xStart, yStart, mX, mY, lineMode.DEFAULT);
-                    xStart = mX;
-                    yStart = mY;
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+//                    mX = mouseEvent.getX() / rectSize;
+//                    mY = mouseEvent.getY() / rectSize;
+                    //if (xStart != -1 && yStart != -1)
+                    if (startXY.X != -1 && startXY.Y != -1)
+                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
+                    startXY.set(mouseXY);
+//                    xStart = mX;
+//                    yStart = mY;
                     drawArea.repaint();
                     break;
                 }
                 case LINE: // vẽ đường thẳng
                 {
                     MyFunction.clearArr(nextDrawing);
-                    mX = mouseEvent.getX() / rectSize;
-                    mY = mouseEvent.getY() / rectSize;
-                    if (xStart != -1 && yStart != -1) {
-                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(xStart, yStart, mX, mY, chooseLineMode);
-                    }
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+//                    mX = mouseEvent.getX() / rectSize;
+//                    mY = mouseEvent.getY() / rectSize;
+                    if (startXY.X != -1 && startXY.Y != -1)
+                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, chooseLineMode);
                     repaint();
                     break;
                 }
                 case RECTANGLE: // vẽ đường thẳng
                 {
                     MyFunction.clearArr(nextDrawing);
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    if(xStart != -1 && yStart !=-1) {
-                        new Rectangle(nextDrawing, nextPoint, chooseColor).PaintRectangle(xStart, yStart, mX, mY, chooseLineMode);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor);
+                        rec.setRectangle(startXY, mouseXY, chooseLineMode);
+                        rec.draw();
+                        Board.setNowHinhHoc(rec);
                     }
                     repaint();
                     break;
                 }
-                case CIRCLE:{
+                case CIRCLE: {
                     MyFunction.clearArr(nextDrawing);
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    if(xStart != -1 && yStart !=-1) {
-                      new Circle(nextDrawing,nextPoint,chooseColor).drawingCircle(xStart,yStart,mX,mY,chooseLineMode);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+//                    mX = mouseEvent.getX() / rectSize;
+//                    mY = mouseEvent.getY() / rectSize;
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
                     }
                     repaint();
                     break;
                 }
-                case ELLIPSE:{
+                case ELLIPSE: {
                     MyFunction.clearArr(nextDrawing);
-                    mX = mouseEvent.getX()/rectSize;
-                    mY = mouseEvent.getY()/rectSize;
-                    if(xStart != -1 && yStart !=-1) {
-                        new Ellipseww(nextDrawing,nextPoint,chooseColor).drawEllipse(xStart,yStart,mX,mY,chooseLineMode);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+//                    mX = mouseEvent.getX() / rectSize;
+//                    mY = mouseEvent.getY() / rectSize;
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        if (mouseEvent.isShiftDown()) {
+                            new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                        } else {
+                            new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, mouseXY, chooseLineMode);
+                        }
                     }
                     repaint();
+                    break;
+                }
+                case ROTATE: {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        //System.out.println(Board.now.tag);
+                        Board.rotateNow(startXY, mouseXY);
+                        repaint();
+                    }
                     break;
                 }
             }
@@ -326,38 +364,48 @@ public class Paint extends JFrame implements ActionListener {
         public void mousePressed(MouseEvent mouseEvent) {
             if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
                 switch (choose) {
+                    case PENCIL: {
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        nextDrawing[mouseXY.X][mouseXY.Y] = true;
+                        nextPoint[mouseXY.X][mouseXY.Y] = chooseColor;
+                        startXY.set(mouseXY);
+                        drawArea.repaint();
+                        break;
+                    }
                     case LINE: // vẽ đường thẳng
                     {
                         // lấy tọa độ điểm bắt đầu
-                        xStart = mouseEvent.getX() / rectSize;
-                        yStart = mouseEvent.getY() / rectSize;
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+//                        xStart = mouseEvent.getX() / rectSize;
+//                        yStart = mouseEvent.getY() / rectSize;
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
                     case RECTANGLE: // vẽ hinh cn
                     {
                         // lấy tọa độ điểm bắt đầu
-                        xStart = mouseEvent.getX() / rectSize;
-                        yStart = mouseEvent.getY() / rectSize;
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
                     case PAINT: {
                         System.out.println("Pressed");
-                        mX = mouseEvent.getX() / rectSize;
-                        mY = mouseEvent.getY() / rectSize;
-                        MyFunction.paintColor(nextPoint, nextDrawing, mX, mY, chooseColor);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.paintColor(nextPoint, nextDrawing, mouseXY, chooseColor);
                         break;
                     }
-                    case CIRCLE:{
-                        xStart = mouseEvent.getX()/rectSize;
-                        yStart= mouseEvent.getY()/rectSize;
+                    case CIRCLE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
-                    case ELLIPSE:{
-                        xStart = mouseEvent.getX()/rectSize;
-                        yStart= mouseEvent.getY()/rectSize;
+                    case ELLIPSE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case ROTATE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
@@ -377,12 +425,8 @@ public class Paint extends JFrame implements ActionListener {
                     case PENCIL: // vẽ đường thẳng
                     {
                         //nothing
-                        xStart = -1;
-                        yStart = -1;
-                        System.out.println("Released");
-                        MyFunction.storePointColor(drawingBoard, undoPoint);
-                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                        MyFunction.clearArr(nextDrawing);
+                        startXY.set(-1, -1);
+                        Board.applyNow();
                         break;
                     }
                     case LINE: {
@@ -414,7 +458,7 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
-                    case ELLIPSE:{
+                    case ELLIPSE: {
                         MyFunction.storePointColor(drawingBoard, undoPoint);
                         MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
                         MyFunction.clearArr(nextDrawing);
@@ -422,6 +466,8 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                 }
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
             }
         }
 
@@ -434,5 +480,7 @@ public class Paint extends JFrame implements ActionListener {
         public void mouseExited(MouseEvent mouseEvent) {
 
         }
+
+
     }
 }

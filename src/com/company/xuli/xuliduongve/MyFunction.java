@@ -19,13 +19,22 @@ public class MyFunction {
     public static int[] YY = {0, -1, 1, 0};
 
     // code xử lí với pixel
-    static void setPoint(Color[][] board, int cordX, int cordY, Color color) {
-        board[cordX][cordY] = color;
+    public static void setPoint(Color[][] board, int coordX, int coordY, Color color) {
+        board[coordX][coordY] = color;
     }
 
+    public static void setPoint(Color[][] board, Point2D coord, Color color) {
+        board[coord.X][coord.Y] = color;
+    }
+
+
     // bỏ chọn pixel đó
-    static void clearPoint(Color[][] board, int cordX, int cordY) {
+    public static void clearPoint(Color[][] board, int cordX, int cordY) {
         board[cordX][cordY] = Color.WHITE;
+    }
+
+    public static void clearPoint(Color[][] board, Point2D coord) {
+        board[coord.X][coord.Y] = Color.WHITE;
     }
 
     // tính góc tạo bởi vector ab và trục Ox
@@ -101,27 +110,24 @@ public class MyFunction {
     }
 
     // dùng loang để tô màu vùng có màu [x][y] bằng màu được chọn
-    public static void paintColor(Color[][] sourceColor, boolean[][] sourceSet, int cordX, int cordY, Color color)
-    {
+    public static void paintColor(Color[][] sourceColor, boolean[][] sourceSet, Point2D cord, Color color) {
         // dùng hàng đợi để khử đệ quy loang
-        Queue <Pair<Integer, Integer>> myQ = new LinkedList<>();
+        Queue<Pair<Integer, Integer>> myQ = new LinkedList<>();
 
         // oldColor là màu của vùng được tô, những pixel nào nằm kệ có màu oldColor sẽ được thay bằng color
-        Color oldColor = sourceColor[cordX][cordY];
+        Color oldColor = sourceColor[cord.X][cord.Y];
 
         // chỉ khi nào màu mới và màu cũ khác nhau thì mới loang
-        if (!oldColor.equals(color))
-        {
-            sourceSet[cordX][cordY] = true;         // đánh dấu ô màu cũ, để sau này có thể merge được
-            sourceColor[cordX][cordY] = color;      // tô ô màu cũ = màu mới
+        if (!oldColor.equals(color)) {
+            sourceSet[cord.X][cord.Y] = true;         // đánh dấu ô màu cũ, để sau này có thể merge được
+            sourceColor[cord.X][cord.Y] = color;      // tô ô màu cũ = màu mới
 
             // thêm ô màu vào hàng đợi để loang sang các ô khác
-            myQ.add(new Pair<Integer, Integer>(cordX, cordY));
+            myQ.add(new Pair<Integer, Integer>(cord.X, cord.Y));
             // biến vị trí phụ để tính vị trí các ô sắp loang
             int tmpX = -1;
             int tmpY = -1;
-            while(myQ.size() > 0)
-            {
+            while (myQ.size() > 0) {
                 // lấy 1 ô ra khỏi hàng đợi, duyệt và tính 4 vị trí kề nó
                 Pair<Integer, Integer> tmpCord = myQ.poll();
                 for (int move = 0; move < 4; move++)

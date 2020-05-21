@@ -13,14 +13,49 @@ public class Setting extends JDialog {
     private JCheckBox show2DCoordinatesCheckBox;
     private JCheckBox show3DAxisCheckBox;
     private JCheckBox show3DCoordinatesCheckBox;
+    private boolean is2DBoard;
 
-    public Setting() {
+    public Setting(boolean boardState) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setResizable(false);
         this.setTitle("Setting");
+        ButtonGroup myButtonGroup = new ButtonGroup();
+        myButtonGroup.add(a2DBoardRadioButton);
+        myButtonGroup.add(a3DBoardRadioButton);
+        this.is2DBoard = boardState;
+        refreshState();
 
+        a2DBoardRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+                if (itemEvent.getSource() == a2DBoardRadioButton) {
+                    if (a2DBoardRadioButton.isSelected()) {
+                        if (!is2DBoard) {
+                            is2DBoard = true;
+                            refreshState();
+                            //System.out.println(is2DBoard);
+                        }
+                    }
+                }
+            }
+        });
+
+        a3DBoardRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+                if (itemEvent.getSource() == a3DBoardRadioButton) {
+                    if (a3DBoardRadioButton.isSelected()) {
+                        if (is2DBoard) {
+                            is2DBoard = false;
+                            refreshState();
+                            //System.out.println(is2DBoard);
+                        }
+                    }
+                }
+            }
+        });
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -50,6 +85,15 @@ public class Setting extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    private void refreshState() {
+        a2DBoardRadioButton.setSelected(is2DBoard);
+        a3DBoardRadioButton.setSelected(!is2DBoard);
+        show2DAxisCheckBox.setEnabled(is2DBoard);
+        show3DAxisCheckBox.setEnabled(!is2DBoard);
+        show2DCoordinatesCheckBox.setEnabled(is2DBoard);
+        show3DCoordinatesCheckBox.setEnabled(!is2DBoard);
+    }
+
     private void onOK() {
         // add your code here
         dispose();
@@ -58,5 +102,9 @@ public class Setting extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public boolean getState() {
+        return is2DBoard;
     }
 }
