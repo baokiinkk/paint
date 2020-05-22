@@ -10,6 +10,7 @@ public class HinhHoc {
     public Point2D end;
     public Point2D center;
     public lineMode mode;
+    public double alpha;
     public com.company.Button tag;
 
     public HinhHoc(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
@@ -17,6 +18,7 @@ public class HinhHoc {
         this.nextDrawing = nextDrawing;
         this.nextPoint = nextPoint;
         this.center = new Point2D();
+        this.alpha = 0;
     }
 
     public void MidpointLine(Point2D start, Point2D end, lineMode Mode) {

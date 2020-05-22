@@ -51,6 +51,20 @@ public class Board extends JPanel {
         }
     }
 
+    public static void applyRotate(Point2D start, Point2D end) {
+        Vector2D a = new Vector2D(now.center, start);
+        Vector2D b = new Vector2D(now.center, end);
+        double alpha = a.alphaVector(b);
+        //System.out.println(alpha);
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).applyRotate(alpha);
+                break;
+            }
+        }
+    }
+
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -127,6 +141,14 @@ public class Board extends JPanel {
             Color[][] tmpBoard = new Color[width][height];
             MyFunction.storePointColor(drawingBoard, tmpBoard);
             redoBoard.push(tmpBoard);
+            MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
+        }
+    }
+
+    public static void previousDo() {
+        if (!undoBoard.empty()) {
+            Color[][] tmpBoard = new Color[width][height];
+            MyFunction.storePointColor(drawingBoard, tmpBoard);
             MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
         }
     }

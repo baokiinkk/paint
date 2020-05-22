@@ -34,7 +34,10 @@ public class Vector2D {
     }
 
     public Vector2D unit() {
-        Vector2D res = new Vector2D(this.X / this.length(), this.Y / this.length());
+        Vector2D res = new Vector2D(0, 0);
+        if (this.length() > 0) {
+            res.set(this.X / this.length(), this.Y / this.length());
+        }
         return res;
     }
 

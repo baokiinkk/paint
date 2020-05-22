@@ -380,6 +380,7 @@ public class Paint extends JFrame implements ActionListener {
                     case ROTATE: {
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
+                        Board.previousDo();
                         break;
                     }
                 }
@@ -428,8 +429,12 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
-                    case ERASE:
-                    {
+                    case ERASE: {
+                        Board.applyNow();
+                        break;
+                    }
+                    case ROTATE: {
+                        Board.applyRotate(startXY, mouseXY);
                         Board.applyNow();
                         break;
                     }

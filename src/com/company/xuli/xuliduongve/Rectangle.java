@@ -20,17 +20,23 @@ public class Rectangle extends HinhHoc {
         D = new Point2D();
     }
 
-    public void setRectangle(Point2D start, Point2D end, lineMode mode) {
+    private void setRectangle(Point2D start, Point2D end) {
         A.set(start.X, start.Y);              // (start) A-----------------B
         B.set(end.X, start.Y);                //         |                 |
         C.set(end.X, end.Y);                  //         |                 |
         D.set(start.X, end.Y);                //         D-----------------C  (end)
+    }
+
+    public void setRectangle(Point2D start, Point2D end, lineMode mode) {
+        this.setRectangle(start, end);
+        this.start = start;
+        this.end = end;
         MODE = mode;
         center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
     }
 
     public void rotate(double alpha) {
-        System.out.println(alpha);
+
         Point2D tmpA = A.rotatePoint(center, alpha);
         Point2D tmpB = B.rotatePoint(center, alpha);
         Point2D tmpC = C.rotatePoint(center, alpha);
@@ -41,20 +47,47 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(tmpD, tmpA, MODE);
     }
 
-    public void setSquare(Point2D start, Point2D end, lineMode mode)
-    {
-        double d = Math.sqrt((start.X-end.X)*(start.X-end.X) + (start.Y-end.Y)*(start.Y-end.Y));
-        double a = d/Math.sqrt(2);
-        end.set(start.X+a, start.Y+a);
+    public void applyRotate(double alpha) {
+        double al = Math.toDegrees(this.alpha) + Math.toDegrees(alpha);
+        if (al > 360) {
+            al = -360 + (al - 360);
+        }
+        if (al < -360) {
+            al = 360 - (-360 - al);
+        }
+        this.alpha = (Math.toRadians(al));
+        System.out.println(alpha);
+
+    }
+
+    public void setSquare(Point2D start, Point2D end, lineMode mode) {
         //end.set();
         MODE = mode;
         A.set(start.X, start.Y);              // (start) A-----------------B
         B.set(end.X, start.Y);                //         |                 |
         C.set(end.X, end.Y);                  //         |                 |
         D.set(start.X, end.Y);                //         D-----------------C  (end)
+        Vector2D AB = new Vector2D(A, B);
+        Vector2D AD = new Vector2D(A, D);
+        int d = (int) Math.min(AB.length(), AD.length());
+        AB = AB.kTimesUnit(d);
+        AD = AD.kTimesUnit(d);
+        //System.out.println(AB.X + "-" +AB.Y + "....." + AD.X + "-" + AD.Y);
+        end.set(A.X + AB.X, A.Y + AD.Y);
+        A.set(start.X, start.Y);              // (start) A-----------------B
+        B.set(end.X, start.Y);                //         |                 |
+        C.set(end.X, end.Y);                  //         |                 |
+        D.set(start.X, end.Y);                //         D-----------------C  (end)
+        this.start = start;
+        this.end = end;
+        center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
     }
 
     public void draw() {
+        A = A.rotatePoint(center, this.alpha);
+        B = B.rotatePoint(center, this.alpha);
+        C = C.rotatePoint(center, this.alpha);
+        D = D.rotatePoint(center, this.alpha);
         super.MidpointLine(A, B, MODE);
         super.MidpointLine(B, C, MODE);
         super.MidpointLine(C, D, MODE);
