@@ -37,10 +37,10 @@ public class Rectangle extends HinhHoc {
 
     public void rotate(double alpha) {
 
-        Point2D tmpA = A.rotatePoint(center, alpha);
-        Point2D tmpB = B.rotatePoint(center, alpha);
-        Point2D tmpC = C.rotatePoint(center, alpha);
-        Point2D tmpD = D.rotatePoint(center, alpha);
+        Point2D tmpA = A.rotatePoint(center, this.alpha + alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha + alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha + alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha + alpha);
         super.MidpointLine(tmpA, tmpB, MODE);
         super.MidpointLine(tmpB, tmpC, MODE);
         super.MidpointLine(tmpC, tmpD, MODE);
@@ -48,15 +48,9 @@ public class Rectangle extends HinhHoc {
     }
 
     public void applyRotate(double alpha) {
-        double al = Math.toDegrees(this.alpha) + Math.toDegrees(alpha);
-        if (al > 360) {
-            al = -360 + (al - 360);
-        }
-        if (al < -360) {
-            al = 360 - (-360 - al);
-        }
-        this.alpha = (Math.toRadians(al));
-        System.out.println(alpha);
+        System.out.println(this.alpha + " " + alpha);
+        this.alpha += alpha;
+
 
     }
 
