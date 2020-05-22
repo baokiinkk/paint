@@ -41,6 +41,19 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(tmpD, tmpA, MODE);
     }
 
+    public void setSquare(Point2D start, Point2D end, lineMode mode)
+    {
+        double d = Math.sqrt((start.X-end.X)*(start.X-end.X) + (start.Y-end.Y)*(start.Y-end.Y));
+        double a = d/Math.sqrt(2);
+        end.set(start.X+a, start.Y+a);
+        //end.set();
+        MODE = mode;
+        A.set(start.X, start.Y);              // (start) A-----------------B
+        B.set(end.X, start.Y);                //         |                 |
+        C.set(end.X, end.Y);                  //         |                 |
+        D.set(start.X, end.Y);                //         D-----------------C  (end)
+    }
+
     public void draw() {
         super.MidpointLine(A, B, MODE);
         super.MidpointLine(B, C, MODE);

@@ -12,74 +12,6 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
 
-    // size ảnh
-    private static int Width = 258;     //220
-    private static int Height = 188;    //155
-    Color colors = Color.BLACK;
-
-    //biến trạng thái chọn loại bảng vẽ, true là vẽ 2D, false là vẽ 3D
-    private boolean currentBoardState = true;
-
-    //bảng trạng thái các pixel
-    private Color[][] drawingBoard = new Color[Width][Height]; //150x217
-    private JButton zigzagButton;           // vẽ đường gấp khúc
-    private JButton colorButton;                  // chưa nghĩ ra
-    private JButton circleButton;           // vẽ hình tròn
-
-    //kích thước nét vẽ
-    private int sizeLine = 1;
-    //kich thuoc pixel va khoang cách giữa các pixel
-    private int rectSize = 4;
-    private int spacing = 1;
-    private JButton eraseButton;            // xóa 1 vùng nhỏ
-
-    // trạng thái nút đang chọn
-    private com.company.Button choose = PENCIL;
-
-    //trạng thái chuột ------------------------------------------------
-    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
-    private Point2D startXY;
-    private Point2D mouseXY;
-
-    // biến xác định click chuột đầu trong 2 lần click
-    private boolean firstClick = false;
-    //----------------------------------------------------------------
-    private JSlider sizeSlider;                // kéo cho vui tay
-
-
-    //biến màu đang chọn
-    private Color chooseColor = Color.BLACK;
-
-    //biến chứa chế độ đường thẳng đang chọn
-    private lineMode chooseLineMode = lineMode.DEFAULT;
-    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
-    // chứa các điểm đã set
-    private Color[][] nextPoint = new Color[Width][Height]; //150x217
-    private boolean[][] nextDrawing = new boolean[Width][Height]; //150x217
-    // chứa các điểm dùng để quay lại
-    private Color[][] undoPoint = new Color[Width][Height]; //150x217
-
-    // khai báo biến
-    private JPanel activity_main;
-    private JPanel leftPanel;
-    private JButton lineButton;
-    private JPanel mainArea;
-    private JPanel drawArea;
-    private JButton clearButton;            // xóa sạch
-    private JButton pencilButton;           // đè là vẽ
-    private JButton undoButton;             // xóa thao tác vừa làm
-    private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton redoButton;            // nút vô dụng nhất, không có gì cả
-    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
-    private JButton colorBox;              // chưa nghĩ ra
-    private JButton ellipseButton;
-    private JButton rotateButton;
-    private JLabel showSize;
-    private JComboBox comboBox1;
-    private JButton Import;
-    private JButton Export;
-    private JButton settingButton;
-
     // hàm chính
     public void run() {
         this.setContentPane(activity_main);// liên kết với màn hình form
@@ -103,21 +35,8 @@ public class Paint extends JFrame implements ActionListener {
         circleButton.addActionListener(this);
         ellipseButton.addActionListener(this);
         settingButton.addActionListener(this);
-
-//        axisCheckBox2D.addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent itemEvent) {
-//                if (itemEvent.getSource() == axisCheckBox2D) {
-//                    if (axisCheckBox2D.isSelected()) {
-//                        ((Board) drawArea).showAxis();
-//                    } else {
-//                        //drawArea.hideAxis();
-//                        ((Board) drawArea).hideAxis();
-//                    }
-//                    repaint();
-//                }
-//            }
-//        });
+        eraseButton.addActionListener(this);
+//
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -174,6 +93,11 @@ public class Paint extends JFrame implements ActionListener {
 //                yStart = -1;
                 choose = RECTANGLE;
 
+                break;
+            }
+            case "Erase":{
+                startXY.set(-1, -1);
+                choose = ERASE;
                 break;
             }
             case "Circle": {
@@ -283,10 +207,35 @@ public class Paint extends JFrame implements ActionListener {
                     mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                     if (startXY.X != -1 && startXY.Y != -1) {
                         Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor);
-                        rec.setRectangle(startXY, mouseXY, chooseLineMode);
+                        if (mouseEvent.isShiftDown())
+                        {
+                            rec.setSquare(startXY, mouseXY, chooseLineMode);
+                        }
+                        else
+                        {
+                            rec.setRectangle(startXY, mouseXY, chooseLineMode);
+                        }
                         rec.draw();
                         Board.setNowHinhHoc(rec);
                     }
+                    repaint();
+                    break;
+                }
+                case ERASE: // vẽ cục gôm
+                {
+                    //MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+
+                    for(int i=-1;i<=1;i++){
+                        for(int j=-1;j<=1;j++){
+                            Point2D diem = new Point2D(mouseXY.X+i,mouseXY.Y+j);
+                            if(MyFunction.isSafe(drawingBoard,diem.X,diem.Y)){
+                                nextPoint[diem.X][diem.Y] = Color.WHITE;
+                                nextDrawing[diem.X][diem.Y] = true;
+                            }
+                        }
+                    }
+                    Board.drawErase(mouseXY);
                     repaint();
                     break;
                 }
@@ -337,10 +286,27 @@ public class Paint extends JFrame implements ActionListener {
                 case LINE: // vẽ đường thẳng
                 {
                     // nothing
+                    System.out.println("x: " +mouseEvent.getX()+" - "+"y:"+mouseEvent.getY());
+                    break;
+                }
+                case ERASE:{
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+
+                    for(int i=-1;i<=1;i++){
+                        for(int j=-1;j<=1;j++){
+                            Point2D diem = new Point2D(mouseXY.X+i,mouseXY.Y+j);
+                            if(MyFunction.isSafe(drawingBoard,diem.X,diem.Y)){
+                                nextPoint[diem.X][diem.Y] = Color.WHITE;
+                                nextDrawing[diem.X][diem.Y] = true;
+                            }
+                        }
+                    }
+                    Board.drawErase(mouseXY);
+                    repaint();
                     break;
                 }
             }
-
         }
     }
 
@@ -382,6 +348,13 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case RECTANGLE: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case ERASE: // vẽ cục gôm
                     {
                         // lấy tọa độ điểm bắt đầu
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
@@ -430,42 +403,38 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case LINE: {
-                        MyFunction.storePointColor(drawingBoard, undoPoint);
-                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                        MyFunction.clearArr(nextDrawing);
+                        Board.applyNow();
                         repaint();
                         break;
                     }
                     case RECTANGLE: {
-                        MyFunction.storePointColor(drawingBoard, undoPoint);
-                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                        MyFunction.clearArr(nextDrawing);
+                        Board.applyNow();
                         repaint();
                         break;
                     }
                     case PAINT: {
-                        MyFunction.storePointColor(drawingBoard, undoPoint);
-                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+                        Board.applyNow();
                         MyFunction.storePointColor(drawingBoard, nextPoint);
-                        MyFunction.clearArr(nextDrawing);
                         repaint();
                         break;
                     }
                     case CIRCLE:{
-                        MyFunction.storePointColor(drawingBoard, undoPoint);
-                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                        MyFunction.clearArr(nextDrawing);
+                        Board.applyNow();
                         repaint();
                         break;
                     }
                     case ELLIPSE: {
-                        MyFunction.storePointColor(drawingBoard, undoPoint);
-                        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-                        MyFunction.clearArr(nextDrawing);
+                        Board.applyNow();
                         repaint();
                         break;
                     }
+                    case ERASE:
+                    {
+                        Board.applyNow();
+                        break;
+                    }
                 }
+
                 undoButton.setEnabled(Board.ableUndo());
                 redoButton.setEnabled(Board.ableRedo());
             }
@@ -483,4 +452,72 @@ public class Paint extends JFrame implements ActionListener {
 
 
     }
+    // size ảnh
+    private static int Width = 258;     //220
+    private static int Height = 188;    //155
+    Color colors = Color.BLACK;
+
+    //biến trạng thái chọn loại bảng vẽ, true là vẽ 2D, false là vẽ 3D
+    private boolean currentBoardState = true;
+
+    //bảng trạng thái các pixel
+    private Color[][] drawingBoard = new Color[Width][Height]; //150x217
+
+    //kích thước nét vẽ
+    private int sizeLine = 1;
+    //kich thuoc pixel va khoang cách giữa các pixel
+    private int rectSize = 4;
+    private int spacing = 1;
+    // xóa 1 vùng nhỏ
+
+    // trạng thái nút đang chọn
+    private com.company.Button choose = PENCIL;
+
+    //trạng thái chuột ------------------------------------------------
+    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
+    private Point2D startXY;
+    private Point2D mouseXY;
+
+    // biến xác định click chuột đầu trong 2 lần click
+    private boolean firstClick = false;
+    //----------------------------------------------------------------
+    private JSlider sizeSlider;                // kéo cho vui tay
+
+
+    //biến màu đang chọn
+    private Color chooseColor = Color.BLACK;
+
+    //biến chứa chế độ đường thẳng đang chọn
+    private lineMode chooseLineMode = lineMode.DEFAULT;
+    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
+    // chứa các điểm đã set
+    private Color[][] nextPoint = new Color[Width][Height]; //150x217
+    private boolean[][] nextDrawing = new boolean[Width][Height]; //150x217
+    // chứa các điểm dùng để quay lại
+    private Color[][] undoPoint = new Color[Width][Height]; //150x217
+
+    // khai báo biến
+    private JPanel activity_main;
+    private JPanel leftPanel;
+    private JButton lineButton;
+    private JPanel mainArea;
+    private JPanel drawArea;
+    private JButton clearButton;            // xóa sạch
+    private JButton pencilButton;           // đè là vẽ
+    private JButton undoButton;             // xóa thao tác vừa làm
+    private JButton rectangleButton;        // vẽ hình chữ nhật
+    private JButton redoButton;            // nút vô dụng nhất, không có gì cả
+    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
+    private JButton colorBox;              // chưa nghĩ ra
+    private JButton ellipseButton;
+    private JButton rotateButton;
+    private JLabel showSize;
+    private JComboBox comboBox1;
+    private JButton Import;
+    private JButton Export;
+    private JButton settingButton;
+    private JButton eraseButton;
+    private JButton zigzagButton;           // vẽ đường gấp khúc
+    private JButton colorButton;                  // chưa nghĩ ra
+    private JButton circleButton;           // vẽ hình tròn
 }

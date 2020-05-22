@@ -15,6 +15,8 @@ public class Board extends JPanel {
     private static int height;
     private static Stack<Color[][]> undoBoard;
 
+    private static Point2D erase;
+    private static boolean drawErase;
     private int OX;
     private int OY;
     private boolean showAxis;
@@ -50,9 +52,9 @@ public class Board extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics gg) {
-        super.paintComponent(gg);
-        Graphics2D g = (Graphics2D) gg;
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         //g.setColor(Color.lightGray); // set màu nền cho nền vẽ
         g.setColor(new Color(235, 235, 235)); // set màu nền cho nền vẽ
         g.fillRect(0, 0, 1280, 800); // kích thước nền vẽ
@@ -61,10 +63,12 @@ public class Board extends JPanel {
         {
             for (int j = 0; j < height; j++) {
                 // nếu bản trạng thái tồn tại thì set ô pixel đó màu đen còn ko thì màu trắng
-                if (nextDrawing[i][j])
+                if (nextDrawing[i][j]) {
                     g.setColor(nextPoint[i][j]);
-                else
+                }
+                else {
                     g.setColor(drawingBoard[i][j]);
+                }
                 g.fillRect(spacing + i * rectSize, spacing + j * rectSize, rectSize - spacing, rectSize - spacing);
             }
         }
@@ -90,11 +94,23 @@ public class Board extends JPanel {
                 }
             }
         }
+
+        if (drawErase)
+        {
+            g.setColor(Color.BLACK);
+            g.drawRect((erase.X-1)*rectSize, (erase.Y-1)*rectSize, rectSize*3, rectSize*3);
+            drawErase = false;
+        }
     }
 
     public static void setNowHinhHoc(HinhHoc other) {
         now = new HinhHoc(nextDrawing, nextPoint, other.chooseColor);
         now = other;
+    }
+
+    public static void drawErase(Point2D vitri){
+        erase = vitri;
+        drawErase = true;
     }
 
     public static void applyNow() {
