@@ -1,9 +1,21 @@
 package com.company.main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.spi.FileTypeDetector;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
+import com.company.Animation2D.Firework;
 import com.company.Button;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Rectangle;
@@ -12,10 +24,23 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
 
+    private JButton animationButton;
+
+    // hàm custom cho các thành phần trong form
+    private void createUIComponents() {
+        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
+        drawArea.addMouseMotionListener(new Move());
+        drawArea.addMouseListener(new Click());
+        comboBox1 = new JComboBox<lineMode>(lineModeArr);
+        mouseXY = new Point2D(-1, -1);
+        startXY = new Point2D(-1, -1);
+
+    }
+
     // hàm chính
     public void run() {
         this.setContentPane(activity_main);// liên kết với màn hình form
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // close
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0");
         this.setSize(1280, 800);
         this.setResizable(false);
@@ -36,6 +61,9 @@ public class Paint extends JFrame implements ActionListener {
         ellipseButton.addActionListener(this);
         settingButton.addActionListener(this);
         eraseButton.addActionListener(this);
+        animationButton.addActionListener(this);
+        Import.addActionListener(this);
+        Export.addActionListener(this);
 //
         comboBox1.addActionListener(new ActionListener() {
             @Override
@@ -46,128 +74,6 @@ public class Paint extends JFrame implements ActionListener {
         //sizeSlider.addChangeListener((ChangeListener) this);
         MyFunction.clearArr(drawingBoard);
         MyFunction.clearArr(undoPoint);
-    }
-
-    // hàm custom cho các thành phần trong form
-    private void createUIComponents() {
-        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
-        drawArea.addMouseMotionListener(new Move());
-        drawArea.addMouseListener(new Click());
-        comboBox1 = new JComboBox<lineMode>(lineModeArr);
-        mouseXY = new Point2D(-1, -1);
-        startXY = new Point2D(-1, -1);
-
-    }
-
-    // click button
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        String nameButton = actionEvent.getActionCommand();
-        System.out.println(nameButton);
-        switch (nameButton) {
-
-            case "Redo": {
-                Board.redo();
-                undoButton.setEnabled(Board.ableUndo());
-                redoButton.setEnabled(Board.ableRedo());
-                repaint();
-                break;
-            }
-            case "Clear": {
-                //choose = Button.CLEAR;
-                MyFunction.clearArr(drawingBoard);
-                MyFunction.clearArr(nextPoint);
-                repaint();
-                break;
-            }
-            case "Line": {
-                startXY.set(-1, -1);
-//                xStart = -1;
-//                yStart = -1;
-                choose = LINE;
-                break;
-            }
-            case "Rectangle": {
-                startXY.set(-1, -1);
-//                xStart = -1;
-//                yStart = -1;
-                choose = RECTANGLE;
-
-                break;
-            }
-            case "Erase":{
-                startXY.set(-1, -1);
-                choose = ERASE;
-                break;
-            }
-            case "Circle": {
-                //startXY.set(-1, -1);
-                startXY.X = -1;
-                startXY.Y = -1;
-//                xStart = -1;
-//                yStart = -1;
-                choose = Button.CIRCLE;
-                break;
-            }
-            case "Pencil": {
-                //startXY.set(-1, -1);
-                startXY.X = -1;
-                startXY.Y = -1;
-//                xStart = -1;
-//                yStart = -1;
-                choose = PENCIL;
-                MyFunction.clearArr(nextPoint);
-                System.out.println(choose);
-                break;
-            }
-            case "Color": {
-                Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
-                if (c != null)
-                    chooseColor = c;
-                //System.out.println(colors);
-                colorBox.setBackground(chooseColor);
-                colorBox.setForeground(chooseColor);
-
-                break;
-            }
-            case "Undo": {
-                Board.undo();
-                undoButton.setEnabled(Board.ableUndo());
-                redoButton.setEnabled(Board.ableRedo());
-                repaint();
-                break;
-            }
-            case "Paint": {
-                choose = PAINT;
-                MyFunction.storePointColor(drawingBoard, nextPoint);
-                MyFunction.clearArr(nextDrawing);
-                break;
-            }
-            case "Ellipse": {
-                startXY.set(-1, -1);
-//                xStart = -1;
-//                yStart = -1;
-                choose = ELLIPSE;
-                break;
-            }
-            case "Rotate": {
-                startXY.set(-1, -1);
-                choose = ROTATE;
-//                sizeLine++;
-//                showSize.setText("Size: " + sizeLine);
-                break;
-            }
-            case "Setting": {
-                System.out.println("Yes");
-                Setting dialog = new Setting(currentBoardState);
-                dialog.pack();
-                dialog.setLocationRelativeTo(this);
-                dialog.setVisible(true);
-                currentBoardState = dialog.getState();
-                System.out.println(currentBoardState);
-                break;
-            }
-        }
     }
 
     // di chuột
@@ -525,4 +431,217 @@ public class Paint extends JFrame implements ActionListener {
     private JButton zigzagButton;           // vẽ đường gấp khúc
     private JButton colorButton;                  // chưa nghĩ ra
     private JButton circleButton;           // vẽ hình tròn
+
+    // click button
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        String nameButton = actionEvent.getActionCommand();
+        System.out.println(nameButton);
+        switch (nameButton) {
+
+            case "Redo": {
+                Board.redo();
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
+                repaint();
+                break;
+            }
+            case "Clear": {
+                //choose = Button.CLEAR;
+                MyFunction.clearArr(drawingBoard);
+                MyFunction.clearArr(nextPoint);
+                repaint();
+                break;
+            }
+            case "Line": {
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
+                choose = LINE;
+                break;
+            }
+            case "Rectangle": {
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
+                choose = RECTANGLE;
+
+                break;
+            }
+            case "Erase": {
+                startXY.set(-1, -1);
+                choose = ERASE;
+                break;
+            }
+            case "Circle": {
+                //startXY.set(-1, -1);
+                startXY.X = -1;
+                startXY.Y = -1;
+//                xStart = -1;
+//                yStart = -1;
+                choose = Button.CIRCLE;
+                break;
+            }
+            case "Pencil": {
+                //startXY.set(-1, -1);
+                startXY.X = -1;
+                startXY.Y = -1;
+//                xStart = -1;
+//                yStart = -1;
+                choose = PENCIL;
+                MyFunction.clearArr(nextPoint);
+                System.out.println(choose);
+                break;
+            }
+            case "Color": {
+                Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
+                if (c != null)
+                    chooseColor = c;
+                //System.out.println(colors);
+                colorBox.setBackground(chooseColor);
+                colorBox.setForeground(chooseColor);
+
+                break;
+            }
+            case "Undo": {
+                Board.undo();
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
+                repaint();
+                break;
+            }
+            case "Paint": {
+                choose = PAINT;
+                MyFunction.storePointColor(drawingBoard, nextPoint);
+                MyFunction.clearArr(nextDrawing);
+                break;
+            }
+            case "Ellipse": {
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
+                choose = ELLIPSE;
+                break;
+            }
+            case "Rotate": {
+                startXY.set(-1, -1);
+                choose = ROTATE;
+//                sizeLine++;
+//                showSize.setText("Size: " + sizeLine);
+                break;
+            }
+            case "Setting": {
+                System.out.println("Yes");
+                Setting dialog = new Setting(currentBoardState);
+                dialog.pack();
+                dialog.setLocationRelativeTo(this);
+                dialog.setVisible(true);
+                currentBoardState = dialog.getState();
+                System.out.println(currentBoardState);
+                break;
+            }
+            case "Imp": {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "PNG Images", "png");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    System.out.println("You chose to open this file: " +
+                            chooser.getSelectedFile().getName());
+                    try {
+                        Board.applyNow();
+                        BufferedImage myNewPNGFile = ImageIO.read(new File(chooser.getSelectedFile().getAbsolutePath()));
+                        if (myNewPNGFile.getHeight() == Height * 3 && myNewPNGFile.getWidth() == Width * 3) {
+                            for (int i = 0; i < drawingBoard.length; i++) {
+                                for (int j = 0; j < drawingBoard[0].length; j++) {
+                                    Color c = new Color(myNewPNGFile.getRGB(i * 3, j * 3), true);
+                                    drawingBoard[i][j] = c;
+                                }
+                            }
+                            repaint();
+                        } else {
+                            System.out.println("Wrong!");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                break;
+            }
+            case "Exp": {
+
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "PNG Images", "png");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showSaveDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    String filename = chooser.getSelectedFile().getAbsolutePath();
+                    if (!filename.toLowerCase().endsWith(".png")) {
+                        filename += ".png";
+                    }
+                    File myNewPNGFile = new File(filename);
+                    BufferedImage bufferedImage = new BufferedImage(drawingBoard.length * 3, drawingBoard[0].length * 3,
+                            BufferedImage.TYPE_INT_RGB);
+                    for (int i = 0; i < drawingBoard.length; i++) {
+                        for (int j = 0; j < drawingBoard[0].length; j++) {
+                            for (int plusI = 0; plusI < 3; plusI++) {
+                                for (int plusJ = 0; plusJ < 3; plusJ++) {
+                                    bufferedImage.setRGB(i * 3 + plusI, j * 3 + plusJ, drawingBoard[i][j].getRGB());
+                                }
+                            }
+                        }
+                    }
+                    try {
+                        ImageIO.write(bufferedImage, "PNG", myNewPNGFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            }
+            case "Animation": {
+                // có bug khi dùng chuột trong lúc chạy animation
+                java.util.List<Firework> listFW = new ArrayList<>();
+                Random rd = new Random();
+                int timerDelay = 20;
+                new Timer(timerDelay, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        // cmt cái này vui lắm =))
+                        MyFunction.clearArr(nextDrawing);
+                        MyFunction.clearArr(nextPoint);
+                        if (rd.nextInt() % 3 == 0) {
+                            Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
+                            FW.initFirework(rd.nextInt(Height), rd.nextInt(50));
+                            //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
+                            listFW.add(FW);
+                        }
+                        for (int u = 0; u < listFW.size(); u++) {
+                            Firework now = listFW.get(u);
+                            //System.out.println(now.getRadius());
+                            if (now.isEnd()) {
+                                listFW.remove(u);
+                            } else {
+                                now.drawingState();
+                                now.nextState();
+                            }
+                        }
+                        repaint();
+                        System.out.println("list" + listFW.size());
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(30);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+                //break;
+            }
+        }
+    }
 }
