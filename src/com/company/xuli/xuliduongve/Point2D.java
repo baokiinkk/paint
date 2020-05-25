@@ -36,12 +36,13 @@ public class Point2D {
         this.Y = other.Y;
     }
 
-    public Point2D rotate(Point2D center, double alpha) {
-        Point2D res = new Point2D();
-        res.set((center.X + this.X * cos(alpha) - this.Y * sin(alpha) + 0.5), (center.Y + this.X * sin(alpha) + this.Y * cos(alpha) + 0.5));
-        return res;
-    }
+//    public Point2D rotate(Point2D center, double alpha) {
+//        Point2D res = new Point2D();
+//        res.set((center.X + this.X * cos(alpha) - this.Y * sin(alpha) + 0.5), (center.Y + this.X * sin(alpha) + this.Y * cos(alpha) + 0.5));
+//        return res;
+//    }
 
+    // xoay điểm hiện tại quanh tâm center với 1 góc alpha
     public Point2D rotatePoint(Point2D center, double alpha) {
         Point2D res = new Point2D();
         res.set((center.X + (this.X - center.X) * cos(alpha) - (this.Y - center.Y) * sin(alpha) + 0.5), (center.Y + (this.X - center.X) * sin(alpha) + (this.Y - center.Y) * cos(alpha) + 0.5));

@@ -363,74 +363,6 @@ public class Paint extends JFrame implements ActionListener {
 
 
     }
-    // size ảnh
-    private static int Width = 258;     //220
-    private static int Height = 188;    //155
-    Color colors = Color.BLACK;
-
-    //biến trạng thái chọn loại bảng vẽ, true là vẽ 2D, false là vẽ 3D
-    private boolean currentBoardState = true;
-
-    //bảng trạng thái các pixel
-    private Color[][] drawingBoard = new Color[Width][Height]; //150x217
-
-    //kích thước nét vẽ
-    private int sizeLine = 1;
-    //kich thuoc pixel va khoang cách giữa các pixel
-    private int rectSize = 4;
-    private int spacing = 1;
-    // xóa 1 vùng nhỏ
-
-    // trạng thái nút đang chọn
-    private com.company.Button choose = PENCIL;
-
-    //trạng thái chuột ------------------------------------------------
-    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
-    private Point2D startXY;
-    private Point2D mouseXY;
-
-    // biến xác định click chuột đầu trong 2 lần click
-    private boolean firstClick = false;
-    //----------------------------------------------------------------
-    private JSlider sizeSlider;                // kéo cho vui tay
-
-
-    //biến màu đang chọn
-    private Color chooseColor = Color.BLACK;
-
-    //biến chứa chế độ đường thẳng đang chọn
-    private lineMode chooseLineMode = lineMode.DEFAULT;
-    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
-    // chứa các điểm đã set
-    private Color[][] nextPoint = new Color[Width][Height]; //150x217
-    private boolean[][] nextDrawing = new boolean[Width][Height]; //150x217
-    // chứa các điểm dùng để quay lại
-    private Color[][] undoPoint = new Color[Width][Height]; //150x217
-
-    // khai báo biến
-    private JPanel activity_main;
-    private JPanel leftPanel;
-    private JButton lineButton;
-    private JPanel mainArea;
-    private JPanel drawArea;
-    private JButton clearButton;            // xóa sạch
-    private JButton pencilButton;           // đè là vẽ
-    private JButton undoButton;             // xóa thao tác vừa làm
-    private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton redoButton;            // nút vô dụng nhất, không có gì cả
-    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
-    private JButton colorBox;              // chưa nghĩ ra
-    private JButton ellipseButton;
-    private JButton rotateButton;
-    private JLabel showSize;
-    private JComboBox comboBox1;
-    private JButton Import;
-    private JButton Export;
-    private JButton settingButton;
-    private JButton eraseButton;
-    private JButton zigzagButton;           // vẽ đường gấp khúc
-    private JButton colorButton;                  // chưa nghĩ ra
-    private JButton circleButton;           // vẽ hình tròn
 
     // click button
     @Override
@@ -644,4 +576,59 @@ public class Paint extends JFrame implements ActionListener {
             }
         }
     }
+
+    // ================================== CÁC BIẾN ĐƠN ==========================
+    private static int Width = 258;     // độ rộng bảng vẽ
+    private static int Height = 188;    // độ cao
+    // =========================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT=================
+    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
+    private Point2D startXY;
+    private Point2D mouseXY;
+    // biến xác định click chuột đầu trong 2 lần click
+    private boolean firstClick = false;
+    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private int rectSize = 4;          // tổng của kích thước pixel và spacing
+    private int spacing = 1;           // khoảng cách giữa 2 pixel
+    private int sizeLine = 1;          // kích thước nét vẽ
+    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
+    private com.company.Button choose = PENCIL; // nút vừa chọn
+
+    //biến chứa chế độ đường thẳng đang chọn
+    private lineMode chooseLineMode = lineMode.DEFAULT;
+    // danh sách các loại nét vẽ
+    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
+
+    // ================================== CÁC LOẠI BẢNG ==========================
+    private boolean[][] nextDrawing = new boolean[Width][Height]; //258x188
+    private Color[][] nextPoint = new Color[Width][Height];
+    private Color[][] drawingBoard = new Color[Width][Height];
+    private Color[][] undoPoint = new Color[Width][Height];
+
+    // ================================== CÁC LOẠI PANEL ==========================
+    private JPanel activity_main;
+    private JPanel leftPanel;
+    private JPanel mainArea;
+    private JPanel drawArea;        // khu vực vẽ
+
+    // =================================== CÁC LOẠI NÚT ============================
+    private JButton lineButton;             // vẽ đường thẳng
+    private JButton clearButton;            // xóa sạch
+    private JButton pencilButton;           // đè là vẽ
+    private JButton undoButton;             // Undo
+    private JButton rectangleButton;        // vẽ hình chữ nhật
+    private JButton redoButton;             // Redo
+    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
+    private JButton colorBox;               // hiển thị màu đang chọn
+    private JButton ellipseButton;          // vẽ elipse
+    private JButton rotateButton;           // xoay
+    private JButton Import;                 // mở hình từ bên ngoài
+    private JButton Export;                 // lưu hình
+    private JButton settingButton;          // mở setting
+    private JButton eraseButton;            // xóa hết
+    private JButton zigzagButton;           // vẽ đường gấp khúc
+    private JButton colorButton;            // chọn màu
+    private JButton circleButton;           // vẽ hình tròn
+    private JComboBox comboBox1;            // chọn loại nét vẽ
+    private JLabel showSize;                // hiện kích thước nét vẽ
+    private JSlider sizeSlider;             // điều chỉnh kích thước nét vẽ
 }

@@ -60,10 +60,10 @@ public class HinhHoc {
                     Point2D c = v.kTimesUnit(end, l);
                     double alpha = v.alphaOXY();
                     //System.out.println("alpha: " + alpha);
-                    Point2D c1 = new Point2D(0, l);
-                    Point2D c2 = new Point2D(0, -l);
-                    MidpointLine(end, c1.rotate(c, alpha), lineMode.DEFAULT);
-                    MidpointLine(end, c2.rotate(c, alpha), lineMode.DEFAULT);
+                    Point2D c1 = new Point2D(c.X, c.Y + l);
+                    Point2D c2 = new Point2D(c.X, c.Y - l);
+                    MidpointLine(end, c1.rotatePoint(c, alpha), lineMode.DEFAULT);
+                    MidpointLine(end, c2.rotatePoint(c, alpha), lineMode.DEFAULT);
                 }
             }
         }

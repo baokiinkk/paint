@@ -11,6 +11,7 @@ public class Rectangle extends HinhHoc {
     private Point2D D;
     private lineMode MODE;
 
+    // khởi tạo hình chữ nhật
     public Rectangle(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
         tag = Button.RECTANGLE;
@@ -20,6 +21,7 @@ public class Rectangle extends HinhHoc {
         D = new Point2D();
     }
 
+    // set 4 điểm hình chữ nhật
     private void setRectangle(Point2D start, Point2D end) {
         A.set(start.X, start.Y);              // (start) A-----------------B
         B.set(end.X, start.Y);                //         |                 |
@@ -27,6 +29,7 @@ public class Rectangle extends HinhHoc {
         D.set(start.X, end.Y);                //         D-----------------C  (end)
     }
 
+    // set full hình chữ nhật
     public void setRectangle(Point2D start, Point2D end, lineMode mode) {
         this.setRectangle(start, end);
         this.start = start;
@@ -35,6 +38,8 @@ public class Rectangle extends HinhHoc {
         center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
     }
 
+    // xoay và vẽ hình hiện tại 1 góc alpha
+    // đây là xoay nháp
     public void rotate(double alpha) {
 
         Point2D tmpA = A.rotatePoint(center, this.alpha + alpha);
@@ -47,13 +52,14 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(tmpD, tmpA, MODE);
     }
 
+    // tăng góc xoay hiện tại thêm alpha
     public void applyRotate(double alpha) {
         System.out.println(this.alpha + " " + alpha);
         this.alpha += alpha;
-
-
     }
 
+    // set hình vuông, lấy độ dài cạnh bằng min độ dài vector AB và AD
+    // có vector AB và AD => các điểm của hình vuông
     public void setSquare(Point2D start, Point2D end, lineMode mode) {
         //end.set();
         MODE = mode;
@@ -77,6 +83,7 @@ public class Rectangle extends HinhHoc {
         center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
     }
 
+    // vẽ hình chữ nhật
     public void draw() {
         A = A.rotatePoint(center, this.alpha);
         B = B.rotatePoint(center, this.alpha);
