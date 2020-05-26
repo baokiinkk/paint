@@ -26,16 +26,9 @@ public class Paint extends JFrame implements ActionListener {
 
     private JButton animationButton;
 
-    // hàm custom cho các thành phần trong form
-    private void createUIComponents() {
-        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
-        drawArea.addMouseMotionListener(new Move());
-        drawArea.addMouseListener(new Click());
-        comboBox1 = new JComboBox<lineMode>(lineModeArr);
-        mouseXY = new Point2D(-1, -1);
-        startXY = new Point2D(-1, -1);
-
-    }
+    // =========================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT=================
+    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
+    private Point2D startXY;
 
     // hàm chính
     public void run() {
@@ -365,10 +358,49 @@ public class Paint extends JFrame implements ActionListener {
 
     }
 
+    private Point2D mouseXY;
+    // biến xác định click chuột đầu trong 2 lần click
+    private boolean firstClick = false;
+    private boolean playingAnimation = false;
+    private Timer timer;
+
+    // ================================== CÁC BIẾN ĐƠN ==========================
+    private static int Width = 272;     // độ rộng bảng vẽ
+    private static int Height = 185;    // độ cao
+    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private int rectSize = 4;          // tổng của kích thước pixel và spacing
+    private int spacing = 1;           // khoảng cách giữa 2 pixel
+    private int sizeLine = 1;          // kích thước nét vẽ
+    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
+    private com.company.Button choose = PENCIL; // nút vừa chọn
+
+    // hàm custom cho các thành phần trong form
+    private void createUIComponents() {
+        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
+        drawArea.addMouseMotionListener(new Move());
+        drawArea.addMouseListener(new Click());
+        comboBox1 = new JComboBox<lineMode>(lineModeArr);
+        mouseXY = new Point2D(-1, -1);
+        startXY = new Point2D(-1, -1);
+        timer = new Timer(0, null);
+    }
+
+    //biến chứa chế độ đường thẳng đang chọn
+    private lineMode chooseLineMode = lineMode.DEFAULT;
+    // danh sách các loại nét vẽ
+    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
+
     // click button
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        String nameButton = actionEvent.getActionCommand();
+        String nameButton = "";
+        if (!playingAnimation) {
+            nameButton = actionEvent.getActionCommand();
+        } else {
+            if (actionEvent.getActionCommand().equals("Animation")) {
+                nameButton = "Animation";
+            }
+        }
         System.out.println(nameButton);
         switch (nameButton) {
 
@@ -537,68 +569,57 @@ public class Paint extends JFrame implements ActionListener {
                 break;
             }
             case "Animation": {
-                // có bug khi dùng chuột trong lúc chạy animation
-                java.util.List<Firework> listFW = new ArrayList<>();
-                Random rd = new Random();
-                ((Board)drawArea).setGridColor(chooseColor);
-                int timerDelay = 20;
-                new Timer(timerDelay, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        // cmt cái này vui lắm =))
-                        MyFunction.clearArr(nextDrawing);
-                        MyFunction.clearArr(nextPoint);
-                        if (rd.nextInt() % 3 == 0) {
-                            Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
-                            FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)]);
-                            //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
-                            listFW.add(FW);
-                        }
-                        for (int u = 0; u < listFW.size(); u++) {
-                            Firework now = listFW.get(u);
-                            //System.out.println(now.getRadius());
-                            if (now.isEnd()) {
-                                listFW.remove(u);
-                            } else {
-                                now.drawingState();
-                                now.nextState();
+                choose = ANIMATION;
+                if (!playingAnimation) {
+                    playingAnimation = true;
+                    java.util.List<Firework> listFW = new ArrayList<>();
+                    Random rd = new Random();
+                    Board.setGridColor(chooseColor);
+                    int timerDelay = 20;
+                    timer.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            MyFunction.clearArr(nextDrawing);
+                            MyFunction.clearArr(nextPoint);
+                            if (rd.nextInt() % 3 == 0) {
+                                Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
+                                FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)]);
+                                //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
+                                listFW.add(FW);
+                            }
+                            for (int u = 0; u < listFW.size(); u++) {
+                                Firework now = listFW.get(u);
+                                //System.out.println(now.getRadius());
+                                if (now.isEnd()) {
+                                    listFW.remove(u);
+                                } else {
+                                    now.drawingState();
+                                    now.nextState();
+                                }
+                            }
+                            repaint();
+                            //System.out.println("list" + listFW.size());
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(30);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                         }
-                        repaint();
-                        //System.out.println("list" + listFW.size());
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(30);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
+                    });
+                    timer.start();
+                } else {
+                    timer.stop();
+                    timer.removeActionListener(timer.getActionListeners()[0]);
+                    playingAnimation = false;
+                    Board.setGridColor(new Color(235, 235, 235));
+                    MyFunction.clearArr(nextDrawing);
+                    MyFunction.clearArr(nextPoint);
+                    repaint();
+                }
                 //break;
             }
         }
     }
-
-    // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 272;     // độ rộng bảng vẽ
-    private static int Height = 185;    // độ cao
-    // =========================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT=================
-    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
-    private Point2D startXY;
-    private Point2D mouseXY;
-    // biến xác định click chuột đầu trong 2 lần click
-    private boolean firstClick = false;
-    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private int rectSize = 4;          // tổng của kích thước pixel và spacing
-    private int spacing = 1;           // khoảng cách giữa 2 pixel
-    private int sizeLine = 1;          // kích thước nét vẽ
-    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
-    private com.company.Button choose = PENCIL; // nút vừa chọn
-
-    //biến chứa chế độ đường thẳng đang chọn
-    private lineMode chooseLineMode = lineMode.DEFAULT;
-    // danh sách các loại nét vẽ
-    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
 
     // ================================== CÁC LOẠI BẢNG ==========================
     private boolean[][] nextDrawing = new boolean[Width][Height]; //258x188

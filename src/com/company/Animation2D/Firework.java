@@ -48,7 +48,7 @@ public class Firework extends HinhHoc {
 //            Point2D end = new Point2D(position, nextPoint.length-currentState-1);
 //            super.MidpointLine(start, end, lineMode.DEFAULT);
         } else if (currentState > height && currentState <= endState) {
-            System.out.println(currentState + "----" + height);
+            //System.out.println(currentState + "----" + height);
             Point2D start = new Point2D(position, nextPoint[0].length - height);
             for (int r = 0; r < currentState-height; r++)
             {

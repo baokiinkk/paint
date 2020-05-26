@@ -134,7 +134,7 @@ public class Board extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println("repaint");
+        //System.out.println("repaint");
         //g.setColor(Color.lightGray); // set màu nền cho nền vẽ
         g.setColor(new Color(235, 235, 235)); // set màu nền cho nền vẽ
         g.setColor(gridColor);
