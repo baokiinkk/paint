@@ -15,6 +15,7 @@ public class Board extends JPanel {
     private static Stack<Color[][]> redoBoard;  // stack lưu redo
     private static Point2D erase;           // vị trí của cục gôm
     private static boolean drawErase;       // biến để xác định có vẽ hay không
+    private static Color gridColor;
     private int spacing;    // khoảng cách giữa 2 pixel
     private int rectSize;   // tổng độ rộng pixel và spacing
     private int OX;     // trục tọa độ OX
@@ -35,6 +36,7 @@ public class Board extends JPanel {
         undoBoard = new Stack<Color[][]>();
         redoBoard = new Stack<Color[][]>();
         showAxis = false;
+        gridColor = new Color(235, 235, 235);
     }
 
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay nháp, tức là xoay làm mẫu để người dùng
@@ -135,6 +137,7 @@ public class Board extends JPanel {
         System.out.println("repaint");
         //g.setColor(Color.lightGray); // set màu nền cho nền vẽ
         g.setColor(new Color(235, 235, 235)); // set màu nền cho nền vẽ
+        g.setColor(gridColor);
         g.fillRect(0, 0, 1280, 800); // kích thước nền vẽ
         // set màu cho các pixel
         for (int i = 0; i < width; i++) {
@@ -198,5 +201,10 @@ public class Board extends JPanel {
 //            }
 //        }
 //    }
+
+    public static void setGridColor(Color tmp)
+    {
+        gridColor = tmp;
+    }
 
 }

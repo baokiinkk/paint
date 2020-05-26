@@ -42,8 +42,9 @@ public class Paint extends JFrame implements ActionListener {
         this.setContentPane(activity_main);// liên kết với màn hình form
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0");
-        this.setSize(1280, 800);
+        this.setSize(1366, 740);
         this.setResizable(false);
+        //this.setMaximumSize(new Dimension(1280, 800));
         this.setLocationRelativeTo(null);
         this.setVisible(true); // set hiện hay k
 
@@ -539,6 +540,7 @@ public class Paint extends JFrame implements ActionListener {
                 // có bug khi dùng chuột trong lúc chạy animation
                 java.util.List<Firework> listFW = new ArrayList<>();
                 Random rd = new Random();
+                ((Board)drawArea).setGridColor(chooseColor);
                 int timerDelay = 20;
                 new Timer(timerDelay, new ActionListener() {
                     @Override
@@ -548,7 +550,7 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         if (rd.nextInt() % 3 == 0) {
                             Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
-                            FW.initFirework(rd.nextInt(Height), rd.nextInt(50));
+                            FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)]);
                             //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
                             listFW.add(FW);
                         }
@@ -563,7 +565,7 @@ public class Paint extends JFrame implements ActionListener {
                             }
                         }
                         repaint();
-                        System.out.println("list" + listFW.size());
+                        //System.out.println("list" + listFW.size());
                         try {
                             TimeUnit.MILLISECONDS.sleep(30);
                         } catch (InterruptedException e) {
@@ -578,8 +580,8 @@ public class Paint extends JFrame implements ActionListener {
     }
 
     // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 258;     // độ rộng bảng vẽ
-    private static int Height = 188;    // độ cao
+    private static int Width = 272;     // độ rộng bảng vẽ
+    private static int Height = 185;    // độ cao
     // =========================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT=================
     // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
     private Point2D startXY;

@@ -6,6 +6,5 @@ public class Main {
 	// write your code here
         Paint ui = new Paint();
         ui.run();
-
     }
 }

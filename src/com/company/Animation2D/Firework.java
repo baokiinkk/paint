@@ -1,9 +1,6 @@
 package com.company.Animation2D;
 
-import com.company.xuli.xuliduongve.HinhHoc;
-import com.company.xuli.xuliduongve.MyFunction;
-import com.company.xuli.xuliduongve.Point2D;
-import com.company.xuli.xuliduongve.lineMode;
+import com.company.xuli.xuliduongve.*;
 
 import java.awt.*;
 import java.util.Random;
@@ -15,6 +12,7 @@ public class Firework extends HinhHoc {
     private int currentState;
     private int endState;
     private Color fireColor;
+    private lineMode MODE;
 
     public Firework(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
@@ -27,14 +25,16 @@ public class Firework extends HinhHoc {
         position = pos;
         //System.out.println(position);
         currentState = 0;
+
     }
 
-    public void initFirework(int height, int radius) {
+    public void initFirework(int height, int radius, lineMode MODE) {
         this.height = height;
         this.radius = radius;
         this.endState = height + radius;
         position = (new Random().nextInt(nextDrawing.length));
         //System.out.println(position);
+        this.MODE = MODE;
         currentState = 0;
     }
 
@@ -50,8 +50,12 @@ public class Firework extends HinhHoc {
         } else if (currentState > height && currentState <= endState) {
             System.out.println(currentState + "----" + height);
             Point2D start = new Point2D(position, nextPoint[0].length - height);
-            Point2D end = new Point2D(position + currentState - height, nextPoint[0].length - height);
-            super.drawingCircle(start, end, lineMode.DEFAULT);
+            for (int r = 0; r < currentState-height; r++)
+            {
+                Point2D tend = new Point2D(position + r, nextPoint[0].length - height);
+                new Circle(nextDrawing, nextPoint, this.chooseColor).drawingCircle(start, tend, MODE);
+            }
+            //super.drawingCircle(start, end, lineMode.DEFAULT);
         }
     }
 
@@ -62,15 +66,34 @@ public class Firework extends HinhHoc {
 
     public void nextState() {
         // đổ màu nhạt dần khi nổ
-        if (currentState > height) {
-            int red = chooseColor.getRed();
-            int green = chooseColor.getGreen();
-            int blue = chooseColor.getBlue();
-            red = red + (255 - red) / (endState - currentState);
-            green = green + (255 - green) / (endState - currentState);
-            blue = blue + (255 - blue) / (endState - currentState);
-            chooseColor = new Color(red, green, blue);
+        boolean flag = true;
+        if (flag)
+        {
+            if (currentState > height)
+            {
+                int red = chooseColor.getRed();
+                int green = chooseColor.getGreen();
+                int blue = chooseColor.getBlue();
+                red = red + (255 - red) / (endState - currentState);
+                green = green + (255 - green) / (endState - currentState);
+                blue = blue + (255 - blue) / (endState - currentState);
+                chooseColor = new Color(red, green, blue);
+           }
         }
+        else
+        {
+            if (currentState > height) {
+                int red = chooseColor.getRed();
+                int green = chooseColor.getGreen();
+                int blue = chooseColor.getBlue();
+                red = red - (red) / (endState - currentState);
+                green = green - (green) / (endState - currentState);
+                blue = blue - (blue) / (endState - currentState);
+                chooseColor = new Color(red, green, blue);
+            }
+        }
+
+
         currentState++;
     }
 
