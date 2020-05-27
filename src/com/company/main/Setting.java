@@ -107,4 +107,28 @@ public class Setting extends JDialog {
     public boolean getState() {
         return is2DBoard;
     }
+
+    public boolean getShow2DAxis() {
+        return show2DAxisCheckBox.isSelected();
+    }
+
+    public boolean getShow2DCoord() {
+        return show2DCoordinatesCheckBox.isSelected();
+    }
+
+    public boolean getShow3DAxis() {
+        return show3DAxisCheckBox.isSelected();
+    }
+
+    public boolean getShow3DCoord() {
+        return show3DCoordinatesCheckBox.isSelected();
+    }
+
+    public void setChecker(boolean c2Axis, boolean c2Coord, boolean c3Axis, boolean c3Coord) {
+        show2DAxisCheckBox.setSelected(c2Axis);
+        show3DAxisCheckBox.setSelected(c3Axis);
+        show2DCoordinatesCheckBox.setSelected(c2Coord);
+        show3DCoordinatesCheckBox.setSelected(c3Coord);
+    }
+
 }

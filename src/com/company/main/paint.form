@@ -150,23 +150,6 @@
               <text value="Rotate"/>
             </properties>
           </component>
-          <component id="c7658" class="javax.swing.JSlider" binding="sizeSlider">
-            <constraints>
-              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="22" height="58"/>
-              </grid>
-            </constraints>
-            <properties>
-              <inverted value="false"/>
-              <majorTickSpacing value="1"/>
-              <maximum value="10"/>
-              <minimum value="0"/>
-              <minorTickSpacing value="1"/>
-              <orientation value="1"/>
-              <value value="5"/>
-              <valueIsAdjusting value="true"/>
-            </properties>
-          </component>
           <component id="d2726" class="javax.swing.JLabel" binding="showSize">
             <constraints>
               <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -213,6 +196,23 @@
             </constraints>
             <properties>
               <text value="Animation"/>
+            </properties>
+          </component>
+          <component id="c7658" class="javax.swing.JSlider" binding="sizeSlider">
+            <constraints>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="22" height="58"/>
+              </grid>
+            </constraints>
+            <properties>
+              <inverted value="false"/>
+              <majorTickSpacing value="1"/>
+              <maximum value="10"/>
+              <minimum value="0"/>
+              <minorTickSpacing value="1"/>
+              <orientation value="1"/>
+              <value value="5"/>
+              <valueIsAdjusting value="true"/>
             </properties>
           </component>
         </children>

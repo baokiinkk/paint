@@ -9,18 +9,23 @@ public class Board extends JPanel {
     private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp
     private static Color[][] nextPoint;     // tức là trạng thái lúc kéo vẽ, VD kéo đường thẳng
     private static Color[][] drawingBoard;  // bảng vẽ
+    private static boolean[][] coordBoard;  // bảng vẽ
     private static int width;   // độ rộng của bảng vẽ
     private static int height;  // độ cao của bảng vẽ
     private static Stack<Color[][]> undoBoard;  // stack lưu undo
     private static Stack<Color[][]> redoBoard;  // stack lưu redo
     private static Point2D erase;           // vị trí của cục gôm
     private static boolean drawErase;       // biến để xác định có vẽ hay không
+    private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D
     private static Color gridColor;
     private int spacing;    // khoảng cách giữa 2 pixel
     private int rectSize;   // tổng độ rộng pixel và spacing
     private int OX;     // trục tọa độ OX
     private int OY;     // trục tọa độ OY
     private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
+    private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
+    private Point2D recStart;   // điểm bắt đầu của vùng chọn
+    private Point2D recEnd;     // điểm kết thúc của vùng chọn
 
 
     public Board(boolean[][] nextDrawing, Color[][] nextPoint, Color[][] drawingBoard, int width, int height, int spacing, int rectSize) {
@@ -35,8 +40,12 @@ public class Board extends JPanel {
         OY = spacing + height / 2 * rectSize + (rectSize - spacing) / 2;
         undoBoard = new Stack<Color[][]>();
         redoBoard = new Stack<Color[][]>();
+        boardState = true;
         showAxis = false;
+        showCoord = false;
         gridColor = new Color(235, 235, 235);
+        recStart = new Point2D(-1, -1);
+        recEnd = new Point2D(-1, -1);
     }
 
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay nháp, tức là xoay làm mẫu để người dùng
@@ -151,28 +160,36 @@ public class Board extends JPanel {
                 g.fillRect(spacing + i * rectSize, spacing + j * rectSize, rectSize - spacing, rectSize - spacing);
             }
         }
-
-        // hiện trục tọa độ
-        if (showAxis) {
-            g.setColor(Color.RED);
-            g.drawLine(0, OY, 1280, OY);
-            g.drawLine(OX, 0, OX, 800);
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    if (drawingBoard[i][j].equals(Color.WHITE) == false) {
-                        g.setColor(drawingBoard[i][j]);
-                        int x = spacing + i * rectSize;
-                        int y = spacing + j * rectSize;
-                        if (y < 15)
-                            y = 15;
-                        if (x + 40 > (width - 4) * rectSize)
-                            x -= 40;
-                        //System.out.println(x + " " + y);
-                        g.drawString("(" + (i - OX / rectSize) + ", " + (-(j - OY / rectSize)) + ")", x, y);
-                    }
-                }
+        //System.out.println("Board: " + boardState +"  " + showAxis);
+        if (boardState) // trạng thái bảng vẽ 2D
+        {
+            if (showAxis) // hiện trục tọa độ
+            {
+                g.setColor(Color.RED);
+                g.drawLine(0, OY, 1280, OY);
+                g.drawLine(OX, 0, OX, 800);
             }
+
+//            if (showCoord)  // hiện tọa độ
+//            {
+//                for (int i = 0; i < width; i++) {
+//                    for (int j = 0; j < height; j++) {
+//                        if (coordBoard[i][j] == true) {
+//                            g.setColor(drawingBoard[i][j]);
+//                            int x = spacing + i * rectSize;
+//                            int y = spacing + j * rectSize;
+//                            if (y < 15)
+//                                y = 15;
+//                            if (x + 40 > (width - 4) * rectSize)
+//                                x -= 40;
+//                            //System.out.println(x + " " + y);
+//                            g.drawString("(" + (i - OX / rectSize) + ", " + (-(j - OY / rectSize)) + ")", x, y);
+//                        }
+//                    }
+//                }
+//            }
         }
+
 
         // vẽ ô vuông của cục gôm
         if (drawErase) {
@@ -180,15 +197,31 @@ public class Board extends JPanel {
             g.drawRect((erase.X - 1) * rectSize, (erase.Y - 1) * rectSize, rectSize * 3, rectSize * 3);
             drawErase = false;
         }
+
+        if (isSelecting()) {
+            g.setColor(Color.BLACK);
+            g.drawRect(recStart.X * rectSize, recStart.Y * rectSize, Math.abs(recStart.Y - recEnd.Y), Math.abs(recStart.X - recEnd.X));
+            recStart.set(-1, -1);
+            recEnd.set(-1, -1);
+        }
+
     }
 
     // hàm set ẩn/hiện trục tọa độ
-    public void hideAxis() {
-        showAxis = false;
+    public void setShowAxis(boolean set) {
+        showAxis = set;
     }
 
-    public void showAxis() {
-        showAxis = true;
+    public void setShowCoord(boolean set) {
+        showCoord = set;
+    }
+
+    public void setBoardState(boolean set) {
+        boardState = set;
+    }
+
+    private boolean isSelecting() {
+        return (recStart.equal(new Point2D(-1, -1)) && recEnd.equal(new Point2D(-1, -1)));
     }
 
     // hàm vẽ biến hình hiện tại (now)
@@ -202,9 +235,11 @@ public class Board extends JPanel {
 //        }
 //    }
 
-    public static void setGridColor(Color tmp)
-    {
+    public static void setGridColor(Color tmp) {
         gridColor = tmp;
     }
-
+//    public static void setBackgroundColor(Color tmp)
+//    {
+//
+//    }
 }

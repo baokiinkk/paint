@@ -49,5 +49,9 @@ public class Point2D {
         return res;
     }
 
+    public boolean equal(Point2D other) {
+        return (this.X == other.X && this.Y == other.Y);
+    }
+
     //public Point2D
 }
