@@ -66,12 +66,12 @@
               <text value="Paint"/>
             </properties>
           </component>
-          <component id="f38db" class="javax.swing.JButton" binding="zigzagButton" default-binding="true">
+          <component id="f38db" class="javax.swing.JButton" binding="cubeButton">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Zigzag"/>
+              <text value="Cube"/>
             </properties>
           </component>
           <component id="5b632" class="javax.swing.JButton" binding="lineButton">

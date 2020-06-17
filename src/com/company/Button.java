@@ -8,7 +8,7 @@ public enum Button {
     PENCIL,
     UNDO,
     PAINT,
-    ZIGZAG,
+    CUBE,
     RECTANGLE,
     ERASE,
     ELLIPSE,

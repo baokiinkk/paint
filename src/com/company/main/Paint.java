@@ -6,19 +6,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.nio.file.spi.FileTypeDetector;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.company.Animation2D.Firework;
-import com.company.Button;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Rectangle;
+import com.company.xuli.xuliduongve.Cube;
 
 import static com.company.Button.*;
 
@@ -42,6 +39,7 @@ public class Paint extends JFrame implements ActionListener {
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
         rectangleButton.addActionListener(this);
+        cubeButton.addActionListener(this);
         ellipseButton.addActionListener(this);
         rotateButton.addActionListener(this);
         //circleButton.addActionListener(this);
@@ -108,6 +106,11 @@ public class Paint extends JFrame implements ActionListener {
             case "Rectangle": {
                 startXY.set(-1, -1);
                 choose = RECTANGLE;
+                break;
+            }
+            case "Cube": {
+                startXY.set(-1, -1);
+                choose = CUBE;
                 break;
             }
             case "Erase": {
@@ -340,6 +343,25 @@ public class Paint extends JFrame implements ActionListener {
                     repaint();
                     break;
                 }
+                case CUBE: // vẽ hình hộp chữ nhật
+                {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        Cube hbh = new Cube(nextDrawing, nextPoint, chooseColor);
+                        Cube hbh2 = new Cube(nextDrawing, nextPoint, chooseColor);
+                        Line li = new Line(nextDrawing, nextPoint, chooseColor);
+                        if (mouseEvent.isShiftDown()) {
+                            hbh.setCube(startXY, mouseXY, chooseLineMode);
+                        } else {
+                            hbh.setCube(startXY, mouseXY, chooseLineMode);
+                        }
+                        hbh.draw();
+                        Board.setNowHinhHoc(hbh);
+                    }
+                    repaint();
+                    break;
+                }
                 case ERASE: // vẽ cục gôm
                 {
                     //MyFunction.clearArr(nextDrawing);
@@ -456,6 +478,13 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case CUBE: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                     case ERASE: // vẽ cục gôm
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -506,6 +535,11 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case RECTANGLE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case CUBE: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -607,7 +641,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton Export;                 // lưu hình
     private JButton settingButton;          // mở setting
     private JButton eraseButton;            // xóa hết
-    private JButton zigzagButton;           // vẽ đường gấp khúc
+    private JButton cubeButton;           // vẽ đường gấp khúc
     private JButton colorButton;            // chọn màu
     private JButton circleButton;           // vẽ hình tròn
     private JComboBox comboBox1;            // chọn loại nét vẽ
