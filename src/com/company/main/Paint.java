@@ -6,11 +6,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.nio.file.spi.FileTypeDetector;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +16,7 @@ import com.company.Animation2D.Firework;
 import com.company.Button;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Rectangle;
+import com.company.xuli.xuliduongve.HopChuNhat;
 
 import static com.company.Button.*;
 
@@ -66,6 +64,13 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case RECTANGLE: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case ZIGZAG: // vẽ hinh cn
                     {
                         // lấy tọa độ điểm bắt đầu
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
@@ -127,6 +132,11 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case RECTANGLE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case ZIGZAG: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -233,6 +243,7 @@ public class Paint extends JFrame implements ActionListener {
         undoButton.addActionListener(this);
         paintButton.addActionListener(this);
         rectangleButton.addActionListener(this);
+        zigzagButton.addActionListener(this);
         ellipseButton.addActionListener(this);
         rotateButton.addActionListener(this);
         circleButton.addActionListener(this);
@@ -294,7 +305,13 @@ public class Paint extends JFrame implements ActionListener {
 //                xStart = -1;
 //                yStart = -1;
                 choose = RECTANGLE;
-
+                break;
+            }
+            case "Zigzag": {
+                startXY.set(-1, -1);
+//                xStart = -1;
+//                yStart = -1;
+                choose = ZIGZAG;
                 break;
             }
             case "Erase": {
@@ -562,6 +579,25 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         rec.draw();
                         Board.setNowHinhHoc(rec);
+                    }
+                    repaint();
+                    break;
+                }
+                case ZIGZAG: // vẽ đường thẳng
+                {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        HopChuNhat hbh = new HopChuNhat(nextDrawing, nextPoint, chooseColor);
+                        HopChuNhat hbh2 = new HopChuNhat(nextDrawing, nextPoint, chooseColor);
+                        Line li = new Line(nextDrawing, nextPoint, chooseColor);
+                        if (mouseEvent.isShiftDown()) {
+                            hbh.setHopChuNhat(startXY, mouseXY, chooseLineMode);
+                        } else {
+                            hbh.setHopChuNhat(startXY, mouseXY, chooseLineMode);
+                        }
+                        hbh.draw();
+                        Board.setNowHinhHoc(hbh);
                     }
                     repaint();
                     break;
