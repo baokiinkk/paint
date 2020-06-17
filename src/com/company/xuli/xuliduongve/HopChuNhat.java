@@ -31,15 +31,24 @@ public class HopChuNhat extends HinhHoc {
 
     private void setHopChuNhat(Point2D start, Point2D end) {
         int d = (end.Y - start.Y) / 2;
-        int a = (Math.abs(end.X - start.X)) * 2;
-        A.set(end.X, start.Y - d);
-        B.set(start.X, start.Y);
-        C.set(start.X, end.Y + d);
-        D.set(end.X, end.Y);
-        E.set(end.X + a, start.Y - d);
-        F.set(start.X + a, start.Y);
-        G.set(start.X + a, end.Y + d);
-        H.set(end.X + a, end.Y);
+//        int a = (Math.abs(end.X - start.X)) * 2;
+//        A.set(end.X, start.Y - d);
+//        B.set(start.X, start.Y);
+//        C.set(start.X, end.Y + d);
+//        D.set(end.X, end.Y);
+//        E.set(end.X + a, start.Y - d);
+//        F.set(start.X + a, start.Y);
+//        G.set(start.X + a, end.Y + d);
+//        H.set(end.X + a, end.Y);
+
+        A.set(start.X, start.Y);
+        B.set(end.X, start.Y);
+        C.set(end.X, end.Y);
+        D.set(start.X, end.Y);
+        E.set(start.X+d, start.Y-d);
+        F.set(end.X+d, start.Y-d);
+        G.set(end.X+d, end.Y-d);
+        H.set(start.X+d, end.Y-d);
     }
 
     public void setHopChuNhat(Point2D start, Point2D end, lineMode mode) {
@@ -58,62 +67,61 @@ public class HopChuNhat extends HinhHoc {
         F = F.rotatePoint(center, this.alpha);
         G = G.rotatePoint(center, this.alpha);
         H = H.rotatePoint(center, this.alpha);
-//        if( B.X <= D.X && B.Y >= D.Y){
-//            super.MidpointLine(A, B, MODE);
-//            super.MidpointLine(B, C, MODE);
-//            super.MidpointLine(C, D, MODE);
-//            super.MidpointLine(D, A, MODE);
-//            super.MidpointLine(E, F, MODE.DASH);
-//            super.MidpointLine(F, G, MODE.DASH);
-//            super.MidpointLine(G, H, MODE);
-//            super.MidpointLine(H, E, MODE);
-//            super.MidpointLine(A, E, MODE);
-//            super.MidpointLine(B, F, MODE.DASH);
-//            super.MidpointLine(C, G, MODE);
-//            super.MidpointLine(D, H, MODE);
-//        }
-        //else
-            if( B.X <= D.X && B.Y < D.Y){
-            super.MidpointLine(A, B, MODE);
-            super.MidpointLine(B, C, MODE);
-            super.MidpointLine(C, D, MODE.DASH);
-            super.MidpointLine(D, A, MODE.DASH);
+        if( B.X <= D.X && B.Y >= D.Y){
+            super.MidpointLine(A, B, MODE.DASH);
+            super.MidpointLine(B, C, MODE.DASH);
+            super.MidpointLine(C, D, MODE);
+            super.MidpointLine(D, A, MODE);
             super.MidpointLine(E, F, MODE);
             super.MidpointLine(F, G, MODE);
             super.MidpointLine(G, H, MODE);
             super.MidpointLine(H, E, MODE);
             super.MidpointLine(A, E, MODE);
+            super.MidpointLine(B, F, MODE.DASH);
+            super.MidpointLine(C, G, MODE);
+            super.MidpointLine(D, H, MODE);
+        }
+        else if( B.X <= D.X && B.Y < D.Y){
+            super.MidpointLine(A, B, MODE);
+            super.MidpointLine(B, C, MODE);
+            super.MidpointLine(C, D, MODE);
+            super.MidpointLine(D, A, MODE);
+            super.MidpointLine(E, F, MODE);
+            super.MidpointLine(F, G, MODE.DASH);
+            super.MidpointLine(G, H, MODE.DASH);
+            super.MidpointLine(H, E, MODE);
+            super.MidpointLine(A, E, MODE);
+            super.MidpointLine(B, F, MODE);
+            super.MidpointLine(C, G, MODE.DASH);
+            super.MidpointLine(D, H, MODE);
+        }
+        else if( B.X > D.X && B.Y < D.Y){
+            super.MidpointLine(A, B, MODE);
+            super.MidpointLine(B, C, MODE);
+            super.MidpointLine(C, D, MODE);
+            super.MidpointLine(D, A, MODE);
+            super.MidpointLine(E, F, MODE);
+            super.MidpointLine(F, G, MODE);
+            super.MidpointLine(G, H, MODE.DASH);
+            super.MidpointLine(H, E, MODE.DASH);
+            super.MidpointLine(A, E, MODE);
             super.MidpointLine(B, F, MODE);
             super.MidpointLine(C, G, MODE);
             super.MidpointLine(D, H, MODE.DASH);
-//        }
-//        else if( B.X > D.X && B.Y < D.Y){
-//            super.MidpointLine(A, B, MODE);
-//            super.MidpointLine(B, C, MODE);
-//            super.MidpointLine(C, D, MODE);
-//            super.MidpointLine(D, A, MODE);
-//            super.MidpointLine(E, F, MODE);
-//            super.MidpointLine(F, G, MODE);
-//            super.MidpointLine(G, H, MODE.DASH);
-//            super.MidpointLine(H, E, MODE.DASH);
-//            super.MidpointLine(A, E, MODE);
-//            super.MidpointLine(B, F, MODE);
-//            super.MidpointLine(C, G, MODE);
-//            super.MidpointLine(D, H, MODE.DASH);
-//        }
-//        else if( B.X > D.X && B.Y >= D.Y){
-//            super.MidpointLine(A, B, MODE.DASH);
-//            super.MidpointLine(B, C, MODE.DASH);
-//            super.MidpointLine(C, D, MODE);
-//            super.MidpointLine(D, A, MODE);
-//            super.MidpointLine(E, F, MODE);
-//            super.MidpointLine(F, G, MODE);
-//            super.MidpointLine(G, H, MODE);
-//            super.MidpointLine(H, E, MODE);
-//            super.MidpointLine(A, E, MODE);
-//            super.MidpointLine(B, F, MODE.DASH);
-//            super.MidpointLine(C, G, MODE);
-//            super.MidpointLine(D, H, MODE);
         }
+        else if( B.X > D.X && B.Y >= D.Y){
+            super.MidpointLine(A, B, MODE.DASH);
+            super.MidpointLine(B, C, MODE);
+            super.MidpointLine(C, D, MODE);
+            super.MidpointLine(D, A, MODE.DASH);
+            super.MidpointLine(E, F, MODE);
+            super.MidpointLine(F, G, MODE);
+            super.MidpointLine(G, H, MODE);
+            super.MidpointLine(H, E, MODE);
+            super.MidpointLine(A, E, MODE.DASH);
+            super.MidpointLine(B, F, MODE);
+            super.MidpointLine(C, G, MODE);
+            super.MidpointLine(D, H, MODE);
+            }
         }
 }
