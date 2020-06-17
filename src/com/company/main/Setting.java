@@ -4,17 +4,6 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Setting extends JDialog {
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JRadioButton a2DBoardRadioButton;
-    private JRadioButton a3DBoardRadioButton;
-    private JCheckBox show2DAxisCheckBox;
-    private JCheckBox show2DCoordinatesCheckBox;
-    private JCheckBox show3DAxisCheckBox;
-    private JCheckBox show3DCoordinatesCheckBox;
-    private boolean is2DBoard;
-
     public Setting(boolean boardState) {
         setContentPane(contentPane);
         setModal(true);
@@ -130,5 +119,17 @@ public class Setting extends JDialog {
         show2DCoordinatesCheckBox.setSelected(c2Coord);
         show3DCoordinatesCheckBox.setSelected(c3Coord);
     }
+
+
+    private JPanel contentPane;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JRadioButton a2DBoardRadioButton;
+    private JRadioButton a3DBoardRadioButton;
+    private JCheckBox show2DAxisCheckBox;
+    private JCheckBox show2DCoordinatesCheckBox;
+    private JCheckBox show3DAxisCheckBox;
+    private JCheckBox show3DCoordinatesCheckBox;
+    private boolean is2DBoard;
 
 }

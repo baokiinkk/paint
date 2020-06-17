@@ -10,7 +10,6 @@ public enum Button {
     PAINT,
     ZIGZAG,
     RECTANGLE,
-    CIRCLE,
     ERASE,
     ELLIPSE,
     ROTATE,

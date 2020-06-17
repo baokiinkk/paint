@@ -5,28 +5,6 @@ import java.awt.*;
 import java.util.Stack;
 
 public class Board extends JPanel {
-    public static HinhHoc now;              // biến lưu hình hiện tại (kiểu như lên thớt để tiến hành xoay, zoom,...)
-    private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp
-    private static Color[][] nextPoint;     // tức là trạng thái lúc kéo vẽ, VD kéo đường thẳng
-    private static Color[][] drawingBoard;  // bảng vẽ
-    private static boolean[][] coordBoard;  // bảng vẽ
-    private static int width;   // độ rộng của bảng vẽ
-    private static int height;  // độ cao của bảng vẽ
-    private static Stack<Color[][]> undoBoard;  // stack lưu undo
-    private static Stack<Color[][]> redoBoard;  // stack lưu redo
-    private static Point2D erase;           // vị trí của cục gôm
-    private static boolean drawErase;       // biến để xác định có vẽ hay không
-    private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D
-    private static Color gridColor;
-    private int spacing;    // khoảng cách giữa 2 pixel
-    private int rectSize;   // tổng độ rộng pixel và spacing
-    private int OX;     // trục tọa độ OX
-    private int OY;     // trục tọa độ OY
-    private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
-    private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
-    private Point2D recStart;   // điểm bắt đầu của vùng chọn
-    private Point2D recEnd;     // điểm kết thúc của vùng chọn
-
 
     public Board(boolean[][] nextDrawing, Color[][] nextPoint, Color[][] drawingBoard, int width, int height, int spacing, int rectSize) {
         Board.drawingBoard = drawingBoard;
@@ -242,4 +220,26 @@ public class Board extends JPanel {
 //    {
 //
 //    }
+
+    public static HinhHoc now;              // biến lưu hình hiện tại (kiểu như lên thớt để tiến hành xoay, zoom,...)
+    private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp
+    private static Color[][] nextPoint;     // tức là trạng thái lúc kéo vẽ, VD kéo đường thẳng
+    private static Color[][] drawingBoard;  // bảng vẽ
+    private static boolean[][] coordBoard;  // bảng vẽ
+    private static int width;   // độ rộng của bảng vẽ
+    private static int height;  // độ cao của bảng vẽ
+    private static Stack<Color[][]> undoBoard;  // stack lưu undo
+    private static Stack<Color[][]> redoBoard;  // stack lưu redo
+    private static Point2D erase;           // vị trí của cục gôm
+    private static boolean drawErase;       // biến để xác định có vẽ hay không
+    private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D
+    private static Color gridColor;
+    private int spacing;    // khoảng cách giữa 2 pixel
+    private int rectSize;   // tổng độ rộng pixel và spacing
+    private int OX;     // trục tọa độ OX
+    private int OY;     // trục tọa độ OY
+    private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
+    private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
+    private Point2D recStart;   // điểm bắt đầu của vùng chọn
+    private Point2D recEnd;     // điểm kết thúc của vùng chọn
 }
