@@ -20,46 +20,7 @@ import com.company.xuli.xuliduongve.Cube;
 import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
-    // hàm chính
-    public void run() {
-        this.setContentPane(activity_main);// liên kết với màn hình form
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
-        this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1366, 740); // kích thước cửa sổ
-        this.setResizable(false);
-        //this.setMaximumSize(new Dimension(1280, 800));
-        this.setLocationRelativeTo(null);
-        this.setVisible(true); // set hiện hay k
-
-        clearButton.addActionListener(this);
-        lineButton.addActionListener(this);
-        pencilButton.addActionListener(this);
-        redoButton.addActionListener(this);
-        colorButton.addActionListener(this);
-        undoButton.addActionListener(this);
-        paintButton.addActionListener(this);
-        rectangleButton.addActionListener(this);
-        cubeButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        rotateButton.addActionListener(this);
-        //circleButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        settingButton.addActionListener(this);
-        eraseButton.addActionListener(this);
-        animationButton.addActionListener(this);
-        Import.addActionListener(this);
-        Export.addActionListener(this);
-
-        // chọn nét vẽ
-        comboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
-            }
-        });
-        //sizeSlider.addChangeListener((ChangeListener) this);
-        MyFunction.clearArr(drawingBoard);
-    }
+    private JPanel filePanel;
 
     // hàm custom cho các thành phần trong form
     private void createUIComponents() {
@@ -72,233 +33,7 @@ public class Paint extends JFrame implements ActionListener {
         timer = new Timer(0, null);
     }
 
-    // click button
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        String nameButton = "";
-        if (!playingAnimation) {
-            nameButton = actionEvent.getActionCommand();
-        } else {
-            if (actionEvent.getActionCommand().equals("Animation")) {
-                nameButton = "Animation";
-            }
-        }
-        switch (nameButton) {
-            case "Redo": {
-                Board.redo();
-                undoButton.setEnabled(Board.ableUndo());
-                redoButton.setEnabled(Board.ableRedo());
-                repaint();
-                break;
-            }
-            case "Clear": {
-                //choose = Button.CLEAR;
-                MyFunction.clearArr(drawingBoard);
-                MyFunction.clearArr(nextPoint);
-                repaint();
-                break;
-            }
-            case "Line": {
-                startXY.set(-1, -1);
-                choose = LINE;
-                break;
-            }
-            case "Rectangle": {
-                startXY.set(-1, -1);
-                choose = RECTANGLE;
-                break;
-            }
-            case "Cube": {
-                startXY.set(-1, -1);
-                choose = CUBE;
-                break;
-            }
-            case "Erase": {
-                startXY.set(-1, -1);
-                choose = ERASE;
-                break;
-            }
-            case "Pencil": {
-                startXY.set(-1, -1);
-                choose = PENCIL;
-                break;
-            }
-            case "Color": {
-                Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
-                if (c != null)
-                    chooseColor = c;
-                colorBox.setBackground(chooseColor);
-                colorBox.setForeground(chooseColor);
-                break;
-            }
-            case "Undo": {
-                Board.undo();
-                undoButton.setEnabled(Board.ableUndo());
-                redoButton.setEnabled(Board.ableRedo());
-                repaint();
-                break;
-            }
-            case "Paint": {
-                choose = PAINT;
-                MyFunction.storePointColor(drawingBoard, nextPoint);
-                MyFunction.clearArr(nextDrawing);
-                break;
-            }
-            case "Ellipse": {
-                startXY.set(-1, -1);
-                choose = ELLIPSE;
-                break;
-            }
-            case "Rotate": {
-                startXY.set(-1, -1);
-                choose = ROTATE;
-                break;
-            }
-            case "Setting": {
-                System.out.println("Yes");
-                Setting dialog = new Setting(currentBoardState);
-                dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
-                dialog.pack();
-                dialog.setLocationRelativeTo(this);
-                dialog.setVisible(true);
-                show2DAxis = dialog.getShow2DAxis();
-                show3DAxis = dialog.getShow3DAxis();
-                show2DCoord = dialog.getShow2DCoord();
-                show3DCoord = dialog.getShow3DCoord();
-                if (currentBoardState != dialog.getState()) {
-                    currentBoardState = dialog.getState();
-                    ((Board) drawArea).setBoardState(currentBoardState);
-                    MyFunction.clearArr(drawingBoard);
-                    MyFunction.clearArr(nextPoint);
-                    MyFunction.clearArr(nextDrawing);
-                }
-                if (currentBoardState) {
-                    ((Board) drawArea).setShowAxis(show2DAxis);
-                    ((Board) drawArea).setShowCoord(show2DCoord);
-                } else {
-                    ((Board) drawArea).setShowAxis(show3DAxis);
-                    ((Board) drawArea).setShowCoord(show3DCoord);
-                }
-
-                repaint();
-                System.out.println(show2DAxis);
-                break;
-            }
-            case "Imp": {
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "PNG Images", "png");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showOpenDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    System.out.println("You chose to open this file: " +
-                            chooser.getSelectedFile().getName());
-                    try {
-                        Board.applyNow();
-                        BufferedImage myNewPNGFile = ImageIO.read(new File(chooser.getSelectedFile().getAbsolutePath()));
-                        if (myNewPNGFile.getHeight() == Height * 3 && myNewPNGFile.getWidth() == Width * 3) {
-                            for (int i = 0; i < drawingBoard.length; i++) {
-                                for (int j = 0; j < drawingBoard[0].length; j++) {
-                                    Color c = new Color(myNewPNGFile.getRGB(i * 3, j * 3), true);
-                                    drawingBoard[i][j] = c;
-                                }
-                            }
-                            repaint();
-                        } else {
-                            System.out.println("Wrong!");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-                break;
-            }
-            case "Exp": {
-
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "PNG Images", "png");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showSaveDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    String filename = chooser.getSelectedFile().getAbsolutePath();
-                    if (!filename.toLowerCase().endsWith(".png")) {
-                        filename += ".png";
-                    }
-                    File myNewPNGFile = new File(filename);
-                    BufferedImage bufferedImage = new BufferedImage(drawingBoard.length * 3, drawingBoard[0].length * 3,
-                            BufferedImage.TYPE_INT_RGB);
-                    for (int i = 0; i < drawingBoard.length; i++) {
-                        for (int j = 0; j < drawingBoard[0].length; j++) {
-                            for (int plusI = 0; plusI < 3; plusI++) {
-                                for (int plusJ = 0; plusJ < 3; plusJ++) {
-                                    bufferedImage.setRGB(i * 3 + plusI, j * 3 + plusJ, drawingBoard[i][j].getRGB());
-                                }
-                            }
-                        }
-                    }
-                    try {
-                        ImageIO.write(bufferedImage, "PNG", myNewPNGFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            }
-            case "Animation": {
-                choose = ANIMATION;
-                if (!playingAnimation) {
-                    playingAnimation = true;
-                    java.util.List<Firework> listFW = new ArrayList<>();
-                    Random rd = new Random();
-                    Board.setGridColor(chooseColor);
-                    int timerDelay = 20;
-                    timer.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent actionEvent) {
-                            MyFunction.clearArr(nextDrawing);
-                            MyFunction.clearArr(nextPoint);
-                            if (rd.nextInt() % 3 == 0) {
-                                Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
-                                FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)]);
-                                //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
-                                listFW.add(FW);
-                            }
-                            for (int u = 0; u < listFW.size(); u++) {
-                                Firework now = listFW.get(u);
-                                //System.out.println(now.getRadius());
-                                if (now.isEnd()) {
-                                    listFW.remove(u);
-                                } else {
-                                    now.drawingState();
-                                    now.nextState();
-                                }
-                            }
-                            repaint();
-                            System.out.println("list" + listFW.size());
-                            try {
-                                TimeUnit.MILLISECONDS.sleep(30);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    timer.start();
-                } else {
-                    timer.stop();
-                    timer.removeActionListener(timer.getActionListeners()[0]);
-                    playingAnimation = false;
-                    Board.setGridColor(new Color(235, 235, 235));
-                    MyFunction.clearArr(nextDrawing);
-                    MyFunction.clearArr(nextPoint);
-                    repaint();
-                }
-                //break;
-            }
-        }
-    }
+    private JButton moveButton;           // vẽ hình tròn
 
     // di chuột
     public class Move implements MouseMotionListener {
@@ -595,7 +330,7 @@ public class Paint extends JFrame implements ActionListener {
 
     // ================================== CÁC LOẠI PANEL ==========================
     private JPanel activity_main;
-    private JPanel leftPanel;
+    private JButton symetryPointButton;
     private JPanel mainArea;
     private JPanel drawArea;        // khu vực vẽ
 
@@ -643,8 +378,296 @@ public class Paint extends JFrame implements ActionListener {
     private JButton eraseButton;            // xóa hết
     private JButton cubeButton;           // vẽ đường gấp khúc
     private JButton colorButton;            // chọn màu
-    private JButton circleButton;           // vẽ hình tròn
+    private JButton setCenter;
     private JComboBox comboBox1;            // chọn loại nét vẽ
-    private JLabel showSize;                // hiện kích thước nét vẽ
-    private JSlider sizeSlider;             // điều chỉnh kích thước nét vẽ
+    private JButton symOXButton;
+    private JButton symOYButton;
+    private JComboBox comboBox2;
+    private JButton zoomButton;
+    private JPanel toolPanel;
+    private JButton button1;
+    private JButton button2;
+    private JPanel Panel2D;
+    private JButton button3;
+    private JPanel Panel3D;
+    private JButton button4;
+    private JPanel AnimationPanel;
+
+    // hàm chính
+    public void run() {
+        this.setContentPane(activity_main);// liên kết với màn hình form
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
+        this.setTitle("Paint V1.0"); // đặt tiêu đề
+        this.setSize(1366, 740); // kích thước cửa sổ
+        this.setResizable(false);
+        //this.setMaximumSize(new Dimension(1280, 800));
+        this.setLocationRelativeTo(null);
+        this.setVisible(true); // set hiện hay k
+
+        clearButton.addActionListener(this);
+        lineButton.addActionListener(this);
+        pencilButton.addActionListener(this);
+        pencilButton.setActionCommand("Pencil");
+        redoButton.addActionListener(this);
+        colorButton.addActionListener(this);
+        undoButton.addActionListener(this);
+        paintButton.addActionListener(this);
+        rectangleButton.addActionListener(this);
+        cubeButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        rotateButton.addActionListener(this);
+        //circleButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        settingButton.addActionListener(this);
+        eraseButton.addActionListener(this);
+        animationButton.addActionListener(this);
+        Import.addActionListener(this);
+        Export.addActionListener(this);
+
+        // chọn nét vẽ
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
+            }
+        });
+        //sizeSlider.addChangeListener((ChangeListener) this);
+        Panel2D.setVisible(currentBoardState);
+        Panel3D.setVisible(!currentBoardState);
+        MyFunction.clearArr(drawingBoard);
+    }
+
+    // nhấn nút
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        String nameButton = "";
+
+        // câu if dưới dùng để tránh trường hợp đang show animation nhưng bấm nút khác (undo, pencil,...)
+        if (!playingAnimation) {
+            // nếu hiện tại không có animation nào đang chạy thì tiến hành get trạng thái nút
+            nameButton = actionEvent.getActionCommand();
+        } else {
+            // nếu có animation đang chạy thì chỉ nhận nút Animation
+            if (actionEvent.getActionCommand().equals("Animation")) {
+                nameButton = "Animation";
+            }
+        }
+        switch (nameButton) {
+            case "Redo": {
+                Board.redo();
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
+                repaint();
+                break;
+            }
+            case "Clear": {
+                //choose = Button.CLEAR;
+                MyFunction.clearArr(drawingBoard);
+                MyFunction.clearArr(nextPoint);
+                repaint();
+                break;
+            }
+            case "Line": {
+                startXY.set(-1, -1);
+                choose = LINE;
+                break;
+            }
+            case "Rectangle": {
+                startXY.set(-1, -1);
+                choose = RECTANGLE;
+                break;
+            }
+            case "Cube": {
+                startXY.set(-1, -1);
+                choose = CUBE;
+                break;
+            }
+            case "Erase": {
+                startXY.set(-1, -1);
+                choose = ERASE;
+                break;
+            }
+            case "Pencil": {
+                startXY.set(-1, -1);
+                choose = PENCIL;
+                break;
+            }
+            case "Color": {
+                Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
+                if (c != null)
+                    chooseColor = c;
+                colorBox.setBackground(chooseColor);
+                colorBox.setForeground(chooseColor);
+                break;
+            }
+            case "Undo": {
+                Board.undo();
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
+                repaint();
+                break;
+            }
+            case "Paint": {
+                choose = PAINT;
+                MyFunction.storePointColor(drawingBoard, nextPoint);
+                MyFunction.clearArr(nextDrawing);
+                break;
+            }
+            case "Ellipse": {
+                startXY.set(-1, -1);
+                choose = ELLIPSE;
+                break;
+            }
+            case "Rotate": {
+                startXY.set(-1, -1);
+                choose = ROTATE;
+                break;
+            }
+            case "Setting": {
+                System.out.println("Yes");
+                Setting dialog = new Setting(currentBoardState);
+                dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
+                dialog.pack();
+                dialog.setLocationRelativeTo(this);
+                dialog.setVisible(true);
+                show2DAxis = dialog.getShow2DAxis();
+                show3DAxis = dialog.getShow3DAxis();
+                show2DCoord = dialog.getShow2DCoord();
+                show3DCoord = dialog.getShow3DCoord();
+                if (currentBoardState != dialog.getState()) {
+                    currentBoardState = dialog.getState();
+                    ((Board) drawArea).setBoardState(currentBoardState);
+                    MyFunction.clearArr(drawingBoard);
+                    MyFunction.clearArr(nextPoint);
+                    MyFunction.clearArr(nextDrawing);
+                }
+                Panel2D.setVisible(currentBoardState);
+                Panel3D.setVisible(!currentBoardState);
+                if (currentBoardState) {
+                    ((Board) drawArea).setShowAxis(show2DAxis);
+                    ((Board) drawArea).setShowCoord(show2DCoord);
+                } else {
+                    ((Board) drawArea).setShowAxis(show3DAxis);
+                    ((Board) drawArea).setShowCoord(show3DCoord);
+                }
+
+                repaint();
+                System.out.println(show2DAxis);
+                break;
+            }
+            case "Imp": {
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "PNG Images", "png");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    System.out.println("You chose to open this file: " +
+                            chooser.getSelectedFile().getName());
+                    try {
+                        Board.applyNow();
+                        BufferedImage myNewPNGFile = ImageIO.read(new File(chooser.getSelectedFile().getAbsolutePath()));
+                        if (myNewPNGFile.getHeight() == Height * 3 && myNewPNGFile.getWidth() == Width * 3) {
+                            for (int i = 0; i < drawingBoard.length; i++) {
+                                for (int j = 0; j < drawingBoard[0].length; j++) {
+                                    Color c = new Color(myNewPNGFile.getRGB(i * 3, j * 3), true);
+                                    drawingBoard[i][j] = c;
+                                }
+                            }
+                            repaint();
+                        } else {
+                            System.out.println("Wrong!");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                break;
+            }
+            case "Exp": {
+
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "PNG Images", "png");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showSaveDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    String filename = chooser.getSelectedFile().getAbsolutePath();
+                    if (!filename.toLowerCase().endsWith(".png")) {
+                        filename += ".png";
+                    }
+                    File myNewPNGFile = new File(filename);
+                    BufferedImage bufferedImage = new BufferedImage(drawingBoard.length * 3, drawingBoard[0].length * 3,
+                            BufferedImage.TYPE_INT_RGB);
+                    for (int i = 0; i < drawingBoard.length; i++) {
+                        for (int j = 0; j < drawingBoard[0].length; j++) {
+                            for (int plusI = 0; plusI < 3; plusI++) {
+                                for (int plusJ = 0; plusJ < 3; plusJ++) {
+                                    bufferedImage.setRGB(i * 3 + plusI, j * 3 + plusJ, drawingBoard[i][j].getRGB());
+                                }
+                            }
+                        }
+                    }
+                    try {
+                        ImageIO.write(bufferedImage, "PNG", myNewPNGFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            }
+            case "Animation": {
+                choose = ANIMATION;
+                if (!playingAnimation) {
+                    playingAnimation = true;
+                    java.util.List<Firework> listFW = new ArrayList<>();
+                    Random rd = new Random();
+                    Board.setGridColor(chooseColor);
+                    int timerDelay = 20;
+                    timer.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            MyFunction.clearArr(nextDrawing);
+                            MyFunction.clearArr(nextPoint);
+                            if (rd.nextInt() % 3 == 0) {
+                                Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
+                                FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)]);
+                                //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
+                                listFW.add(FW);
+                            }
+                            for (int u = 0; u < listFW.size(); u++) {
+                                Firework now = listFW.get(u);
+                                //System.out.println(now.getRadius());
+                                if (now.isEnd()) {
+                                    listFW.remove(u);
+                                } else {
+                                    now.drawingState();
+                                    now.nextState();
+                                }
+                            }
+                            repaint();
+                            System.out.println("list" + listFW.size());
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(30);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    timer.start();
+                } else {
+                    timer.stop();
+                    timer.removeActionListener(timer.getActionListeners()[0]);
+                    playingAnimation = false;
+                    Board.setGridColor(new Color(235, 235, 235));
+                    MyFunction.clearArr(nextDrawing);
+                    MyFunction.clearArr(nextPoint);
+                    repaint();
+                }
+                //break;
+            }
+        }
+    }
 }

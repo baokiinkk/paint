@@ -6,13 +6,14 @@ public class HinhHoc {
     public boolean[][] nextDrawing;
     public Color[][] nextPoint;
     public Color chooseColor;
-    public Point2D start;
-    public Point2D end;
-    public Point2D center;
-    public lineMode mode;
-    public double alpha;
-    public com.company.Button tag;
+    public Point2D start;             // điểm bắt đầu để vẽ hình
+    public Point2D end;               // điểm kết thúc để vẽ hình
+    public Point2D center;            // tâm của hình
+    public lineMode mode;             // chế độ nét vẽ
+    public double alpha;              // góc xoay hiện tại của hình so với hình gốc, hình gốc sẽ có góc = 0
+    public com.company.Button tag;    // loại hình
 
+    // khởi tạo các thông số cơ bản của hình
     public HinhHoc(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         this.chooseColor = chooseColor;
         this.nextDrawing = nextDrawing;

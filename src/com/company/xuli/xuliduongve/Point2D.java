@@ -49,6 +49,7 @@ public class Point2D {
         return res;
     }
 
+    // kiểm tra điểm hiện tại có bằng điểm Other hay không
     public boolean equal(Point2D other) {
         return (this.X == other.X && this.Y == other.Y);
     }

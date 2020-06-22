@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Erase extends JPanel {
-    Point2D A;
+    Point2D A; // tọa độ của cục tẩy
     int size;
     public Erase(Point2D a,int size) {
         A = a;

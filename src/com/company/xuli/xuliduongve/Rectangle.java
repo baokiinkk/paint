@@ -29,7 +29,7 @@ public class Rectangle extends HinhHoc {
         D.set(start.X, end.Y);                //         D-----------------C  (end)
     }
 
-    // set full hình chữ nhật
+    // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
     public void setRectangle(Point2D start, Point2D end, lineMode mode) {
         this.setRectangle(start, end);
         this.start = start;
@@ -39,7 +39,7 @@ public class Rectangle extends HinhHoc {
     }
 
     // xoay và vẽ hình hiện tại 1 góc alpha
-    // đây là xoay nháp
+    // đây là xoay nháp, tức là chỉ xoay hình ảo để người dùng canh góc xoay, khi nhả chuột sẽ áp dụng vào hình gốc
     public void rotate(double alpha) {
 
         Point2D tmpA = A.rotatePoint(center, this.alpha + alpha);
@@ -52,7 +52,8 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(tmpD, tmpA, MODE);
     }
 
-    // tăng góc xoay hiện tại thêm alpha
+    // khi xoay nháp sẽ có góc alpha lệch so với góc ban đầu, khi xoay xong, hàm này sẽ + góc vừa xoay vào góc hiện tại
+    // ví dụ xoay hình gốc 1 góc 20 độ, thì sau khi xoay nháp xong, góc xoay gốc sẽ được cộng thêm 20 độ
     public void applyRotate(double alpha) {
         System.out.println(this.alpha + " " + alpha);
         this.alpha += alpha;
@@ -83,7 +84,7 @@ public class Rectangle extends HinhHoc {
         center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
     }
 
-    // vẽ hình chữ nhật
+    // vẽ hình chữ nhật dựa vào 4 điểm
     public void draw() {
         A = A.rotatePoint(center, this.alpha);
         B = B.rotatePoint(center, this.alpha);

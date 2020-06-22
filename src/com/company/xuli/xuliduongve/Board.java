@@ -221,21 +221,21 @@ public class Board extends JPanel {
 //
 //    }
 
-    public static HinhHoc now;              // biến lưu hình hiện tại (kiểu như lên thớt để tiến hành xoay, zoom,...)
-    private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp
-    private static Color[][] nextPoint;     // tức là trạng thái lúc kéo vẽ, VD kéo đường thẳng
-    private static Color[][] drawingBoard;  // bảng vẽ
-    private static boolean[][] coordBoard;  // bảng vẽ
+    public static HinhHoc now;              // biến lưu hình vừa vẽ xong, khi thực hiện các thao tác move, zoom,... sẽ thực hiện trên biến này
+    private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp, trạng thái nháp là trạng thái lúc kéo vẽ 1 hình nào đó, VD vẽ đường thẳng
+    private static Color[][] nextPoint;     // bảng này lưu màu nháp
+    private static Color[][] drawingBoard;  // bảng vẽ chính thức.
+    private static boolean[][] coordBoard;  // bảng này sẽ lưu các tọa độ của hình
     private static int width;   // độ rộng của bảng vẽ
     private static int height;  // độ cao của bảng vẽ
-    private static Stack<Color[][]> undoBoard;  // stack lưu undo
-    private static Stack<Color[][]> redoBoard;  // stack lưu redo
+    private static Stack<Color[][]> undoBoard;  // stack lưu các trạng thái của bảng vẽ để undo
+    private static Stack<Color[][]> redoBoard;  // stack lưu .... để redo
     private static Point2D erase;           // vị trí của cục gôm
-    private static boolean drawErase;       // biến để xác định có vẽ hay không
+    private static boolean drawErase;       // biến để xác định có hiện cục gôm hay không
     private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D
-    private static Color gridColor;
+    private static Color gridColor; // biến xác định màu của lưới
     private int spacing;    // khoảng cách giữa 2 pixel
-    private int rectSize;   // tổng độ rộng pixel và spacing
+    private int rectSize;   // tổng độ rộng của pixel và spacing
     private int OX;     // trục tọa độ OX
     private int OY;     // trục tọa độ OY
     private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
