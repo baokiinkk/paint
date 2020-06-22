@@ -33,9 +33,7 @@ public class Paint extends JFrame implements ActionListener {
         timer = new Timer(0, null);
     }
 
-    private JButton moveButton;           // vẽ hình tròn
 
-    private JButton globularButton;
 
     // hàm chính
     public void run() {
@@ -82,75 +80,7 @@ public class Paint extends JFrame implements ActionListener {
         MyFunction.clearArr(drawingBoard);
     }
 
-    // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 272;     // độ rộng bảng vẽ
-    private static int Height = 185;    // độ cao
 
-    // ================================== CÁC LOẠI BẢNG ==========================
-    private boolean[][] nextDrawing = new boolean[Width][Height]; //258x188
-    private Color[][] nextPoint = new Color[Width][Height];
-    private Color[][] drawingBoard = new Color[Width][Height];
-
-    // ================================== CÁC LOẠI PANEL ==========================
-    private JPanel activity_main;
-    private JButton symetryPointButton;
-    private JPanel mainArea;
-    private JPanel drawArea;        // khu vực vẽ
-
-    //========================= biến chứa chế độ đường thẳng đang chọn ==============
-    private lineMode chooseLineMode = lineMode.DEFAULT;
-
-    //========================= danh sách các loại nét vẽ ===========================
-    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
-
-
-    // ======================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT ========================
-    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
-    private Point2D startXY;
-    private Point2D mouseXY;
-    private boolean firstClick = false; // biến xác định click chuột đầu trong 2 lần click
-    private boolean playingAnimation = false;
-    private Timer timer;
-    private int rectSize = 4;          // tổng của kích thước pixel và spacing
-    private int spacing = 1;           // khoảng cách giữa 2 pixel
-    private int sizeLine = 1;          // kích thước nét vẽ
-    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
-    private com.company.Button choose = PENCIL; // nút vừa chọn
-    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show2DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show3DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show2DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    // =================================== CÁC LOẠI NÚT ============================
-    private JButton animationButton;        // nút mở hoạt cảnh
-
-    //=================================== Các biến ánh xạ với UI ================
-    private JButton lineButton;             // vẽ đường thẳng
-    private JButton clearButton;            // xóa sạch
-    private JButton pencilButton;           // đè là vẽ
-    private JButton undoButton;             // Undo
-    private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton redoButton;             // Redo
-    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
-    private JButton colorBox;               // hiển thị màu đang chọn
-    private JButton ellipseButton;          // vẽ elipse
-    private JButton rotateButton;           // xoay
-    private JButton Import;                 // mở hình từ bên ngoài
-    private JButton Export;                 // lưu hình
-    private JButton settingButton;          // mở setting
-    private JButton eraseButton;            // xóa hết
-    private JButton cubeButton;           // vẽ đường gấp khúc
-    private JButton colorButton;            // chọn màu
-    private JButton setCenter;
-    private JComboBox comboBox1;            // chọn loại nét vẽ
-    private JButton symOXButton;
-    private JButton symOYButton;
-    private JComboBox comboBox2;
-    private JButton zoomButton;
-    private JPanel toolPanel;
-    private JButton button1;
-    private JButton button2;
-    private JPanel Panel2D;
 
     // nhấn nút
     @Override
@@ -700,7 +630,77 @@ public class Paint extends JFrame implements ActionListener {
         public void mouseExited(MouseEvent mouseEvent) {
 
         }
-
-
     }
+
+    // ================================== CÁC BIẾN ĐƠN ==========================
+    private static int Width = 273;     // độ rộng bảng vẽ
+    private static int Height = 170;    // độ cao
+
+    // ================================== CÁC LOẠI BẢNG ==========================
+    private boolean[][] nextDrawing = new boolean[Width][Height];
+    private Color[][] nextPoint = new Color[Width][Height];
+    private Color[][] drawingBoard = new Color[Width][Height];
+
+    // ================================== CÁC LOẠI PANEL ==========================
+    private JPanel activity_main;
+    private JButton symetryPointButton;
+    private JPanel mainArea;
+    private JPanel drawArea;        // khu vực vẽ
+
+    //========================= biến chứa chế độ đường thẳng đang chọn ==============
+    private lineMode chooseLineMode = lineMode.DEFAULT;
+
+    //========================= danh sách các loại nét vẽ ===========================
+    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
+
+
+    // ======================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT ========================
+    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
+    private Point2D startXY;
+    private Point2D mouseXY;
+    private boolean firstClick = false; // biến xác định click chuột đầu trong 2 lần click
+    private boolean playingAnimation = false;
+    private Timer timer;
+    private int rectSize = 4;          // tổng của kích thước pixel và spacing
+    private int spacing = 1;           // khoảng cách giữa 2 pixel
+    private int sizeLine = 1;          // kích thước nét vẽ
+    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
+    private com.company.Button choose = PENCIL; // nút vừa chọn
+    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show2DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show3DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show2DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    // =================================== CÁC LOẠI NÚT ============================
+    private JButton animationButton;        // nút mở hoạt cảnh
+
+    //=================================== Các biến ánh xạ với UI ================
+    private JButton lineButton;             // vẽ đường thẳng
+    private JButton clearButton;            // xóa sạch
+    private JButton pencilButton;           // đè là vẽ
+    private JButton undoButton;             // Undo
+    private JButton rectangleButton;        // vẽ hình chữ nhật
+    private JButton redoButton;             // Redo
+    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
+    private JButton colorBox;               // hiển thị màu đang chọn
+    private JButton ellipseButton;          // vẽ elipse
+    private JButton rotateButton;           // xoay
+    private JButton Import;                 // mở hình từ bên ngoài
+    private JButton Export;                 // lưu hình
+    private JButton settingButton;          // mở setting
+    private JButton eraseButton;            // xóa hết
+    private JButton cubeButton;           // vẽ đường gấp khúc
+    private JButton colorButton;            // chọn màu
+    private JButton moveButton;           // vẽ hình tròn
+    private JButton globularButton;
+    private JButton setCenter;
+    private JComboBox comboBox1;            // chọn loại nét vẽ
+    private JButton symOXButton;
+    private JButton symOYButton;
+    private JComboBox comboBox2;
+    private JButton zoomButton;
+    private JPanel toolPanel;
+    private JButton button1;
+    private JButton button2;
+    private JPanel Panel2D;
 }
