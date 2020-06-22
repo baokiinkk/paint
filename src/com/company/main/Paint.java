@@ -49,6 +49,7 @@ public class Paint extends JFrame implements ActionListener {
         animationButton.addActionListener(this);
         Import.addActionListener(this);
         Export.addActionListener(this);
+        globularButton.addActionListener(this);
 
         // chọn nét vẽ
         comboBox1.addActionListener(new ActionListener() {
@@ -111,6 +112,11 @@ public class Paint extends JFrame implements ActionListener {
             case "Cube": {
                 startXY.set(-1, -1);
                 choose = CUBE;
+                break;
+            }
+            case "Globular": {
+                startXY.set(-1, -1);
+                choose = GLOBULAR;
                 break;
             }
             case "Erase": {
@@ -392,6 +398,18 @@ public class Paint extends JFrame implements ActionListener {
                     repaint();
                     break;
                 }
+                case GLOBULAR: {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                            new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                            Point2D temp = mouseXY;
+                            temp.Y=startXY.Y+Math.abs(mouseXY.X-startXY.X)/3;
+                            new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, temp, chooseLineMode);
+                    }
+                    repaint();
+                    break;
+                }
                 case ROTATE: {
                     MyFunction.clearArr(nextDrawing);
                     mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
@@ -485,6 +503,13 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case GLOBULAR: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                     case ERASE: // vẽ cục gôm
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -540,6 +565,11 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case CUBE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case GLOBULAR: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -647,4 +677,5 @@ public class Paint extends JFrame implements ActionListener {
     private JComboBox comboBox1;            // chọn loại nét vẽ
     private JLabel showSize;                // hiện kích thước nét vẽ
     private JSlider sizeSlider;             // điều chỉnh kích thước nét vẽ
+    private JButton globularButton;
 }
