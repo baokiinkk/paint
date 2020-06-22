@@ -333,12 +333,12 @@
               <text value="Cube"/>
             </properties>
           </component>
-          <component id="6d2e2" class="javax.swing.JButton" binding="button3" default-binding="true">
+          <component id="6d2e2" class="javax.swing.JButton" binding="globularButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="Globular"/>
             </properties>
           </component>
         </children>

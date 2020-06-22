@@ -9,6 +9,7 @@ public enum Button {
     UNDO,
     PAINT,
     CUBE,
+    GLOBULAR,
     RECTANGLE,
     ERASE,
     ELLIPSE,

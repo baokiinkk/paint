@@ -35,288 +35,51 @@ public class Paint extends JFrame implements ActionListener {
 
     private JButton moveButton;           // vẽ hình tròn
 
-    // di chuột
-    public class Move implements MouseMotionListener {
-        @Override
-        public void mouseDragged(MouseEvent mouseEvent) {      // nắm kéo thả chuột
-            switch (choose) {
-                case PENCIL: {
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+    private JButton globularButton;
 
-                    // nếu vị trí bắt đầu không phải là (-1,-1) thì vẽ đường thẳng từ điểm đó tới vị trí hiện tại của con trỏ chuột
-                    if (startXY.X != -1 && startXY.Y != -1) {
-                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
-                    }
-                    startXY.set(mouseXY); // sau khi vẽ hàm trên thì điểm bắt đầu được set lại
-                    drawArea.repaint();
-                    break;
-                }
-                case LINE: // vẽ đường thẳng
-                {
-                    // tương tự với pencil, khác ở chỗ điểm bắt đầu không đổi
-                    MyFunction.clearArr(nextDrawing); // phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    if (startXY.X != -1 && startXY.Y != -1)
-                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, chooseLineMode);
-                    repaint();
-                    break;
-                }
-                case RECTANGLE: // vẽ đường thẳng
-                {
-                    MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    if (startXY.X != -1 && startXY.Y != -1) {
-                        Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
-                        if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
-                            rec.setSquare(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
-                        } else {
-                            rec.setRectangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
-                        }
-                        rec.draw(); // cho vẽ hình
-                        Board.setNowHinhHoc(rec); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
-                    }
-                    repaint();
-                    break;
-                }
-                case CUBE: // vẽ hình hộp chữ nhật
-                {
-                    MyFunction.clearArr(nextDrawing);
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    if (startXY.X != -1 && startXY.Y != -1) {
-                        Cube hbh = new Cube(nextDrawing, nextPoint, chooseColor);
-                        Cube hbh2 = new Cube(nextDrawing, nextPoint, chooseColor);
-                        Line li = new Line(nextDrawing, nextPoint, chooseColor);
-                        if (mouseEvent.isShiftDown()) {
-                            hbh.setCube(startXY, mouseXY, chooseLineMode);
-                        } else {
-                            hbh.setCube(startXY, mouseXY, chooseLineMode);
-                        }
-                        hbh.draw();
-                        Board.setNowHinhHoc(hbh);
-                    }
-                    repaint();
-                    break;
-                }
-                case ERASE: // vẽ cục gôm
-                {
-                    //MyFunction.clearArr(nextDrawing);
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    for (int i = -1; i <= 1; i++) {
-                        for (int j = -1; j <= 1; j++) {
-                            Point2D diem = new Point2D(mouseXY.X + i, mouseXY.Y + j);
-                            if (MyFunction.isSafe(drawingBoard, diem.X, diem.Y)) {
-                                nextPoint[diem.X][diem.Y] = Color.WHITE;
-                                nextDrawing[diem.X][diem.Y] = true;
-                            }
-                        }
-                    }
-                    Board.drawErase(mouseXY);
-                    repaint();
-                    break;
-                }
-                case ELLIPSE: {
-                    MyFunction.clearArr(nextDrawing);
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    if (startXY.X != -1 && startXY.Y != -1) {
-                        if (mouseEvent.isShiftDown()) {
-                            new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
-                        } else {
-                            new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, mouseXY, chooseLineMode);
-                        }
-                    }
-                    repaint();
-                    break;
-                }
-                case ROTATE: {
-                    MyFunction.clearArr(nextDrawing);
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    if (startXY.X != -1 && startXY.Y != -1) {
-                        //System.out.println(Board.now.tag);
-                        Board.rotateNow(startXY, mouseXY);
-                        repaint();
-                    }
-                    break;
-                }
+    // hàm chính
+    public void run() {
+        this.setContentPane(activity_main);// liên kết với màn hình form
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
+        this.setTitle("Paint V1.0"); // đặt tiêu đề
+        this.setSize(1366, 740); // kích thước cửa sổ
+        this.setResizable(false);
+        //this.setMaximumSize(new Dimension(1280, 800));
+        this.setLocationRelativeTo(null);
+        this.setVisible(true); // set hiện hay k
+
+        clearButton.addActionListener(this);
+        lineButton.addActionListener(this);
+        pencilButton.addActionListener(this);
+        pencilButton.setActionCommand("Pencil");
+        redoButton.addActionListener(this);
+        colorButton.addActionListener(this);
+        undoButton.addActionListener(this);
+        paintButton.addActionListener(this);
+        rectangleButton.addActionListener(this);
+        cubeButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        rotateButton.addActionListener(this);
+        //circleButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        settingButton.addActionListener(this);
+        eraseButton.addActionListener(this);
+        animationButton.addActionListener(this);
+        Import.addActionListener(this);
+        Export.addActionListener(this);
+        globularButton.addActionListener(this);
+
+        // chọn nét vẽ
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
             }
-
-        }
-
-        // di chuột
-        @Override
-        public void mouseMoved(MouseEvent mouseEvent) {
-            switch (choose) {
-                case LINE: // vẽ đường thẳng
-                {
-                    // nothing
-                    // System.out.println("x: " +mouseEvent.getX()+" - "+"y:"+mouseEvent.getY());
-                    break;
-                }
-                case ERASE: {
-                    MyFunction.clearArr(nextDrawing);
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-
-                    for (int i = -1; i <= 1; i++) {
-                        for (int j = -1; j <= 1; j++) {
-                            Point2D diem = new Point2D(mouseXY.X + i, mouseXY.Y + j);
-                            if (MyFunction.isSafe(drawingBoard, diem.X, diem.Y)) {
-                                nextPoint[diem.X][diem.Y] = Color.WHITE;
-                                nextDrawing[diem.X][diem.Y] = true;
-                            }
-                        }
-                    }
-                    Board.drawErase(mouseXY);
-                    repaint();
-                    break;
-                }
-            }
-        }
-    }
-    // thư viện click
-    public class Click implements MouseListener {
-
-        // click chuột vào trạng thái nào
-        @Override
-        public void mouseClicked(MouseEvent mouseEvent) {
-            switch (choose) {
-                case LINE: // vẽ đường thẳng
-                {
-                    // nothing
-                    break;
-                }
-            }
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent mouseEvent) {
-            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                switch (choose) {
-                    case PENCIL: {
-                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        nextDrawing[mouseXY.X][mouseXY.Y] = true;
-                        nextPoint[mouseXY.X][mouseXY.Y] = chooseColor;
-                        startXY.set(mouseXY);
-                        drawArea.repaint();
-                        break;
-                    }
-                    case LINE: // vẽ đường thẳng
-                    {
-                        // lấy tọa độ điểm bắt đầu
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.clearArr(nextPoint);
-                        break;
-                    }
-                    case RECTANGLE: // vẽ hinh cn
-                    {
-                        // lấy tọa độ điểm bắt đầu
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.clearArr(nextPoint);
-                        break;
-                    }
-                    case CUBE: // vẽ hinh hộp chữ nhật
-                    {
-                        // lấy tọa độ điểm bắt đầu
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.clearArr(nextPoint);
-                        break;
-                    }
-                    case ERASE: // vẽ cục gôm
-                    {
-                        // lấy tọa độ điểm bắt đầu
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.clearArr(nextPoint);
-                        break;
-                    }
-                    case PAINT: {
-                        System.out.println("Pressed");
-                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.paintColor(nextPoint, nextDrawing, mouseXY, chooseColor);
-                        break;
-                    }
-                    case ELLIPSE: {
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.clearArr(nextPoint);
-                        break;
-                    }
-                    case ROTATE: {
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        MyFunction.clearArr(nextPoint);
-                        Board.previousDo();
-                        break;
-                    }
-                }
-            } else {
-//                MyFunction.storePointColor(drawingBoard, nextPoint);
-//                MyFunction.clearArr(nextDrawing);
-//                repaint();
-            }
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent mouseEvent) {
-            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                switch (choose) {
-                    case PENCIL: // vẽ đường thẳng
-                    {
-                        //nothing
-                        startXY.set(-1, -1);
-                        Board.applyNow();
-                        break;
-                    }
-                    case LINE: {
-                        Board.applyNow();
-                        repaint();
-                        break;
-                    }
-                    case RECTANGLE: {
-                        Board.applyNow();
-                        repaint();
-                        break;
-                    }
-                    case CUBE: {
-                        Board.applyNow();
-                        repaint();
-                        break;
-                    }
-                    case PAINT: {
-                        Board.applyNow();
-                        MyFunction.storePointColor(drawingBoard, nextPoint);
-                        repaint();
-                        break;
-                    }
-                    case ELLIPSE: {
-                        Board.applyNow();
-                        repaint();
-                        break;
-                    }
-                    case ERASE: {
-                        Board.applyNow();
-                        break;
-                    }
-                    case ROTATE: {
-                        Board.applyRotate(startXY, mouseXY);
-                        Board.applyNow();
-                        break;
-                    }
-                }
-
-                undoButton.setEnabled(Board.ableUndo());
-                redoButton.setEnabled(Board.ableRedo());
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent mouseEvent) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent mouseEvent) {
-
-        }
-
-
+        });
+        //sizeSlider.addChangeListener((ChangeListener) this);
+        Panel2D.setVisible(currentBoardState);
+        Panel3D.setVisible(!currentBoardState);
+        MyFunction.clearArr(drawingBoard);
     }
 
     // ================================== CÁC BIẾN ĐƠN ==========================
@@ -388,54 +151,6 @@ public class Paint extends JFrame implements ActionListener {
     private JButton button1;
     private JButton button2;
     private JPanel Panel2D;
-    private JButton button3;
-    private JPanel Panel3D;
-    private JButton button4;
-    private JPanel AnimationPanel;
-
-    // hàm chính
-    public void run() {
-        this.setContentPane(activity_main);// liên kết với màn hình form
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
-        this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1366, 740); // kích thước cửa sổ
-        this.setResizable(false);
-        //this.setMaximumSize(new Dimension(1280, 800));
-        this.setLocationRelativeTo(null);
-        this.setVisible(true); // set hiện hay k
-
-        clearButton.addActionListener(this);
-        lineButton.addActionListener(this);
-        pencilButton.addActionListener(this);
-        pencilButton.setActionCommand("Pencil");
-        redoButton.addActionListener(this);
-        colorButton.addActionListener(this);
-        undoButton.addActionListener(this);
-        paintButton.addActionListener(this);
-        rectangleButton.addActionListener(this);
-        cubeButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        rotateButton.addActionListener(this);
-        //circleButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        settingButton.addActionListener(this);
-        eraseButton.addActionListener(this);
-        animationButton.addActionListener(this);
-        Import.addActionListener(this);
-        Export.addActionListener(this);
-
-        // chọn nét vẽ
-        comboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
-            }
-        });
-        //sizeSlider.addChangeListener((ChangeListener) this);
-        Panel2D.setVisible(currentBoardState);
-        Panel3D.setVisible(!currentBoardState);
-        MyFunction.clearArr(drawingBoard);
-    }
 
     // nhấn nút
     @Override
@@ -480,6 +195,11 @@ public class Paint extends JFrame implements ActionListener {
             case "Cube": {
                 startXY.set(-1, -1);
                 choose = CUBE;
+                break;
+            }
+            case "Globular": {
+                startXY.set(-1, -1);
+                choose = GLOBULAR;
                 break;
             }
             case "Erase": {
@@ -669,5 +389,318 @@ public class Paint extends JFrame implements ActionListener {
                 //break;
             }
         }
+    }
+
+    private JPanel Panel3D;
+    private JButton button4;
+    private JPanel AnimationPanel;
+
+    // di chuột
+    public class Move implements MouseMotionListener {
+        @Override
+        public void mouseDragged(MouseEvent mouseEvent) {      // nắm kéo thả chuột
+            switch (choose) {
+                case PENCIL: {
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+
+                    // nếu vị trí bắt đầu không phải là (-1,-1) thì vẽ đường thẳng từ điểm đó tới vị trí hiện tại của con trỏ chuột
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
+                    }
+                    startXY.set(mouseXY); // sau khi vẽ hàm trên thì điểm bắt đầu được set lại
+                    drawArea.repaint();
+                    break;
+                }
+                case LINE: // vẽ đường thẳng
+                {
+                    // tương tự với pencil, khác ở chỗ điểm bắt đầu không đổi
+                    MyFunction.clearArr(nextDrawing); // phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1)
+                        new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, chooseLineMode);
+                    repaint();
+                    break;
+                }
+                case RECTANGLE: // vẽ đường thẳng
+                {
+                    MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
+                            rec.setSquare(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
+                        } else {
+                            rec.setRectangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
+                        }
+                        rec.draw(); // cho vẽ hình
+                        Board.setNowHinhHoc(rec); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                    }
+                    repaint();
+                    break;
+                }
+                case CUBE: // vẽ hình hộp chữ nhật
+                {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        Cube hbh = new Cube(nextDrawing, nextPoint, chooseColor);
+                        Cube hbh2 = new Cube(nextDrawing, nextPoint, chooseColor);
+                        Line li = new Line(nextDrawing, nextPoint, chooseColor);
+                        if (mouseEvent.isShiftDown()) {
+                            hbh.setCube(startXY, mouseXY, chooseLineMode);
+                        } else {
+                            hbh.setCube(startXY, mouseXY, chooseLineMode);
+                        }
+                        hbh.draw();
+                        Board.setNowHinhHoc(hbh);
+                    }
+                    repaint();
+                    break;
+                }
+                case ERASE: // vẽ cục gôm
+                {
+                    //MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    for (int i = -1; i <= 1; i++) {
+                        for (int j = -1; j <= 1; j++) {
+                            Point2D diem = new Point2D(mouseXY.X + i, mouseXY.Y + j);
+                            if (MyFunction.isSafe(drawingBoard, diem.X, diem.Y)) {
+                                nextPoint[diem.X][diem.Y] = Color.WHITE;
+                                nextDrawing[diem.X][diem.Y] = true;
+                            }
+                        }
+                    }
+                    Board.drawErase(mouseXY);
+                    repaint();
+                    break;
+                }
+                case ELLIPSE: {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        if (mouseEvent.isShiftDown()) {
+                            new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                        } else {
+                            new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, mouseXY, chooseLineMode);
+                        }
+                    }
+                    repaint();
+                    break;
+                }
+                case GLOBULAR: {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                        Point2D temp = mouseXY;
+                        temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 3;
+                        new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, temp, chooseLineMode);
+                    }
+                    repaint();
+                    break;
+                }
+                case ROTATE: {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    if (startXY.X != -1 && startXY.Y != -1) {
+                        //System.out.println(Board.now.tag);
+                        Board.rotateNow(startXY, mouseXY);
+                        repaint();
+                    }
+                    break;
+                }
+            }
+
+        }
+
+        // di chuột
+        @Override
+        public void mouseMoved(MouseEvent mouseEvent) {
+            switch (choose) {
+                case LINE: // vẽ đường thẳng
+                {
+                    // nothing
+                    // System.out.println("x: " +mouseEvent.getX()+" - "+"y:"+mouseEvent.getY());
+                    break;
+                }
+                case ERASE: {
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+
+                    for (int i = -1; i <= 1; i++) {
+                        for (int j = -1; j <= 1; j++) {
+                            Point2D diem = new Point2D(mouseXY.X + i, mouseXY.Y + j);
+                            if (MyFunction.isSafe(drawingBoard, diem.X, diem.Y)) {
+                                nextPoint[diem.X][diem.Y] = Color.WHITE;
+                                nextDrawing[diem.X][diem.Y] = true;
+                            }
+                        }
+                    }
+                    Board.drawErase(mouseXY);
+                    repaint();
+                    break;
+                }
+            }
+        }
+    }
+
+    // thư viện click
+    public class Click implements MouseListener {
+
+        // click chuột vào trạng thái nào
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+            switch (choose) {
+                case LINE: // vẽ đường thẳng
+                {
+                    // nothing
+                    break;
+                }
+            }
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
+            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+                switch (choose) {
+                    case PENCIL: {
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        nextDrawing[mouseXY.X][mouseXY.Y] = true;
+                        nextPoint[mouseXY.X][mouseXY.Y] = chooseColor;
+                        startXY.set(mouseXY);
+                        drawArea.repaint();
+                        break;
+                    }
+                    case LINE: // vẽ đường thẳng
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case RECTANGLE: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case CUBE: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case GLOBULAR: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case ERASE: // vẽ cục gôm
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case PAINT: {
+                        System.out.println("Pressed");
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.paintColor(nextPoint, nextDrawing, mouseXY, chooseColor);
+                        break;
+                    }
+                    case ELLIPSE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case ROTATE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        Board.previousDo();
+                        break;
+                    }
+                }
+            } else {
+//                MyFunction.storePointColor(drawingBoard, nextPoint);
+//                MyFunction.clearArr(nextDrawing);
+//                repaint();
+            }
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) {
+            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+                switch (choose) {
+                    case PENCIL: // vẽ đường thẳng
+                    {
+                        //nothing
+                        startXY.set(-1, -1);
+                        Board.applyNow();
+                        break;
+                    }
+                    case LINE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case RECTANGLE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case CUBE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case GLOBULAR: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case PAINT: {
+                        Board.applyNow();
+                        MyFunction.storePointColor(drawingBoard, nextPoint);
+                        repaint();
+                        break;
+                    }
+                    case ELLIPSE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case ERASE: {
+                        Board.applyNow();
+                        break;
+                    }
+                    case ROTATE: {
+                        Board.applyRotate(startXY, mouseXY);
+                        Board.applyNow();
+                        break;
+                    }
+                }
+
+                undoButton.setEnabled(Board.ableUndo());
+                redoButton.setEnabled(Board.ableRedo());
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {
+
+        }
+
+
     }
 }

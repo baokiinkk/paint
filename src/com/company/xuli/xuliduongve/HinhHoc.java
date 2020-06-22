@@ -138,7 +138,7 @@ public class HinhHoc {
             endDot.set(x + cx, y + cy);
             if (i != 60)
                 // draw a line joining previous and new point .
-                new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startDot, endDot, lineMode.DOT);
+                new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startDot, endDot, lineMode.DASH);
             // store the previous points
             px = x;
             py = y;
