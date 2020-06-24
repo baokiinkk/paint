@@ -2,7 +2,11 @@ package com.company.main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -22,64 +26,8 @@ import static com.company.Button.*;
 public class Paint extends JFrame implements ActionListener {
     private JPanel filePanel;
 
-    // hàm custom cho các thành phần trong form
-    private void createUIComponents() {
-        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
-        drawArea.addMouseMotionListener(new Move());
-        drawArea.addMouseListener(new Click());
-        comboBox1 = new JComboBox<lineMode>(lineModeArr);
-        mouseXY = new Point2D(-1, -1);
-        startXY = new Point2D(-1, -1);
-        timer = new Timer(0, null);
-    }
-
-
-
-    // hàm chính
-    public void run() {
-        this.setContentPane(activity_main);// liên kết với màn hình form
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
-        this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1366, 740); // kích thước cửa sổ
-        this.setResizable(false);
-        //this.setMaximumSize(new Dimension(1280, 800));
-        this.setLocationRelativeTo(null);
-        this.setVisible(true); // set hiện hay k
-
-        clearButton.addActionListener(this);
-        lineButton.addActionListener(this);
-        pencilButton.addActionListener(this);
-        redoButton.addActionListener(this);
-        colorButton.addActionListener(this);
-        undoButton.addActionListener(this);
-        paintButton.addActionListener(this);
-        rectangleButton.addActionListener(this);
-        cubeButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        rotateButton.addActionListener(this);
-        //circleButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        settingButton.addActionListener(this);
-        eraseButton.addActionListener(this);
-        animationButton.addActionListener(this);
-        Import.addActionListener(this);
-        Export.addActionListener(this);
-        globularButton.addActionListener(this);
-        animalButton.addActionListener(this);
-
-        // chọn nét vẽ
-        comboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                chooseLineMode = lineModeArr[comboBox1.getSelectedIndex()];
-            }
-        });
-        //sizeSlider.addChangeListener((ChangeListener) this);
-        Panel2D.setVisible(currentBoardState);
-        Panel3D.setVisible(!currentBoardState);
-        MyFunction.clearArr(drawingBoard);
-    }
-
+    private JComboBox styleComboBox;            // chọn loại nét vẽ
+    private JComboBox sizeComboBox;
 
 
     // nhấn nút
@@ -541,10 +489,10 @@ public class Paint extends JFrame implements ActionListener {
     private JButton moveButton;           // vẽ hình tròn
     private JButton globularButton;
     private JButton setCenter;
-    private JComboBox comboBox1;            // chọn loại nét vẽ
+    private JPanel styleCBPanel;
     private JButton symOXButton;
     private JButton symOYButton;
-    private JComboBox comboBox2;
+    private JPanel sizeCBPanel;
     private JButton zoomButton;
     private JPanel toolPanel;
     private JButton button1;
@@ -554,6 +502,97 @@ public class Paint extends JFrame implements ActionListener {
     private JLabel xCoord2D;
     private JLabel yCoord2D;
     private JButton animalButton;
+    private JPanel settingPanel;
+
+    // hàm custom cho các thành phần trong form
+    private void createUIComponents() {
+        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
+        drawArea.addMouseMotionListener(new Move());
+        drawArea.addMouseListener(new Click());
+        styleComboBox = new JComboBox<lineMode>(lineModeArr);
+        sizeComboBox = new JComboBox<lineMode>(lineModeArr);
+        mouseXY = new Point2D(-1, -1);
+        startXY = new Point2D(-1, -1);
+        timer = new Timer(0, null);
+    }
+
+    // hàm chính
+    public void run() {
+        this.setContentPane(activity_main);// liên kết với màn hình form
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
+        this.setTitle("Paint V1.0"); // đặt tiêu đề
+        this.setSize(1366, 740); // kích thước cửa sổ
+        this.setResizable(false);
+        //this.setMaximumSize(new Dimension(1280, 800));
+        this.setLocationRelativeTo(null);
+        this.setVisible(true); // set hiện hay k
+
+        clearButton.addActionListener(this);
+        lineButton.addActionListener(this);
+        pencilButton.addActionListener(this);
+        redoButton.addActionListener(this);
+        colorButton.addActionListener(this);
+        undoButton.addActionListener(this);
+        paintButton.addActionListener(this);
+        rectangleButton.addActionListener(this);
+        cubeButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        rotateButton.addActionListener(this);
+        //circleButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        settingButton.addActionListener(this);
+        eraseButton.addActionListener(this);
+        animationButton.addActionListener(this);
+        Import.addActionListener(this);
+        Export.addActionListener(this);
+        globularButton.addActionListener(this);
+        animalButton.addActionListener(this);
+
+        //settingPanel.setSize(70, 30);
+        styleComboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                //Color bg = styleComboBox.getBackground();
+                Color bg = styleComboBox.getBackground();
+                JButton b = super.createArrowButton();
+                styleComboBox.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+                b.setBackground(bg);
+                b.setBorder(BorderFactory.createLineBorder(bg));
+                return b;
+            }
+        });
+
+        sizeComboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                //Color bg = styleComboBox.getBackground();
+                Color bg = sizeComboBox.getBackground();
+                JButton b = super.createArrowButton();
+                sizeComboBox.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+                b.setBackground(bg);
+                b.setBorder(BorderFactory.createLineBorder(bg));
+                return b;
+            }
+        });
+        // chọn nét vẽ
+        styleComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[styleComboBox.getSelectedIndex()];
+            }
+        });
+        sizeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[sizeComboBox.getSelectedIndex()];
+            }
+        });
+        //sizeSlider.addChangeListener((ChangeListener) this);
+        Panel2D.setVisible(currentBoardState);
+        Panel3D.setVisible(!currentBoardState);
+        MyFunction.clearArr(drawingBoard);
+    }
+
 
     // di chuột
     public class Move implements MouseMotionListener {
