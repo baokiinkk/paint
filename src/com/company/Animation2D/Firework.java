@@ -13,6 +13,7 @@ public class Firework extends HinhHoc {
     private int endState;
     private Color fireColor;
     private lineMode MODE;
+    private float sizeFW;
 
     public Firework(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
@@ -28,10 +29,11 @@ public class Firework extends HinhHoc {
 
     }
 
-    public void initFirework(int height, int radius, lineMode MODE) {
+    public void initFirework(int height, int radius, lineMode MODE, float sz) {
         this.height = height;
         this.radius = radius;
         this.endState = height + radius;
+        this.sizeFW = sz;
         position = (new Random().nextInt(nextDrawing.length));
         //System.out.println(position);
         this.MODE = MODE;
@@ -42,6 +44,9 @@ public class Firework extends HinhHoc {
         //System.out.print(currentState + ", ");
         if (currentState <= height) {
             //System.out.println(currentState);
+//            MuiTen mt = new MuiTen(nextDrawing,nextPoint,chooseColor);
+//            mt.setMuiTen(new Point2D(position,nextPoint[0].length - currentState - 1), sizeFW);
+//            mt.draw();
             super.nextPoint[position][nextPoint[0].length - currentState - 1] = chooseColor;
             super.nextDrawing[position][nextPoint[0].length - currentState - 1] = true;
 //            Point2D start = new Point2D(position, height);

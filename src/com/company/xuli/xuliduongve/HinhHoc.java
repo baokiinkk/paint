@@ -1,6 +1,7 @@
 package com.company.xuli.xuliduongve;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class HinhHoc {
     public boolean[][] nextDrawing;
@@ -69,7 +70,13 @@ public class HinhHoc {
             }
         }
     }
-
+    public void drawZigZag(ArrayList<Point2D> diem){
+        System.out.println(diem.size());
+        for(int i=0;i<diem.size()-1;i++){
+            System.out.println(diem.get(i).X + "," + diem.get(i).Y + "--" + diem.get(i+1).X + "," + diem.get(i+1).Y);
+            MidpointLine(diem.get(i), diem.get(i+1), this.mode);
+        }
+    }
     public void drawingCircle(Point2D start, Point2D end, lineMode mode) {
 
         if (start.X != -1 && start.Y != -1) {

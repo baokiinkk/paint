@@ -115,6 +115,8 @@ public class MyFunction {
         Queue<Pair<Integer, Integer>> myQ = new LinkedList<>();
 
         // oldColor là màu của vùng được tô, những pixel nào nằm kệ có màu oldColor sẽ được thay bằng color
+        if (!isSafe(sourceColor, cord.X, cord.Y))
+            return;
         Color oldColor = sourceColor[cord.X][cord.Y];
 
         // chỉ khi nào màu mới và màu cũ khác nhau thì mới loang

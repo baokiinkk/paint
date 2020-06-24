@@ -14,6 +14,7 @@ public enum Button {
     ERASE,
     ELLIPSE,
     ROTATE,
-    ANIMATION
+    ANIMATION,
+    ANIMAL
 }
 
