@@ -24,10 +24,183 @@ import com.company.xuli.xuliduongve.Cube;
 import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
-    private JPanel filePanel;
-
+    // ================================== CÁC BIẾN ĐƠN ==========================
+    private static int Width = 273;     // độ rộng bảng vẽ
+    private static int Height = 170;    // độ cao
+    //=================================== Các biến ánh xạ với UI ================
+    private JButton lineButton;             // vẽ đường thẳng
+    private JButton clearButton;            // xóa sạch
+    private JButton pencilButton;           // đè là vẽ
+    private JButton undoButton;             // Undo
+    private JButton rectangleButton;        // vẽ hình chữ nhật
+    private JButton redoButton;             // Redo
+    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
+    private JButton colorBox;               // hiển thị màu đang chọn
+    private JButton ellipseButton;          // vẽ elipse
+    private JButton rotateButton;           // xoay
+    private JButton Import;                 // mở hình từ bên ngoài
+    private JButton Export;                 // lưu hình
+    private JButton settingButton;          // mở setting
+    private JButton eraseButton;            // xóa hết
+    private JButton cubeButton;             // vẽ đường gấp khúc
+    private JButton colorButton;            // chọn màu
+    private JButton moveButton;             // vẽ hình tròn
+    private JButton globularButton;         // vẽ hình cầu
+    private JButton animationButton;        // nút mở hoạt cảnh
+    private JButton setCenter;
+    private JPanel styleCBPanel;
+    private JButton symOXButton;
+    private JButton symOYButton;
+    private JPanel sizeCBPanel;
+    private JButton zoomButton;
+    private JPanel toolPanel;
+    private JButton button1;
+    private JButton button2;
+    private JPanel Panel2D;
+    private JPanel Coord3D;
+    private JLabel xCoord2D;
     private JComboBox styleComboBox;            // chọn loại nét vẽ
     private JComboBox sizeComboBox;
+    private JLabel yCoord2D;
+    private JButton animalButton;
+    private JPanel settingPanel;
+    private JPanel filePanel;
+    private int spacing = 1;           // khoảng cách giữa 2 pixels
+    private int rectSize = 4;          // tổng của kích thước pixel và spacing
+    private boolean playingAnimation = false;
+    private Timer timer;
+    private int sizeLine = 1;          // kích thước nét vẽ
+    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
+    private com.company.Button choose = PENCIL; // nút vừa chọn
+    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show2DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show3DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show2DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
+    private int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
+    private int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
+    private JPanel Coord2D;
+    private JPanel Panel3D;
+    private JButton button4;
+    private JPanel AnimationPanel;
+
+
+    // ================================== CÁC LOẠI BẢNG ==========================
+    private boolean[][] nextDrawing = new boolean[Width][Height];
+    private Color[][] nextPoint = new Color[Width][Height];
+    private Color[][] drawingBoard = new Color[Width][Height];
+
+    // ================================== CÁC LOẠI PANEL ==========================
+    private JPanel activity_main;
+    private JButton symetryPointButton;
+    private JPanel mainArea;
+    private JPanel drawArea;        // khu vực vẽ
+
+    //========================= biến chứa chế độ đường thẳng đang chọn ==============
+    private lineMode chooseLineMode = lineMode.DEFAULT;
+
+    //========================= danh sách các loại nét vẽ ===========================
+    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
+
+
+    // ======================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT ========================
+    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
+    private Point2D startXY;
+    private Point2D mouseXY;
+    private Point2D test;
+    private boolean firstClick = false; // biến xác định click chuột đầu trong 2 lần click
+
+
+    // hàm custom cho các thành phần trong form
+
+    private void createUIComponents() {
+        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
+        drawArea.addMouseMotionListener(new Move());
+        drawArea.addMouseListener(new Click());
+        styleComboBox = new JComboBox<lineMode>(lineModeArr);
+        sizeComboBox = new JComboBox<lineMode>(lineModeArr);
+        mouseXY = new Point2D(-1, -1);
+        startXY = new Point2D(-1, -1);
+        timer = new Timer(0, null);
+    }
+
+    // hàm chính
+    public void run() {
+        this.setContentPane(activity_main);// liên kết với màn hình form
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
+        this.setTitle("Paint V1.0"); // đặt tiêu đề
+        this.setSize(1270, 740); // kích thước cửa sổ
+        this.setResizable(false);
+        //this.setMaximumSize(new Dimension(1280, 800));
+        this.setLocationRelativeTo(null);
+        this.setVisible(true); // set hiện hay k
+
+        clearButton.addActionListener(this);
+        lineButton.addActionListener(this);
+        pencilButton.addActionListener(this);
+        redoButton.addActionListener(this);
+        colorButton.addActionListener(this);
+        undoButton.addActionListener(this);
+        paintButton.addActionListener(this);
+        rectangleButton.addActionListener(this);
+        cubeButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        rotateButton.addActionListener(this);
+        //circleButton.addActionListener(this);
+        ellipseButton.addActionListener(this);
+        settingButton.addActionListener(this);
+        eraseButton.addActionListener(this);
+        animationButton.addActionListener(this);
+        Import.addActionListener(this);
+        Export.addActionListener(this);
+        globularButton.addActionListener(this);
+        animalButton.addActionListener(this);
+
+        //settingPanel.setSize(70, 30);
+        styleComboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                //Color bg = styleComboBox.getBackground();
+                Color bg = styleComboBox.getBackground();
+                JButton b = super.createArrowButton();
+                styleComboBox.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+                b.setBackground(bg);
+                b.setBorder(BorderFactory.createLineBorder(bg));
+                return b;
+            }
+        });
+
+        sizeComboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                //Color bg = styleComboBox.getBackground();
+                Color bg = sizeComboBox.getBackground();
+                JButton b = super.createArrowButton();
+                sizeComboBox.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+                b.setBackground(bg);
+                b.setBorder(BorderFactory.createLineBorder(bg));
+                return b;
+            }
+        });
+
+        // chọn nét vẽ
+        styleComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[styleComboBox.getSelectedIndex()];
+            }
+        });
+        sizeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chooseLineMode = lineModeArr[sizeComboBox.getSelectedIndex()];
+            }
+        });
+        //sizeSlider.addChangeListener((ChangeListener) this);
+        Panel2D.setVisible(currentBoardState);
+        Panel3D.setVisible(!currentBoardState);
+        MyFunction.clearArr(drawingBoard);
+    }
 
 
     // nhấn nút
@@ -238,11 +411,6 @@ public class Paint extends JFrame implements ActionListener {
         }
     }
 
-    private JPanel Panel3D;
-    private JButton button4;
-    private JPanel AnimationPanel;
-
-    private int rectSize = 4;          // tổng của kích thước pixel và spacing
 
     // thư viện click
     public class Click implements MouseListener {
@@ -423,175 +591,7 @@ public class Paint extends JFrame implements ActionListener {
         }
     }
 
-    // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 273;     // độ rộng bảng vẽ
-    private static int Height = 170;    // độ cao
-    private int spacing = 1;           // khoảng cách giữa 2 pixel
-    private boolean playingAnimation = false;
-    private Timer timer;
-    private int sizeLine = 1;          // kích thước nét vẽ
-    private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
-    private com.company.Button choose = PENCIL; // nút vừa chọn
-    private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show2DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show3DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show2DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
-    private int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
-    private JPanel Coord2D;
 
-    // ================================== CÁC LOẠI BẢNG ==========================
-    private boolean[][] nextDrawing = new boolean[Width][Height];
-    private Color[][] nextPoint = new Color[Width][Height];
-    private Color[][] drawingBoard = new Color[Width][Height];
-
-    // ================================== CÁC LOẠI PANEL ==========================
-    private JPanel activity_main;
-    private JButton symetryPointButton;
-    private JPanel mainArea;
-    private JPanel drawArea;        // khu vực vẽ
-
-    //========================= biến chứa chế độ đường thẳng đang chọn ==============
-    private lineMode chooseLineMode = lineMode.DEFAULT;
-
-    //========================= danh sách các loại nét vẽ ===========================
-    private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
-
-
-    // ======================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT ========================
-    // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
-    private Point2D startXY;
-    private Point2D mouseXY;
-    private Point2D test;
-    private boolean firstClick = false; // biến xác định click chuột đầu trong 2 lần click
-
-    // =================================== CÁC LOẠI NÚT ============================
-    private JButton animationButton;        // nút mở hoạt cảnh
-
-    //=================================== Các biến ánh xạ với UI ================
-    private JButton lineButton;             // vẽ đường thẳng
-    private JButton clearButton;            // xóa sạch
-    private JButton pencilButton;           // đè là vẽ
-    private JButton undoButton;             // Undo
-    private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton redoButton;             // Redo
-    private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
-    private JButton colorBox;               // hiển thị màu đang chọn
-    private JButton ellipseButton;          // vẽ elipse
-    private JButton rotateButton;           // xoay
-    private JButton Import;                 // mở hình từ bên ngoài
-    private JButton Export;                 // lưu hình
-    private JButton settingButton;          // mở setting
-    private JButton eraseButton;            // xóa hết
-    private JButton cubeButton;           // vẽ đường gấp khúc
-    private JButton colorButton;            // chọn màu
-    private JButton moveButton;           // vẽ hình tròn
-    private JButton globularButton;
-    private JButton setCenter;
-    private JPanel styleCBPanel;
-    private JButton symOXButton;
-    private JButton symOYButton;
-    private JPanel sizeCBPanel;
-    private JButton zoomButton;
-    private JPanel toolPanel;
-    private JButton button1;
-    private JButton button2;
-    private JPanel Panel2D;
-    private JPanel Coord3D;
-    private JLabel xCoord2D;
-    private JLabel yCoord2D;
-    private JButton animalButton;
-    private JPanel settingPanel;
-
-    // hàm custom cho các thành phần trong form
-    private void createUIComponents() {
-        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
-        drawArea.addMouseMotionListener(new Move());
-        drawArea.addMouseListener(new Click());
-        styleComboBox = new JComboBox<lineMode>(lineModeArr);
-        sizeComboBox = new JComboBox<lineMode>(lineModeArr);
-        mouseXY = new Point2D(-1, -1);
-        startXY = new Point2D(-1, -1);
-        timer = new Timer(0, null);
-    }
-
-    // hàm chính
-    public void run() {
-        this.setContentPane(activity_main);// liên kết với màn hình form
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
-        this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1280, 740); // kích thước cửa sổ
-        this.setResizable(false);
-        //this.setMaximumSize(new Dimension(1280, 800));
-        this.setLocationRelativeTo(null);
-        this.setVisible(true); // set hiện hay k
-
-        clearButton.addActionListener(this);
-        lineButton.addActionListener(this);
-        pencilButton.addActionListener(this);
-        redoButton.addActionListener(this);
-        colorButton.addActionListener(this);
-        undoButton.addActionListener(this);
-        paintButton.addActionListener(this);
-        rectangleButton.addActionListener(this);
-        cubeButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        rotateButton.addActionListener(this);
-        //circleButton.addActionListener(this);
-        ellipseButton.addActionListener(this);
-        settingButton.addActionListener(this);
-        eraseButton.addActionListener(this);
-        animationButton.addActionListener(this);
-        Import.addActionListener(this);
-        Export.addActionListener(this);
-        globularButton.addActionListener(this);
-        animalButton.addActionListener(this);
-
-        //settingPanel.setSize(70, 30);
-        styleComboBox.setUI(new BasicComboBoxUI() {
-            @Override
-            protected JButton createArrowButton() {
-                //Color bg = styleComboBox.getBackground();
-                Color bg = styleComboBox.getBackground();
-                JButton b = super.createArrowButton();
-                styleComboBox.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-                b.setBackground(bg);
-                b.setBorder(BorderFactory.createLineBorder(bg));
-                return b;
-            }
-        });
-
-        sizeComboBox.setUI(new BasicComboBoxUI() {
-            @Override
-            protected JButton createArrowButton() {
-                //Color bg = styleComboBox.getBackground();
-                Color bg = sizeComboBox.getBackground();
-                JButton b = super.createArrowButton();
-                sizeComboBox.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-                b.setBackground(bg);
-                b.setBorder(BorderFactory.createLineBorder(bg));
-                return b;
-            }
-        });
-        // chọn nét vẽ
-        styleComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                chooseLineMode = lineModeArr[styleComboBox.getSelectedIndex()];
-            }
-        });
-        sizeComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                chooseLineMode = lineModeArr[sizeComboBox.getSelectedIndex()];
-            }
-        });
-        //sizeSlider.addChangeListener((ChangeListener) this);
-        Panel2D.setVisible(currentBoardState);
-        Panel3D.setVisible(!currentBoardState);
-        MyFunction.clearArr(drawingBoard);
-    }
 
 
     // di chuột
