@@ -130,6 +130,8 @@ public class Setting extends JDialog {
     private JCheckBox show2DCoordinatesCheckBox;
     private JCheckBox show3DAxisCheckBox;
     private JCheckBox show3DCoordinatesCheckBox;
+    private JButton setColorButton;
+    private JButton defaultColorButton;
     private boolean is2DBoard;
 
 }
