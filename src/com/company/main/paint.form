@@ -126,7 +126,7 @@
                       <focusable value="false"/>
                       <hideActionText value="true"/>
                       <horizontalAlignment value="0"/>
-                      <icon value="com/company/Icons/Pencil.png"/>
+                      <icon value="com/company/Icons/Import.png"/>
                       <iconTextGap value="0"/>
                       <maximumSize width="-1" height="-1"/>
                       <minimumSize width="-1" height="-1"/>
@@ -162,7 +162,7 @@
                       <focusable value="false"/>
                       <hideActionText value="true"/>
                       <horizontalAlignment value="0"/>
-                      <icon value="com/company/Icons/Line.png"/>
+                      <icon value="com/company/Icons/Export.png"/>
                       <iconTextGap value="0"/>
                       <maximumSize width="-1" height="-1"/>
                       <minimumSize width="-1" height="-1"/>
@@ -201,7 +201,7 @@
                       <focusable value="false"/>
                       <hideActionText value="true"/>
                       <horizontalAlignment value="0"/>
-                      <icon value="com/company/Icons/Line.png"/>
+                      <icon value="com/company/Icons/Setting.png"/>
                       <iconTextGap value="0"/>
                       <inheritsPopupMenu value="false"/>
                       <maximumSize width="-1" height="-1"/>
@@ -286,7 +286,7 @@
               <borderPainted value="false"/>
               <enabled value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Undo.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -299,7 +299,7 @@
               <borderPainted value="false"/>
               <enabled value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Redo.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -311,7 +311,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Erase.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -323,7 +323,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Rotate.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -336,7 +336,7 @@
               <borderPainted value="false"/>
               <focusable value="false"/>
               <hideActionText value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Symetry.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -360,7 +360,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/SymOX.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -372,7 +372,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/SymOY.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -386,7 +386,7 @@
               <defaultCapable value="false"/>
               <focusable value="false"/>
               <foreground color="-4473925"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Clear.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -424,7 +424,7 @@
               <borderPainted value="false"/>
               <focusable value="false"/>
               <hideActionText value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Movea.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -478,7 +478,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Paint.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -493,7 +493,7 @@
               <focusable value="false"/>
               <foreground color="-16777216"/>
               <hideActionText value="true"/>
-              <icon value="com/company/Icons/Pencil.png"/>
+              <icon value="com/company/Icons/Select.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -537,7 +537,7 @@
               <contentAreaFilled value="true"/>
               <focusable value="false"/>
               <hideActionText value="false"/>
-              <icon value="com/company/Icons/Pencil.png"/>
+              <icon value="com/company/Icons/Rec.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -550,7 +550,7 @@
               <borderPainted value="false"/>
               <contentAreaFilled value="true"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Pencil.png"/>
+              <icon value="com/company/Icons/Ellipse.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -591,7 +591,7 @@
               <borderPainted value="false"/>
               <contentAreaFilled value="true"/>
               <focusable value="false"/>
-              <text value=""/>
+              <text value="gau"/>
             </properties>
           </component>
           <component id="5b632" class="javax.swing.JButton" binding="lineButton">
@@ -654,7 +654,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/Cubee.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -666,7 +666,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Pencil.png"/>
+              <icon value="com/company/Icons/Globular.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -692,7 +692,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Line.png"/>
+              <icon value="com/company/Icons/Firework.png"/>
               <text value=""/>
             </properties>
           </component>
