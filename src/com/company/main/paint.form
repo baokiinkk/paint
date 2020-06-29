@@ -115,7 +115,7 @@
                   <component id="32cce" class="javax.swing.JButton" binding="Import">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                        <maximum-size width="30" height="30"/>
+                        <maximum-size width="40" height="40"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -151,7 +151,7 @@
                   <component id="6fe32" class="javax.swing.JButton" binding="Export">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                        <maximum-size width="30" height="30"/>
+                        <maximum-size width="40" height="40"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -189,7 +189,7 @@
                   <component id="a4452" class="javax.swing.JButton" binding="settingButton">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                        <maximum-size width="30" height="30"/>
+                        <maximum-size width="40" height="40"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -348,7 +348,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Color.png"/>
+              <icon value="com/company/Icons/SetCenter.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -511,7 +511,7 @@
           </component>
         </children>
       </grid>
-      <grid id="913b5" binding="Panel2D" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+      <grid id="913b5" binding="Panel2D" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="true"/>
@@ -554,46 +554,6 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="c5fdb" class="javax.swing.JButton" binding="button1" default-binding="true">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <background color="-1118482"/>
-              <borderPainted value="false"/>
-              <contentAreaFilled value="true"/>
-              <focusCycleRoot value="false"/>
-              <focusPainted value="true"/>
-              <focusable value="false"/>
-              <icon value="com/company/Icons/Pencil.png"/>
-              <text value=""/>
-            </properties>
-          </component>
-          <component id="79912" class="javax.swing.JButton" binding="button2" default-binding="true">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <background color="-1118482"/>
-              <borderPainted value="false"/>
-              <contentAreaFilled value="true"/>
-              <focusable value="false"/>
-              <icon value="com/company/Icons/Pencil.png"/>
-              <text value=""/>
-            </properties>
-          </component>
-          <component id="73438" class="javax.swing.JButton" binding="animalButton">
-            <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <background color="-1118482"/>
-              <borderPainted value="false"/>
-              <contentAreaFilled value="true"/>
-              <focusable value="false"/>
-              <text value="gau"/>
-            </properties>
-          </component>
           <component id="5b632" class="javax.swing.JButton" binding="lineButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -628,6 +588,32 @@
             <clientProperties>
               <hideActionText class="java.lang.Boolean" value="false"/>
             </clientProperties>
+          </component>
+          <component id="73438" class="javax.swing.JButton" binding="animalButton">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1118482"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="true"/>
+              <focusable value="false"/>
+              <icon value="com/company/Icons/Firework.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="79912" class="javax.swing.JButton" binding="button2" default-binding="true">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1118482"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="true"/>
+              <focusable value="false"/>
+              <icon value="com/company/Icons/Pencil.png"/>
+              <text value=""/>
+            </properties>
           </component>
         </children>
       </grid>

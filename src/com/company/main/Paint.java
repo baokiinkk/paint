@@ -25,8 +25,8 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
     // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 273;     // độ rộng bảng vẽ
-    private static int Height = 170;    // độ cao
+    private static int Width = 277;     // độ rộng bảng vẽ
+    private static int Height = 172;    // độ cao
     //=================================== Các biến ánh xạ với UI ================
     private JButton lineButton;             // vẽ đường thẳng
     private JButton clearButton;            // xóa sạch
@@ -54,7 +54,6 @@ public class Paint extends JFrame implements ActionListener {
     private JPanel sizeCBPanel;
     private JButton zoomButton;
     private JPanel toolPanel;
-    private JButton button1;
     private JButton button2;
     private JPanel Panel2D;
     private JPanel Coord3D;
@@ -129,8 +128,10 @@ public class Paint extends JFrame implements ActionListener {
         this.setContentPane(activity_main);// liên kết với màn hình form
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1270, 750); // kích thước cửa sổ
+        this.setSize(1279, 748); // kích thước cửa sổ
         this.setResizable(false);
+        ImageIcon icon = new ImageIcon("/com/company/Icons/Color.png");
+        this.setIconImage(icon.getImage());
         //this.setMaximumSize(new Dimension(1280, 800));
         this.setLocationRelativeTo(null);
         this.setVisible(true); // set hiện hay k
@@ -272,12 +273,13 @@ public class Paint extends JFrame implements ActionListener {
             startXY.set(-1, -1);
             choose = ROTATE;
         } else if (settingButton.equals(source)) {
-            System.out.println("Yes");
             Setting dialog = new Setting(currentBoardState);
+            Setting.setGridColor(Board.getGridColor());
             dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
+            Board.setGridColor(Setting.getGridColor());
             show2DAxis = dialog.getShow2DAxis();
             show3DAxis = dialog.getShow3DAxis();
             show2DCoord = dialog.getShow2DCoord();
@@ -300,7 +302,6 @@ public class Paint extends JFrame implements ActionListener {
             }
 
             repaint();
-            System.out.println(show2DAxis);
         } else if (Import.equals(source)) {
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -308,8 +309,8 @@ public class Paint extends JFrame implements ActionListener {
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                System.out.println("You chose to open this file: " +
-                        chooser.getSelectedFile().getName());
+                //System.out.println("You chose to open this file: " +
+                //chooser.getSelectedFile().getName());
                 try {
                     Board.applyNow();
                     BufferedImage myNewPNGFile = ImageIO.read(new File(chooser.getSelectedFile().getAbsolutePath()));
@@ -322,7 +323,10 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         repaint();
                     } else {
-                        System.out.println("Wrong!");
+                        Error dialog = new Error();
+                        dialog.pack();
+                        dialog.setLocationRelativeTo(this);
+                        dialog.setVisible(true);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

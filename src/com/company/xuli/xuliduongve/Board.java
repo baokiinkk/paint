@@ -216,6 +216,10 @@ public class Board extends JPanel {
     public static void setGridColor(Color tmp) {
         gridColor = tmp;
     }
+
+    public static Color getGridColor() {
+        return gridColor;
+    }
 //    public static void setBackgroundColor(Color tmp)
 //    {
 //
