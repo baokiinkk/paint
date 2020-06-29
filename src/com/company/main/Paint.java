@@ -156,6 +156,7 @@ public class Paint extends JFrame implements ActionListener {
         Export.addActionListener(this);
         globularButton.addActionListener(this);
         animalButton.addActionListener(this);
+        setCenter.addActionListener(this);
 
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
@@ -272,6 +273,8 @@ public class Paint extends JFrame implements ActionListener {
         } else if (rotateButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ROTATE;
+        } else if (setCenter.equals(source)) {
+            choose = SETCENTER;
         } else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
             Setting.setGridColor(Board.getGridColor());
@@ -510,6 +513,11 @@ public class Paint extends JFrame implements ActionListener {
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         Board.previousDo();
+                        break;
+                    }
+                    case SETCENTER: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Board.now.center = new Point2D(startXY);
                         break;
                     }
                 }

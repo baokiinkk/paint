@@ -49,6 +49,12 @@ public class Point2D {
         return res;
     }
 
+    public Point2D moveVector(Vector2D vec) {
+        Point2D res = new Point2D();
+        res.set(this.X + vec.X, this.Y + vec.Y);
+        return res;
+    }
+
     // kiểm tra điểm hiện tại có bằng điểm Other hay không
     public boolean equal(Point2D other) {
         return (this.X == other.X && this.Y == other.Y);
