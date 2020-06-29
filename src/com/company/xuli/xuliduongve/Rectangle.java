@@ -87,21 +87,25 @@ public class Rectangle extends HinhHoc {
 
     // vẽ hình chữ nhật dựa vào 4 điểm
     public void draw() {
-        A = A.rotatePoint(center, this.alpha);
-        B = B.rotatePoint(center, this.alpha);
-        C = C.rotatePoint(center, this.alpha);
-        D = D.rotatePoint(center, this.alpha);
-        super.MidpointLine(A, B, MODE);
-        super.MidpointLine(B, C, MODE);
-        super.MidpointLine(C, D, MODE);
-        super.MidpointLine(D, A, MODE);
+        Point2D tmpA = A.rotatePoint(center, this.alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha);
+        super.MidpointLine(tmpA, tmpB, MODE);
+        super.MidpointLine(tmpB, tmpC, MODE);
+        super.MidpointLine(tmpC, tmpD, MODE);
+        super.MidpointLine(tmpD, tmpA, MODE);
     }
 
     public void move(Vector2D a) {
-        Point2D tmpA = A.moveVector(a);
-        Point2D tmpB = B.moveVector(a);
-        Point2D tmpC = C.moveVector(a);
-        Point2D tmpD = D.moveVector(a);
+        Point2D tmpA = A.rotatePoint(center, this.alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha);
+        tmpA = tmpA.moveVector(a);
+        tmpB = tmpB.moveVector(a);
+        tmpC = tmpC.moveVector(a);
+        tmpD = tmpD.moveVector(a);
         super.MidpointLine(tmpA, tmpB, MODE);
         super.MidpointLine(tmpB, tmpC, MODE);
         super.MidpointLine(tmpC, tmpD, MODE);
@@ -113,10 +117,8 @@ public class Rectangle extends HinhHoc {
         B = B.moveVector(a);
         C = C.moveVector(a);
         D = D.moveVector(a);
+        center = center.moveVector(a);
         draw();
     }
 
-    public void setCenterPoint(Point2D start, Point2D end) {
-        center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-    }
 }

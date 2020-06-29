@@ -158,7 +158,7 @@ public class Paint extends JFrame implements ActionListener {
         animalButton.addActionListener(this);
         setCenter.addActionListener(this);
         moveButton.addActionListener(this);
-
+        button2.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -280,6 +280,47 @@ public class Paint extends JFrame implements ActionListener {
             startXY.set(-1, -1);
             choose = MOVE;
             System.out.println("Move Button");
+        } else if (button2.equals(source)) {
+            choose = PLAY;
+            //choose = ANIMATION;
+            if (!playingAnimation) {
+                playingAnimation = true;
+                int timerDelay = 30;
+                final int[] angle = {0};
+                Point2D a = Board.now.center;
+                Board.previousDo();
+                final Point2D[] b = {new Point2D(6, 0)};
+                timer.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        //while(true)
+                        {
+                            MyFunction.clearArr(nextDrawing);
+                            MyFunction.clearArr(nextPoint);
+                            b[0] = b[0].rotatePoint(a, 0.1);
+                            Board.rotateNow(a, b[0]);
+                            repaint();
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                });
+                timer.start();
+            } else {
+                timer.stop();
+                timer.removeActionListener(timer.getActionListeners()[0]);
+                playingAnimation = false;
+                Board.setGridColor(new Color(235, 235, 235));
+                MyFunction.clearArr(nextDrawing);
+                MyFunction.clearArr(nextPoint);
+                repaint();
+            }
+
+
         } else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
             Setting.setGridColor(Board.getGridColor());
