@@ -16,6 +16,7 @@ public enum Button {
     ROTATE,
     ANIMATION,
     ANIMAL,
-    SETCENTER
+    SETCENTER,
+    MOVE
 }
 

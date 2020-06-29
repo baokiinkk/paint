@@ -157,6 +157,7 @@ public class Paint extends JFrame implements ActionListener {
         globularButton.addActionListener(this);
         animalButton.addActionListener(this);
         setCenter.addActionListener(this);
+        moveButton.addActionListener(this);
 
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
@@ -275,6 +276,10 @@ public class Paint extends JFrame implements ActionListener {
             choose = ROTATE;
         } else if (setCenter.equals(source)) {
             choose = SETCENTER;
+        } else if (moveButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = MOVE;
+            System.out.println("Move Button");
         } else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
             Setting.setGridColor(Board.getGridColor());
@@ -520,6 +525,12 @@ public class Paint extends JFrame implements ActionListener {
                         Board.now.center = new Point2D(startXY);
                         break;
                     }
+                    case MOVE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        Board.previousDo();
+                        break;
+                    }
                 }
             } else {
 //                MyFunction.storePointColor(drawingBoard, nextPoint);
@@ -582,6 +593,11 @@ public class Paint extends JFrame implements ActionListener {
                     }
                     case ROTATE: {
                         Board.applyRotate(startXY, mouseXY);
+                        Board.applyNow();
+                        break;
+                    }
+                    case MOVE: {
+                        Board.applyMove(startXY, mouseXY);
                         Board.applyNow();
                         break;
                     }
@@ -719,6 +735,17 @@ public class Paint extends JFrame implements ActionListener {
                         if (startXY.X != -1 && startXY.Y != -1) {
                             //System.out.println(Board.now.tag);
                             Board.rotateNow(startXY, mouseXY);
+                            repaint();
+                        }
+                        break;
+                    }
+                    case MOVE: {
+                        MyFunction.clearArr(nextDrawing);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            //System.out.println(Board.now.tag);
+                            Board.moveNow(startXY, mouseXY);
+                            System.out.println("Move");
                             repaint();
                         }
                         break;

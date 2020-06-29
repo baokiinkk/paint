@@ -41,6 +41,17 @@ public class Board extends JPanel {
         }
     }
 
+    public static void moveNow(Point2D start, Point2D end) {
+        Vector2D a = new Vector2D(start, end);
+        //System.out.println(alpha);
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).move(a);
+                break;
+            }
+        }
+    }
+
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay thật :v, xem hàm trên sẽ rõ
     public static void applyRotate(Point2D start, Point2D end) {
         Vector2D a = new Vector2D(now.center, start);
@@ -50,6 +61,18 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).applyRotate(alpha);
+                break;
+            }
+        }
+    }
+
+    public static void applyMove(Point2D start, Point2D end) {
+        Vector2D a = new Vector2D(start, end);
+        //System.out.println(alpha);
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).applyMove(a);
+                ((Rectangle) now).setCenterPoint(start, end);
                 break;
             }
         }
