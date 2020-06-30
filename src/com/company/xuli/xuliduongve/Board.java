@@ -44,10 +44,14 @@ public class Board extends JPanel {
 
     public static void moveNow(Point2D start, Point2D end) {
         Vector2D a = new Vector2D(start, end);
-        //System.out.println(alpha);
+        //System.out.println("---" + now.tag);
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).move(a);
+                break;
+            }
+            case SELECT:{
+                now.move(a);
                 break;
             }
         }
@@ -73,6 +77,10 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).applyMove(a);
+                break;
+            }
+            case SELECT:{
+                now.applyMove(a);
                 break;
             }
         }
@@ -199,11 +207,22 @@ public class Board extends JPanel {
             drawErase = false;
         }
 
-        if (isSelecting()) {
+//        if (drawSelect) {
+//            g.setColor(Color.BLACK);
+//            g.drawRect((erase.X - 1) * rectSize, (erase.Y - 1) * rectSize, rectSize * 3, rectSize * 3);
+//            drawSelect = false;
+//        }
+
+
+
+        if (!isNotSelecting()) {
             g.setColor(Color.BLACK);
-            g.drawRect(recStart.X * rectSize, recStart.Y * rectSize, Math.abs(recStart.Y - recEnd.Y), Math.abs(recStart.X - recEnd.X));
+            //System.out.println("ccccccccc");
+            g.drawRect(recStart.X * rectSize, recStart.Y * rectSize,
+                    Math.abs(recStart.X - recEnd.X)*rectSize, Math.abs(recStart.Y - recEnd.Y)*rectSize);
             recStart.set(-1, -1);
             recEnd.set(-1, -1);
+
         }
 
     }
@@ -221,10 +240,14 @@ public class Board extends JPanel {
         boardState = set;
     }
 
-    private boolean isSelecting() {
+    private boolean isNotSelecting() {
         return (recStart.equal(new Point2D(-1, -1)) && recEnd.equal(new Point2D(-1, -1)));
     }
 
+    public static void select(Point2D start, Point2D end){
+        recStart.set(start);
+        recEnd.set(end);
+    }
     // hàm vẽ biến hình hiện tại (now)
     // hình như bị dư :v
 //    public static void drawNow() {
@@ -267,6 +290,6 @@ public class Board extends JPanel {
     private int OY;     // trục tọa độ OY
     private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
     private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
-    private Point2D recStart;   // điểm bắt đầu của vùng chọn
-    private Point2D recEnd;     // điểm kết thúc của vùng chọn
+    private static Point2D recStart;   // điểm bắt đầu của vùng chọn
+    private static Point2D recEnd;     // điểm kết thúc của vùng chọn
 }

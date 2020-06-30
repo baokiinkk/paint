@@ -10,6 +10,8 @@ public class Main {
         try {
             // Set System L&F
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+
         } catch (UnsupportedLookAndFeelException e) {
             // handle exception
         } catch (ClassNotFoundException e) {

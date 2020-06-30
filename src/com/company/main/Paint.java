@@ -159,6 +159,7 @@ public class Paint extends JFrame implements ActionListener {
         setCenter.addActionListener(this);
         moveButton.addActionListener(this);
         button2.addActionListener(this);
+        selectButton.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -234,7 +235,12 @@ public class Paint extends JFrame implements ActionListener {
         } else if (lineButton.equals(source)) {
             startXY.set(-1, -1);
             choose = LINE;
-        } else if (rectangleButton.equals(source)) {
+        }
+        else if(selectButton.equals(source)){
+            startXY.set(-1, -1);
+            choose = SELECT;
+        }
+        else if (rectangleButton.equals(source)) {
             startXY.set(-1, -1);
             choose = RECTANGLE;
         } else if (cubeButton.equals(source)) {
@@ -427,7 +433,7 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         if (rd.nextInt() % 3 == 0) {
                             Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
-                            FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)], 1 + rd.nextInt(20)/10);
+                            FW.initFirework(100 + rd.nextInt(Height-100), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)], 1 + rd.nextInt(20)/10);
                             //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
                             listFW.add(FW);
                         }
@@ -523,6 +529,14 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case SELECT: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        //Board.previousDo();
+                        break;
+                    }
                     case CUBE: // vẽ hinh hộp chữ nhật
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -572,6 +586,7 @@ public class Paint extends JFrame implements ActionListener {
                         Board.previousDo();
                         break;
                     }
+
                 }
             } else {
 //                MyFunction.storePointColor(drawingBoard, nextPoint);
@@ -603,6 +618,11 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case RECTANGLE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case SELECT: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -709,6 +729,46 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
+                    case SELECT:
+                    {
+                        MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            Point2D startSelect = new Point2D();
+                            Point2D endSelect = new Point2D();
+                            //A
+                            if (startXY.X > mouseXY.X && startXY.Y > mouseXY.Y){
+                                startSelect.set(mouseXY.X, mouseXY.Y);
+                                endSelect.set(startXY.X, startXY.Y);
+                            }
+                            //B
+                            if (startXY.X < mouseXY.X && startXY.Y > mouseXY.Y){
+                                startSelect.set(startXY.X, mouseXY.Y);
+                                endSelect.set(mouseXY.X, startXY.Y);
+                            }
+
+                            //D
+                            if (startXY.X > mouseXY.X && startXY.Y < mouseXY.Y){
+                                startSelect.set(mouseXY.X, startXY.Y);
+                                endSelect.set(startXY.X, mouseXY.Y);
+                            }
+
+                            //C
+                            if (startXY.X < mouseXY.X && startXY.Y < mouseXY.Y){
+                                startSelect.set(startXY);
+                                endSelect.set(mouseXY);
+                            }
+                            Board.select(startSelect, endSelect);
+                            HinhHoc select = new HinhHoc(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                                select.SelectPoint(startSelect, endSelect,drawingBoard); //  hàm set HCN
+                            //System.out.println(startSelect.X + " " + startSelect.Y + "--" + endSelect.X + " " + endSelect.Y);
+                            select.tag = SELECT;
+                            //System.out.println("aaaaaaaaaaaa");
+                            Board.setNowHinhHoc(select); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        }
+                        repaint();
+                        break;
+                    }
                     case CUBE: // vẽ hình hộp chữ nhật
                     {
                         MyFunction.clearArr(nextDrawing);
@@ -786,7 +846,7 @@ public class Paint extends JFrame implements ActionListener {
                         if (startXY.X != -1 && startXY.Y != -1) {
                             //System.out.println(Board.now.tag);
                             Board.moveNow(startXY, mouseXY);
-                            System.out.println("Move");
+                            //System.out.println("Move");
                             repaint();
                         }
                         break;

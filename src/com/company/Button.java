@@ -18,6 +18,7 @@ public enum Button {
     ANIMAL,
     SETCENTER,
     MOVE,
-    PLAY
+    PLAY,
+    SELECT
 }
 
