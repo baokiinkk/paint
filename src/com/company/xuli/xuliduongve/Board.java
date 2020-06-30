@@ -39,6 +39,10 @@ public class Board extends JPanel {
                 ((Rectangle) now).rotate(alpha);
                 break;
             }
+            case ELLIPSE:{
+                ((Ellipse) now).rotate(alpha);
+                break;
+            }
         }
     }
 
@@ -66,6 +70,10 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).applyRotate(alpha);
+                break;
+            }
+            case ELLIPSE: {
+                ((Ellipse) now).applyRotate(alpha);
                 break;
             }
         }

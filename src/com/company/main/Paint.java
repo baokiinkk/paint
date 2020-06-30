@@ -810,12 +810,19 @@ public class Paint extends JFrame implements ActionListener {
                     case ELLIPSE: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Ellipse elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
+                            if(startXY.X == mouseXY.X)
+                                mouseXY.X++;
+                            if(startXY.Y == mouseXY.Y)
+                                mouseXY.Y++;
                             if (mouseEvent.isShiftDown()) {
-                                new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                                elp.setCircle(startXY, mouseXY, chooseLineMode);
                             } else {
-                                new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, mouseXY, chooseLineMode);
+                                elp.setElip(startXY, mouseXY, chooseLineMode);
                             }
+                            elp.draw();
+                            Board.setNowHinhHoc(elp);
                         }
                         repaint();
                         break;
@@ -823,11 +830,14 @@ public class Paint extends JFrame implements ActionListener {
                     case GLOBULAR: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Ellipse elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                            elp.setCircle(startXY, mouseXY, chooseLineMode);
                             Point2D temp = mouseXY;
                             temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 3;
-                            new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, temp, chooseLineMode);
+                            elp.setElip(startXY, temp, chooseLineMode);
+                            elp.draw();
+                            Board.setNowHinhHoc(elp);
                         }
                         repaint();
                         break;
