@@ -26,17 +26,7 @@ public class HinhHoc {
         listPointCoord = new ArrayList<>();
         listPointColor = new ArrayList<>();
     }
-    public void SelectPoint(Point2D start, Point2D end, Color[][] selectPoint){
-        //System.out.println(start.X + " " + start.Y + "--" + end.X + " " + end.Y);
-        for(int i= start.X; i<= end.X;i++)
-            for(int j= start.Y;j<=end.Y;j++){
-                if(MyFunction.isSafe(selectPoint, i, j)){
-                    listPointColor.add(selectPoint[i][j]);
-                    listPointCoord.add(new Point2D(i,j));
-                }
-            }
-        //System.out.println("size: "+listPointColor.size());
-    }
+
     public void MidpointLine(Point2D start, Point2D end, lineMode Mode) {
         // tính khoảng cách 2 điểm
         float x = start.X, y = start.Y, temp = (Math.abs(end.X - start.X) >= Math.abs(end.Y - start.Y)) ? Math.abs(end.X - start.X) : Math.abs(end.Y - start.Y);
@@ -222,24 +212,5 @@ public class HinhHoc {
         putPixel(-x + xd, y + yd);
     }
 
-    public void move(Vector2D a){
-        //System.out.println("Moving");
-        for (int i = 0; i < listPointCoord.size(); i++)
-        {
-            Point2D tmp = new Point2D(listPointCoord.get(i));
-            nextDrawing[tmp.X][tmp.Y] = false;
-            tmp = tmp.moveVector(a);
-            if (MyFunction.isSafe(nextPoint, tmp.X, tmp.Y)){
-                nextPoint[tmp.X][tmp.Y] = listPointColor.get(i);
-                nextDrawing[tmp.X][tmp.Y] = true;
-            }
-        }
-    }
 
-    public void applyMove(Vector2D a){
-        for (int i = 0 ; i < listPointCoord.size(); i++){
-            listPointCoord.get(i).moveVector(a);
-            nextDrawing[listPointCoord.get(i).X][listPointCoord.get(i).Y] = true;
-        }
-    }
 }

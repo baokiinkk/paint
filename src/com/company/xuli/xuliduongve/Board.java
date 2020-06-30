@@ -51,7 +51,7 @@ public class Board extends JPanel {
                 break;
             }
             case SELECT:{
-                now.move(a);
+                ((Select) now).move(a);
                 break;
             }
         }
@@ -80,7 +80,7 @@ public class Board extends JPanel {
                 break;
             }
             case SELECT:{
-                now.applyMove(a);
+                ((Select) now).applyMove(a);
                 break;
             }
         }
@@ -117,6 +117,12 @@ public class Board extends JPanel {
             MyFunction.storePointColor(drawingBoard, tmpBoard);
             MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
         }
+    }
+
+    public static void nextDo() {
+        Color[][] tmpBoard = new Color[width][height];
+        MyFunction.storePointColor(drawingBoard, tmpBoard);
+        undoBoard.push(tmpBoard);
     }
 
     // quay lại trạng thái trước đó, push trạng thái hiện tại vào redo

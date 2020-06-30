@@ -78,6 +78,8 @@ public class Paint extends JFrame implements ActionListener {
     private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
     private int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
     private int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
+    private Point2D startSelect;
+    private Point2D endSelect;
     private JPanel Coord2D;
     private JPanel Panel3D;
     private JButton button4;
@@ -120,6 +122,8 @@ public class Paint extends JFrame implements ActionListener {
         sizeComboBox = new JComboBox<lineMode>(lineModeArr);
         mouseXY = new Point2D(-1, -1);
         startXY = new Point2D(-1, -1);
+        startSelect = new Point2D();
+        endSelect = new Point2D();
         timer = new Timer(0, null);
     }
 
@@ -559,7 +563,7 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case PAINT: {
-                        System.out.println("Pressed");
+                        //System.out.println("Pressed");
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.paintColor(nextPoint, nextDrawing, mouseXY, chooseColor);
                         break;
@@ -622,11 +626,6 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
-                    case SELECT: {
-                        Board.applyNow();
-                        repaint();
-                        break;
-                    }
                     case CUBE: {
                         Board.applyNow();
                         repaint();
@@ -660,7 +659,18 @@ public class Paint extends JFrame implements ActionListener {
                     case MOVE: {
                         Board.applyMove(startXY, mouseXY);
                         Board.applyNow();
+                        repaint();
                         break;
+                    }
+                    case SELECT: {
+                        Select select = new Select(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        select.SelectPoint(startSelect, endSelect, drawingBoard); //  hàm set HCN
+                        //System.out.println(startSelect.X + " " + startSelect.Y + "--" + endSelect.X + " " + endSelect.Y);
+                        select.tag = SELECT;
+                        //System.out.println("aaaaaaaaaaaa");
+                        Board.setNowHinhHoc(select); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        //Board.applyNow();
+                        //Board.nextDo();
                     }
                 }
 
@@ -734,8 +744,6 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            Point2D startSelect = new Point2D();
-                            Point2D endSelect = new Point2D();
                             //A
                             if (startXY.X > mouseXY.X && startXY.Y > mouseXY.Y){
                                 startSelect.set(mouseXY.X, mouseXY.Y);
@@ -759,12 +767,6 @@ public class Paint extends JFrame implements ActionListener {
                                 endSelect.set(mouseXY);
                             }
                             Board.select(startSelect, endSelect);
-                            HinhHoc select = new HinhHoc(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
-                                select.SelectPoint(startSelect, endSelect,drawingBoard); //  hàm set HCN
-                            //System.out.println(startSelect.X + " " + startSelect.Y + "--" + endSelect.X + " " + endSelect.Y);
-                            select.tag = SELECT;
-                            //System.out.println("aaaaaaaaaaaa");
-                            Board.setNowHinhHoc(select); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
                         repaint();
                         break;
