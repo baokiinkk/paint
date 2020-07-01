@@ -54,6 +54,10 @@ public class Board extends JPanel {
                 ((Rectangle) now).move(a);
                 break;
             }
+            case ELLIPSE:{
+                ((Ellipse) now).move(a);
+                break;
+            }
             case SELECT:{
                 ((Select) now).move(a);
                 break;
@@ -85,6 +89,10 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).applyMove(a);
+                break;
+            }
+            case ELLIPSE: {
+                ((Ellipse) now).applyMove(a);
                 break;
             }
             case SELECT:{
