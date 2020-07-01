@@ -830,14 +830,14 @@ public class Paint extends JFrame implements ActionListener {
                     case GLOBULAR: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        Ellipse elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
+                        Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            elp.setCircle(startXY, mouseXY, chooseLineMode);
+                            Glo.setGlobular(startXY, mouseXY, chooseLineMode);
                             Point2D temp = mouseXY;
-                            temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 3;
-                            elp.setElip(startXY, temp, chooseLineMode);
-                            elp.draw();
-                            Board.setNowHinhHoc(elp);
+                            temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 2;
+                            Glo.setGlobular(startXY, temp, chooseLineMode);
+                            Glo.draw();
+                            Board.setNowHinhHoc(Glo);
                         }
                         repaint();
                         break;

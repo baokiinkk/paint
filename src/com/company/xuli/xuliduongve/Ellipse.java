@@ -29,8 +29,8 @@ public class Ellipse extends HinhHoc {
         MODE = mode;
         formula = false;
         center.set(start.X,start.Y);
-        Major_rad = Math.abs(Math.min(start.X,start.Y) - Math.min(end.X,end.Y));
-        Minor_rad = Major_rad;
+        Minor_rad = Math.max(Math.abs(start.X - end.X), Math.abs(start.Y - end.Y));
+        Major_rad = Minor_rad;
         //pt duong tron (x - a)^2 + (y - b)^2 = r^2 => y = sqrt(r^2 -(x - a)^2) +b
         //tam (a,b)
     }
