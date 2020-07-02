@@ -93,7 +93,7 @@ public class MyFunction {
         for (int i = 0; i < sourceColor.length; i++)
             for (int j = 0; j < sourceColor[0].length; j++)
             {
-                    desColor[i][j] = new Color(sourceColor[i][j].getRGB());
+                desColor[i][j] = new Color(sourceColor[i][j].getRGB());
             }
     }
 

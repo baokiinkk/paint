@@ -101,6 +101,48 @@ public class Board extends JPanel {
             }
         }
     }
+    public static void SymOXNow() {
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).draw();
+                ((Rectangle) now).SymOX();
+                break;
+            }
+            case ELLIPSE:{
+                ((Ellipse) now).draw();
+                ((Ellipse) now).SymOX();
+                break;
+            }
+        }
+    }
+    public static void SymOYNow() {
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).draw();
+                ((Rectangle) now).SymOY();
+                break;
+            }
+            case ELLIPSE:{
+                ((Ellipse) now).draw();
+                ((Ellipse) now).SymOY();
+                break;
+            }
+        }
+    }
+    public static void SymPointNow(Point2D point) {
+            switch (now.tag) {
+                case RECTANGLE: {
+                    ((Rectangle) now).draw();
+                    ((Rectangle) now).SymP(point);
+                    break;
+                }
+                case ELLIPSE:{
+                    ((Ellipse) now).draw();
+                    ((Ellipse) now).SymP(point);
+                    break;
+                }
+            }
+        }
 
     // đặt hình vẽ hiện tại
     // hình vừa vẽ xong sẽ được lưu vào biến now để thao tác xoay, zoom,...

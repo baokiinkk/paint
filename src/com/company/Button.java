@@ -20,6 +20,9 @@ public enum Button {
     SETCENTER,
     MOVE,
     PLAY,
-    SELECT
+    SELECT,
+    VETICALSYMETRY,
+    HONRIZONTALSYMETRY,
+    POINTSYMETRY
 }
 

@@ -90,11 +90,11 @@ public class Animal extends HinhHoc {
         drawZigZag(new ArrayList<Point2D>(Arrays.asList(listDiem.get(7),listDiem.get(10),listDiem.get(14), listDiem.get(7))));
         drawZigZag(new ArrayList<Point2D>(Arrays.asList(listDiem.get(7),listDiem.get(11),listDiem.get(17), listDiem.get(7))));
         drawZigZag(new ArrayList<Point2D>(Arrays.asList(listDiem.get(2),listDiem.get(5)
-                                                                    ,listDiem.get(6),listDiem.get(4))));
+                ,listDiem.get(6),listDiem.get(4))));
         drawZigZag(new ArrayList<Point2D>(Arrays.asList(listDiem.get(7),listDiem.get(5)
-                                                         ,listDiem.get(6),listDiem.get(11))));
+                ,listDiem.get(6),listDiem.get(11))));
         drawZigZag(new ArrayList<Point2D>(Arrays.asList(listDiem.get(13),listDiem.get(17)
-                                                        ,listDiem.get(20),listDiem.get(19))));
+                ,listDiem.get(20),listDiem.get(19))));
 
         drawingCircle(listDiem.get(21), new Point2D(listDiem.get(21).X+2,listDiem.get(21).Y),mode);
 //        elp.setCircle(listDiem.get(21), new Point2D(listDiem.get(21).X+2,listDiem.get(21).Y),mode);

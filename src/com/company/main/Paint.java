@@ -163,6 +163,9 @@ public class Paint extends JFrame implements ActionListener {
         button2.addActionListener(this);
         selectButton.addActionListener(this);
         driveCarButton.addActionListener(this);
+        symOXButton.addActionListener(this);
+        symOYButton.addActionListener(this);
+        symetryPointButton.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -484,6 +487,19 @@ public class Paint extends JFrame implements ActionListener {
             }
             //break;
         }
+        else if(symOYButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = VETICALSYMETRY;
+        }
+        else if(symOXButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = HONRIZONTALSYMETRY;
+        }
+        else if(symetryPointButton.equals((source))){
+            startXY.set(-1, -1);
+            choose = POINTSYMETRY;
+        }
+
     }
 
 
@@ -497,6 +513,31 @@ public class Paint extends JFrame implements ActionListener {
                 case LINE: // vẽ đường thẳng
                 {
                     // nothing
+                    break;
+                }
+                case HONRIZONTALSYMETRY:{
+
+                    MyFunction.clearArr(nextDrawing);
+                    Board.SymOXNow();
+                    Board.applyNow();
+                    repaint();
+                    break;
+                }
+                case VETICALSYMETRY:{
+                    MyFunction.clearArr(nextDrawing);
+                    Board.SymOYNow();
+                    Board.applyNow();
+                    repaint();
+                    break;
+                }
+                case POINTSYMETRY:{
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    nextDrawing[mouseXY.X][mouseXY.Y] = true;
+                    nextPoint[mouseXY.X][mouseXY.Y] = chooseColor;
+                    Board.SymPointNow(mouseXY);
+                    Board.applyNow();
+                    repaint();
                     break;
                 }
             }

@@ -61,4 +61,42 @@ public class Point2D {
     }
 
     //public Point2D
+    public Point2D VerticalSymetry(Point2D other)
+    {
+        System.out.println("buggg");
+        if(other.X >= 138)
+            other.X= 138 - (other.X-138);
+        else
+            other.X = 138 + (138 - other.X);
+        return other;
+    }
+    public Point2D HonrizontalSymetry(Point2D other)
+    {
+        if(other.Y >= 86) {
+            other.Y = 86 - (other.Y - 86);
+        }
+        else {
+            other.Y = 86 + (86 - other.Y);
+        }
+        return other;
+    }
+    public Point2D PointSymetry(Point2D other, Point2D pointSym)
+    {
+        if(other.Y >= pointSym.Y) {
+            other.Y = pointSym.Y - (other.Y - pointSym.Y);
+        }
+        else {
+            other.Y = pointSym.Y + (pointSym.Y - other.Y);
+        }
+
+        if(other.X >= pointSym.X) {
+            other.X = pointSym.X - (other.X - pointSym.X);
+        }
+        else {
+            other.X = pointSym.X + (pointSym.X - other.X);
+        }
+        return other;
+    }
+
+    //public Point2D
 }
