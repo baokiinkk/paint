@@ -1,7 +1,5 @@
 package com.company.xuli.xuliduongve;
-
 import com.company.Button;
-
 import java.awt.*;
 
 public class Ellipse extends HinhHoc {
@@ -13,7 +11,6 @@ public class Ellipse extends HinhHoc {
     private double   Major_rad;
     private double   Minor_rad;
     private boolean  formula;
-
     public Ellipse(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
         tag = Button.ELLIPSE;
@@ -28,8 +25,8 @@ public class Ellipse extends HinhHoc {
         this.end = end;
         MODE = mode;
         formula = false;
-        center.set(start.X,start.Y);
-        Minor_rad = Math.max(Math.abs(start.X - end.X), Math.abs(start.Y - end.Y));
+        center.set(this.start.X,this.start.Y);
+        Minor_rad = Math.max(Math.abs(this.start.X - this.end.X), Math.abs(this.start.Y - this.end.Y));
         Major_rad = Minor_rad;
         //pt duong tron (x - a)^2 + (y - b)^2 = r^2 => y = sqrt(r^2 -(x - a)^2) +b
         //tam (a,b)
@@ -42,8 +39,8 @@ public class Ellipse extends HinhHoc {
         MODE = mode;
         formula = true;
         center.set(this.start.X,this.start.Y);
-        Major_rad = Math.abs(start.X - end.X);
-        Minor_rad = Math.abs(start.Y - end.Y);
+        Major_rad = Math.abs(this.start.X - this.end.X);
+        Minor_rad = Math.abs(this.start.Y - this.end.Y);
         //pt elip (x^2/a^2 + y^2/b^2 = 1) => y = sqrt(1 - (x^2/a^2))* b^2)
         // tam  (xstart;ystart)
     }
@@ -150,7 +147,6 @@ public class Ellipse extends HinhHoc {
     }
 
     public void draw() {
-
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
@@ -300,5 +296,211 @@ public class Ellipse extends HinhHoc {
         fourth = fourth.moveVector(a);
         center = center.moveVector(a);
         draw();
+    }
+    public void SymOX()
+    {
+        int x1_c = 0;
+        while (Major_rad > x1_c) {
+            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
+            double y1_c;
+            if(formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            else
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
+
+            double y2_c = center.Y - y1_c;
+            double tx_c = center.X - x1_c;
+
+            int ty1_c = (int) (y1_c + 0.5);
+            int ty2_c = (int) (y2_c + 0.5);
+            int x2_c = (int) (tx_c + 0.5);
+
+            //a = (x1_c, ty1_c);
+            //b = (x2_c,ty2_c);
+
+            first.set(x1_c + center.X, ty2_c);
+            second.set(x2_c,ty2_c);
+            third.set(x2_c, ty1_c + center.Y);
+            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+
+            first = first.HonrizontalSymetry(first);
+            second = second.HonrizontalSymetry(second);
+            third = third.HonrizontalSymetry(third);
+            fourth = fourth.HonrizontalSymetry(fourth);
+
+            Quadrant(first,second,third,fourth, MODE);
+            x1_c++;
+        }
+        int y1_r = 0;
+        while (y1_r < Minor_rad) {
+            double x1_r;
+            if (formula)
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+            else
+                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
+
+            double x2_r = center.X - x1_r;
+            double ty_r = center.Y - y1_r;
+
+            int tx1_r = (int) (x1_r + 0.5);
+            int tx2_r = (int) (x2_r + 0.5);
+            int y2_r = (int) (ty_r + 0.5);
+
+            //a = (tx1_r, y1_r);
+            //b = (tx2_r,y2_r);
+
+            first.set(tx1_r + center.X, y2_r);
+            second.set(tx2_r,y2_r);
+            third.set(tx2_r, y1_r + center.Y);
+            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+
+            first = first.HonrizontalSymetry(first);
+            second = second.HonrizontalSymetry(second);
+            third = third.HonrizontalSymetry(third);
+            fourth = fourth.HonrizontalSymetry(fourth);
+
+            Quadrant(first,second,third,fourth, MODE);
+            y1_r++;
+        }
+    }
+    public void SymOY()
+    {
+        int x1_c = 0;
+        while (Major_rad > x1_c) {
+            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
+            double y1_c;
+            if(formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            else
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
+
+            double y2_c = center.Y - y1_c;
+            double tx_c = center.X - x1_c;
+
+            int ty1_c = (int) (y1_c + 0.5);
+            int ty2_c = (int) (y2_c + 0.5);
+            int x2_c = (int) (tx_c + 0.5);
+
+            //a = (x1_c, ty1_c);
+            //b = (x2_c,ty2_c);
+
+            first.set(x1_c + center.X, ty2_c);
+            second.set(x2_c,ty2_c);
+            third.set(x2_c, ty1_c + center.Y);
+            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+
+            first = first.VerticalSymetry(first);
+            second = second.VerticalSymetry(second);
+            third = third.VerticalSymetry(third);
+            fourth = fourth.VerticalSymetry(fourth);
+
+            Quadrant(first,second,third,fourth, MODE);
+            x1_c++;
+        }
+        int y1_r = 0;
+        while (y1_r < Minor_rad) {
+            double x1_r;
+            if (formula)
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+            else
+                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
+
+            double x2_r = center.X - x1_r;
+            double ty_r = center.Y - y1_r;
+
+            int tx1_r = (int) (x1_r + 0.5);
+            int tx2_r = (int) (x2_r + 0.5);
+            int y2_r = (int) (ty_r + 0.5);
+
+            //a = (tx1_r, y1_r);
+            //b = (tx2_r,y2_r);
+
+            first.set(tx1_r + center.X, y2_r);
+            second.set(tx2_r,y2_r);
+            third.set(tx2_r, y1_r + center.Y);
+            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+
+            first = first.VerticalSymetry(first);
+            second = second.VerticalSymetry(second);
+            third = third.VerticalSymetry(third);
+            fourth = fourth.VerticalSymetry(fourth);
+
+            Quadrant(first,second,third,fourth, MODE);
+            y1_r++;
+        }
+
+    }
+
+    public void SymP(Point2D pointSym)
+    {
+        int x1_c = 0;
+        while (Major_rad > x1_c) {
+            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
+            double y1_c;
+            if(formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            else
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
+
+            double y2_c = center.Y - y1_c;
+            double tx_c = center.X - x1_c;
+
+            int ty1_c = (int) (y1_c + 0.5);
+            int ty2_c = (int) (y2_c + 0.5);
+            int x2_c = (int) (tx_c + 0.5);
+
+            //a = (x1_c, ty1_c);
+            //b = (x2_c,ty2_c);
+
+            first.set(x1_c + center.X, ty2_c);
+            second.set(x2_c,ty2_c);
+            third.set(x2_c, ty1_c + center.Y);
+            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+
+            first = first.PointSymetry(first, pointSym);
+            second = second.PointSymetry(second, pointSym);
+            third = third.PointSymetry(third, pointSym);
+            fourth = fourth.PointSymetry(fourth, pointSym);
+
+            Quadrant(first,second,third,fourth, MODE);
+            x1_c++;
+        }
+        int y1_r = 0;
+        while (y1_r < Minor_rad) {
+            double x1_r;
+            if (formula)
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+            else
+                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
+
+            double x2_r = center.X - x1_r;
+            double ty_r = center.Y - y1_r;
+
+            int tx1_r = (int) (x1_r + 0.5);
+            int tx2_r = (int) (x2_r + 0.5);
+            int y2_r = (int) (ty_r + 0.5);
+
+            //a = (tx1_r, y1_r);
+            //b = (tx2_r,y2_r);
+
+            first.set(tx1_r + center.X, y2_r);
+            second.set(tx2_r,y2_r);
+            third.set(tx2_r, y1_r + center.Y);
+            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+
+            first = first.PointSymetry(first, pointSym);
+            second = second.PointSymetry(second, pointSym);
+            third = third.PointSymetry(third, pointSym);
+            fourth = fourth.PointSymetry(fourth, pointSym);
+
+            Quadrant(first,second,third,fourth, MODE);
+            y1_r++;
+        }
     }
 }

@@ -121,4 +121,38 @@ public class Rectangle extends HinhHoc {
         draw();
     }
 
+    public void SymOY()
+    {
+        A = A.VerticalSymetry(A);
+        B = B.VerticalSymetry(B);
+        C = C.VerticalSymetry(C);
+        D = D.VerticalSymetry(D);
+        super.MidpointLine(A, B, MODE);
+        super.MidpointLine(B, C, MODE);
+        super.MidpointLine(C, D, MODE);
+        super.MidpointLine(D, A, MODE);
+    }
+    public void SymOX()
+    {
+        A = A.HonrizontalSymetry(A);
+        B = B.HonrizontalSymetry(B);
+        C = C.HonrizontalSymetry(C);
+        D = D.HonrizontalSymetry(D);
+        super.MidpointLine(A, B, MODE);
+        super.MidpointLine(B, C, MODE);
+        super.MidpointLine(C, D, MODE);
+        super.MidpointLine(D, A, MODE);
+    }
+    public void SymP(Point2D pointSym)
+    {
+        A = A.PointSymetry(A,pointSym);
+        B = B.PointSymetry(B,pointSym);
+        C = C.PointSymetry(C,pointSym);
+        D = D.PointSymetry(D,pointSym);
+        super.MidpointLine(A, B, MODE);
+        super.MidpointLine(B, C, MODE);
+        super.MidpointLine(C, D, MODE);
+        super.MidpointLine(D, A, MODE);
+    }
+
 }
