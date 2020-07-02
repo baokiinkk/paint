@@ -15,8 +15,10 @@ public class Firework extends HinhHoc {
     private lineMode MODE;
     private float sizeFW;
 
+
     public Firework(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
+
     }
 
     public void initFirework(int height, int radius, int pos) {
@@ -41,6 +43,7 @@ public class Firework extends HinhHoc {
     }
 
     public void drawingState() {
+//        Ellipse elp = new Ellipse(nextDrawing, nextPoint, this.chooseColor);
         //System.out.print(currentState + ", ");
         if (currentState <= height) {
             //System.out.println(currentState);
@@ -58,7 +61,9 @@ public class Firework extends HinhHoc {
             for (int r = 0; r < currentState-height; r++)
             {
                 Point2D tend = new Point2D(position + r, nextPoint[0].length - height);
-                new Circle(nextDrawing, nextPoint, this.chooseColor).drawingCircle(start, tend, MODE);
+                new Circle(nextDrawing, nextPoint, this.chooseColor).drawingCircle(start,tend,MODE);
+//                elp.setCircle(start,tend,MODE);
+//                elp.draw();
             }
             //super.drawingCircle(start, end, lineMode.DEFAULT);
         }

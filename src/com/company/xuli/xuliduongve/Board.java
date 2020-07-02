@@ -39,6 +39,10 @@ public class Board extends JPanel {
                 ((Rectangle) now).rotate(alpha);
                 break;
             }
+            case ELLIPSE:{
+                ((Ellipse) now).rotate(alpha);
+                break;
+            }
         }
     }
 
@@ -48,6 +52,10 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).move(a);
+                break;
+            }
+            case ELLIPSE:{
+                ((Ellipse) now).move(a);
                 break;
             }
             case SELECT:{
@@ -68,6 +76,10 @@ public class Board extends JPanel {
                 ((Rectangle) now).applyRotate(alpha);
                 break;
             }
+            case ELLIPSE: {
+                ((Ellipse) now).applyRotate(alpha);
+                break;
+            }
         }
     }
 
@@ -77,6 +89,10 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).applyMove(a);
+                break;
+            }
+            case ELLIPSE: {
+                ((Ellipse) now).applyMove(a);
                 break;
             }
             case SELECT:{

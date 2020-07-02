@@ -186,6 +186,7 @@
                       <maximumSize width="-1" height="-1"/>
                       <minimumSize width="-1" height="-1"/>
                       <preferredSize width="40" height="40"/>
+                      <toolTipText value="Import Picture"/>
                     </properties>
                   </component>
                 </children>
@@ -223,6 +224,7 @@
                       <minimumSize width="-1" height="-1"/>
                       <preferredSize width="40" height="40"/>
                       <requestFocusEnabled value="true"/>
+                      <toolTipText value="Export Picture"/>
                     </properties>
                   </component>
                 </children>
@@ -262,6 +264,7 @@
                       <maximumSize width="-1" height="-1"/>
                       <minimumSize width="-1" height="-1"/>
                       <preferredSize width="40" height="40"/>
+                      <toolTipText value="Setting"/>
                     </properties>
                   </component>
                 </children>
@@ -343,6 +346,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Undo.png"/>
               <text value=""/>
+              <toolTipText value="Undo"/>
             </properties>
           </component>
           <component id="9a9e3" class="javax.swing.JButton" binding="redoButton">
@@ -356,6 +360,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Redo.png"/>
               <text value=""/>
+              <toolTipText value="Redo"/>
             </properties>
           </component>
           <component id="d98a4" class="javax.swing.JButton" binding="eraseButton" default-binding="true">
@@ -368,6 +373,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Erase.png"/>
               <text value=""/>
+              <toolTipText value="Erase "/>
             </properties>
           </component>
           <component id="e4b04" class="javax.swing.JButton" binding="rotateButton">
@@ -380,6 +386,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Rotate.png"/>
               <text value=""/>
+              <toolTipText value="Rotate"/>
             </properties>
           </component>
           <component id="623b" class="javax.swing.JButton" binding="symetryPointButton">
@@ -393,6 +400,7 @@
               <hideActionText value="false"/>
               <icon value="com/company/Icons/Symetry.png"/>
               <text value=""/>
+              <toolTipText value="Symetry"/>
             </properties>
           </component>
           <component id="40424" class="javax.swing.JButton" binding="setCenter">
@@ -405,6 +413,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/SetCenter.png"/>
               <text value=""/>
+              <toolTipText value="Set center"/>
             </properties>
           </component>
           <component id="6eaf9" class="javax.swing.JButton" binding="symOXButton" default-binding="true">
@@ -417,6 +426,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/SymOX.png"/>
               <text value=""/>
+              <toolTipText value="Horizontal Symetry"/>
             </properties>
           </component>
           <component id="2be07" class="javax.swing.JButton" binding="symOYButton" default-binding="true">
@@ -429,6 +439,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/SymOY.png"/>
               <text value=""/>
+              <toolTipText value="Vertical Symetry"/>
             </properties>
           </component>
           <component id="69ff" class="javax.swing.JButton" binding="clearButton">
@@ -443,6 +454,7 @@
               <foreground color="-4473925"/>
               <icon value="com/company/Icons/Clear.png"/>
               <text value=""/>
+              <toolTipText value="Clear"/>
             </properties>
           </component>
           <grid id="48951" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
@@ -450,7 +462,9 @@
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Choose color"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="5a2d4" class="javax.swing.JButton" binding="colorButton">
@@ -466,6 +480,7 @@
                   <foreground color="-16777216"/>
                   <hideActionText value="false"/>
                   <text value=""/>
+                  <toolTipText value="Choose color"/>
                 </properties>
               </component>
             </children>
@@ -481,6 +496,7 @@
               <hideActionText value="false"/>
               <icon value="com/company/Icons/Movea.png"/>
               <text value=""/>
+              <toolTipText value="Move"/>
             </properties>
           </component>
           <grid id="75ad0" binding="styleCBPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
@@ -500,6 +516,7 @@
                   <focusable value="false"/>
                   <inheritsPopupMenu value="true"/>
                   <lightWeightPopupEnabled value="true"/>
+                  <toolTipText value="Choose Style"/>
                 </properties>
               </component>
             </children>
@@ -521,6 +538,7 @@
                   <focusable value="false"/>
                   <inheritsPopupMenu value="true"/>
                   <lightWeightPopupEnabled value="true"/>
+                  <toolTipText value="Choose Size"/>
                 </properties>
               </component>
             </children>
@@ -535,6 +553,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Paint.png"/>
               <text value=""/>
+              <toolTipText value="Paint"/>
             </properties>
           </component>
           <component id="64e5f" class="javax.swing.JButton" binding="selectButton">
@@ -550,6 +569,7 @@
               <hideActionText value="true"/>
               <icon value="com/company/Icons/Select.png"/>
               <text value=""/>
+              <toolTipText value="Select"/>
             </properties>
           </component>
           <component id="f33b1" class="javax.swing.JButton" binding="zoomButton">
@@ -562,6 +582,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Zoom.png"/>
               <text value=""/>
+              <toolTipText value="Zoom"/>
             </properties>
           </component>
         </children>
@@ -594,6 +615,7 @@
               <hideActionText value="false"/>
               <icon value="com/company/Icons/Rec.png"/>
               <text value=""/>
+              <toolTipText value="Draw Rectangle"/>
             </properties>
           </component>
           <component id="dd27" class="javax.swing.JButton" binding="ellipseButton">
@@ -607,6 +629,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Ellipse.png"/>
               <text value=""/>
+              <toolTipText value="Draw Ellipse"/>
             </properties>
           </component>
           <component id="5b632" class="javax.swing.JButton" binding="lineButton">
@@ -620,6 +643,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Line.png"/>
               <text value=""/>
+              <toolTipText value="Draw Line"/>
             </properties>
           </component>
           <component id="4d7a" class="javax.swing.JButton" binding="pencilButton">
@@ -638,6 +662,7 @@
               <icon value="com/company/Icons/Pencil.png"/>
               <selected value="false"/>
               <text value=""/>
+              <toolTipText value="Pencil"/>
               <verifyInputWhenFocusTarget value="true"/>
             </properties>
             <clientProperties>
@@ -655,6 +680,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Firework.png"/>
               <text value=""/>
+              <toolTipText value="Draw Bear"/>
             </properties>
           </component>
           <component id="79912" class="javax.swing.JButton" binding="button2" default-binding="true">
@@ -668,7 +694,11 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Pencil.png"/>
               <text value=""/>
+              <toolTipText value="Auto rotate"/>
             </properties>
+            <clientProperties>
+              <hideActionText class="java.lang.Boolean" value="false"/>
+            </clientProperties>
           </component>
         </children>
       </grid>
@@ -697,6 +727,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Cubee.png"/>
               <text value=""/>
+              <toolTipText value="Draw Cube"/>
             </properties>
           </component>
           <component id="6d2e2" class="javax.swing.JButton" binding="globularButton">
@@ -709,6 +740,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Globular.png"/>
               <text value=""/>
+              <toolTipText value="Draw Globular"/>
             </properties>
           </component>
         </children>
@@ -735,6 +767,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Firework.png"/>
               <text value=""/>
+              <toolTipText value="Firework Animation"/>
             </properties>
           </component>
           <component id="e4b0d" class="javax.swing.JButton" binding="button4" default-binding="true">
@@ -747,6 +780,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Line.png"/>
               <text value=""/>
+              <toolTipText value="Nothing"/>
             </properties>
           </component>
         </children>
