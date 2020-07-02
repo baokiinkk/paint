@@ -59,6 +59,7 @@ public class Rectangle extends HinhHoc {
         this.alpha += alpha;
     }
 
+
     // set hình vuông, lấy độ dài cạnh bằng min độ dài vector AB và AD
     // có vector AB và AD => các điểm của hình vuông
     public void setSquare(Point2D start, Point2D end, lineMode mode) {
@@ -86,14 +87,29 @@ public class Rectangle extends HinhHoc {
 
     // vẽ hình chữ nhật dựa vào 4 điểm
     public void draw() {
-        A = A.rotatePoint(center, this.alpha);
-        B = B.rotatePoint(center, this.alpha);
-        C = C.rotatePoint(center, this.alpha);
-        D = D.rotatePoint(center, this.alpha);
-        super.MidpointLine(A, B, MODE);
-        super.MidpointLine(B, C, MODE);
-        super.MidpointLine(C, D, MODE);
-        super.MidpointLine(D, A, MODE);
+        Point2D tmpA = A.rotatePoint(center, this.alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha);
+        super.MidpointLine(tmpA, tmpB, MODE);
+        super.MidpointLine(tmpB, tmpC, MODE);
+        super.MidpointLine(tmpC, tmpD, MODE);
+        super.MidpointLine(tmpD, tmpA, MODE);
+    }
+
+    public void move(Vector2D a) {
+        Point2D tmpA = A.rotatePoint(center, this.alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha);
+        tmpA = tmpA.moveVector(a);
+        tmpB = tmpB.moveVector(a);
+        tmpC = tmpC.moveVector(a);
+        tmpD = tmpD.moveVector(a);
+        super.MidpointLine(tmpA, tmpB, MODE);
+        super.MidpointLine(tmpB, tmpC, MODE);
+        super.MidpointLine(tmpC, tmpD, MODE);
+        super.MidpointLine(tmpD, tmpA, MODE);
     }
 
     public void applyMove(Vector2D a) {

@@ -2,8 +2,20 @@ package com.company.main;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.*;
 
 public class Setting extends JDialog {
+    private static Color gridColor;
+
+    private void refreshState() {
+        a2DBoardRadioButton.setSelected(is2DBoard);
+        a3DBoardRadioButton.setSelected(!is2DBoard);
+        show2DAxisCheckBox.setEnabled(is2DBoard);
+        show3DAxisCheckBox.setEnabled(!is2DBoard);
+        show2DCoordinatesCheckBox.setEnabled(is2DBoard);
+        show3DCoordinatesCheckBox.setEnabled(!is2DBoard);
+    }
+
     public Setting(boolean boardState) {
         setContentPane(contentPane);
         setModal(true);
@@ -58,6 +70,22 @@ public class Setting extends JDialog {
             }
         });
 
+        defaultColorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gridColor = new Color(235, 235, 235);
+            }
+        });
+
+        setColorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Color c = JColorChooser.showDialog(setColorButton, "Choose Color", gridColor);
+                if (c != null)
+                    gridColor = c;
+            }
+        });
+
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -74,13 +102,8 @@ public class Setting extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void refreshState() {
-        a2DBoardRadioButton.setSelected(is2DBoard);
-        a3DBoardRadioButton.setSelected(!is2DBoard);
-        show2DAxisCheckBox.setEnabled(is2DBoard);
-        show3DAxisCheckBox.setEnabled(!is2DBoard);
-        show2DCoordinatesCheckBox.setEnabled(is2DBoard);
-        show3DCoordinatesCheckBox.setEnabled(!is2DBoard);
+    public static Color getGridColor() {
+        return gridColor;
     }
 
     private void onOK() {
@@ -133,5 +156,9 @@ public class Setting extends JDialog {
     private JButton setColorButton;
     private JButton defaultColorButton;
     private boolean is2DBoard;
+
+    public static void setGridColor(Color tmp) {
+        gridColor = tmp;
+    }
 
 }

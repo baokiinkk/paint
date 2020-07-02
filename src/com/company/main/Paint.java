@@ -25,8 +25,8 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
     // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 273;     // độ rộng bảng vẽ
-    private static int Height = 170;    // độ cao
+    private static int Width = 277;     // độ rộng bảng vẽ
+    private static int Height = 172;    // độ cao
     //=================================== Các biến ánh xạ với UI ================
     private JButton lineButton;             // vẽ đường thẳng
     private JButton clearButton;            // xóa sạch
@@ -54,7 +54,6 @@ public class Paint extends JFrame implements ActionListener {
     private JPanel sizeCBPanel;
     private JButton zoomButton;
     private JPanel toolPanel;
-    private JButton button1;
     private JButton button2;
     private JPanel Panel2D;
     private JPanel Coord3D;
@@ -79,6 +78,8 @@ public class Paint extends JFrame implements ActionListener {
     private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
     private int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
     private int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
+    private Point2D startSelect;
+    private Point2D endSelect;
     private JPanel Coord2D;
     private JPanel Panel3D;
     private JButton button4;
@@ -95,6 +96,9 @@ public class Paint extends JFrame implements ActionListener {
     private JButton symetryPointButton;
     private JPanel mainArea;
     private JPanel drawArea;        // khu vực vẽ
+    private JPanel X;
+    private JPanel Y;
+    private JPanel Z;
 
     //========================= biến chứa chế độ đường thẳng đang chọn ==============
     private lineMode chooseLineMode = lineMode.DEFAULT;
@@ -121,6 +125,8 @@ public class Paint extends JFrame implements ActionListener {
         sizeComboBox = new JComboBox<lineMode>(lineModeArr);
         mouseXY = new Point2D(-1, -1);
         startXY = new Point2D(-1, -1);
+        startSelect = new Point2D();
+        endSelect = new Point2D();
         timer = new Timer(0, null);
     }
 
@@ -129,8 +135,10 @@ public class Paint extends JFrame implements ActionListener {
         this.setContentPane(activity_main);// liên kết với màn hình form
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1270, 750); // kích thước cửa sổ
+        this.setSize(1279, 748); // kích thước cửa sổ
         this.setResizable(false);
+        ImageIcon icon = new ImageIcon("/com/company/Icons/Color.png");
+        this.setIconImage(icon.getImage());
         //this.setMaximumSize(new Dimension(1280, 800));
         this.setLocationRelativeTo(null);
         this.setVisible(true); // set hiện hay k
@@ -237,7 +245,12 @@ public class Paint extends JFrame implements ActionListener {
         } else if (lineButton.equals(source)) {
             startXY.set(-1, -1);
             choose = LINE;
-        } else if (rectangleButton.equals(source)) {
+        }
+        else if(selectButton.equals(source)){
+            startXY.set(-1, -1);
+            choose = SELECT;
+        }
+        else if (rectangleButton.equals(source)) {
             startXY.set(-1, -1);
             choose = RECTANGLE;
         } else if (cubeButton.equals(source)) {
@@ -277,13 +290,61 @@ public class Paint extends JFrame implements ActionListener {
         } else if (rotateButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ROTATE;
+        } else if (setCenter.equals(source)) {
+            choose = SETCENTER;
+        } else if (moveButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = MOVE;
+            System.out.println("Move Button");
+        } else if (button2.equals(source)) {
+            choose = PLAY;
+            //choose = ANIMATION;
+            if (!playingAnimation) {
+                playingAnimation = true;
+                int timerDelay = 30;
+                final int[] angle = {0};
+                Point2D a = Board.now.center;
+                Board.previousDo();
+                final Point2D[] b = {new Point2D(6, 0)};
+                timer.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        //while(true)
+                        {
+                            MyFunction.clearArr(nextDrawing);
+                            MyFunction.clearArr(nextPoint);
+                            b[0] = b[0].rotatePoint(a, 0.1);
+                            Board.rotateNow(a, b[0]);
+                            repaint();
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                });
+                timer.start();
+            } else {
+                timer.stop();
+                timer.removeActionListener(timer.getActionListeners()[0]);
+                playingAnimation = false;
+                Board.setGridColor(new Color(235, 235, 235));
+                MyFunction.clearArr(nextDrawing);
+                MyFunction.clearArr(nextPoint);
+                repaint();
+            }
+
+
         } else if (settingButton.equals(source)) {
-            System.out.println("Yes");
             Setting dialog = new Setting(currentBoardState);
+            Setting.setGridColor(Board.getGridColor());
             dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
+            Board.setGridColor(Setting.getGridColor());
             show2DAxis = dialog.getShow2DAxis();
             show3DAxis = dialog.getShow3DAxis();
             show2DCoord = dialog.getShow2DCoord();
@@ -306,7 +367,6 @@ public class Paint extends JFrame implements ActionListener {
             }
 
             repaint();
-            System.out.println(show2DAxis);
         } else if (Import.equals(source)) {
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -314,8 +374,8 @@ public class Paint extends JFrame implements ActionListener {
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                System.out.println("You chose to open this file: " +
-                        chooser.getSelectedFile().getName());
+                //System.out.println("You chose to open this file: " +
+                //chooser.getSelectedFile().getName());
                 try {
                     Board.applyNow();
                     BufferedImage myNewPNGFile = ImageIO.read(new File(chooser.getSelectedFile().getAbsolutePath()));
@@ -328,7 +388,10 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         repaint();
                     } else {
-                        System.out.println("Wrong!");
+                        Error dialog = new Error();
+                        dialog.pack();
+                        dialog.setLocationRelativeTo(this);
+                        dialog.setVisible(true);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -380,7 +443,7 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         if (rd.nextInt() % 3 == 0) {
                             Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
-                            FW.initFirework(rd.nextInt(Height), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)], 1 + rd.nextInt(20)/10);
+                            FW.initFirework(100 + rd.nextInt(Height-100), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)], 1 + rd.nextInt(20)/10);
                             //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
                             listFW.add(FW);
                         }
@@ -514,6 +577,14 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case SELECT: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        //Board.previousDo();
+                        break;
+                    }
                     case CUBE: // vẽ hinh hộp chữ nhật
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -536,7 +607,7 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case PAINT: {
-                        System.out.println("Pressed");
+                        //System.out.println("Pressed");
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.paintColor(nextPoint, nextDrawing, mouseXY, chooseColor);
                         break;
@@ -552,6 +623,18 @@ public class Paint extends JFrame implements ActionListener {
                         Board.previousDo();
                         break;
                     }
+                    case SETCENTER: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Board.now.center = new Point2D(startXY);
+                        break;
+                    }
+                    case MOVE: {
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        Board.previousDo();
+                        break;
+                    }
+
                 }
             } else {
 //                MyFunction.storePointColor(drawingBoard, nextPoint);
@@ -616,6 +699,22 @@ public class Paint extends JFrame implements ActionListener {
                         Board.applyRotate(startXY, mouseXY);
                         Board.applyNow();
                         break;
+                    }
+                    case MOVE: {
+                        Board.applyMove(startXY, mouseXY);
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case SELECT: {
+                        Select select = new Select(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        select.SelectPoint(startSelect, endSelect, drawingBoard); //  hàm set HCN
+                        //System.out.println(startSelect.X + " " + startSelect.Y + "--" + endSelect.X + " " + endSelect.Y);
+                        select.tag = SELECT;
+                        //System.out.println("aaaaaaaaaaaa");
+                        Board.setNowHinhHoc(select); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        //Board.applyNow();
+                        //Board.nextDo();
                     }
                 }
 
@@ -684,6 +783,38 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
+                    case SELECT:
+                    {
+                        MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            //A
+                            if (startXY.X > mouseXY.X && startXY.Y > mouseXY.Y){
+                                startSelect.set(mouseXY.X, mouseXY.Y);
+                                endSelect.set(startXY.X, startXY.Y);
+                            }
+                            //B
+                            if (startXY.X < mouseXY.X && startXY.Y > mouseXY.Y){
+                                startSelect.set(startXY.X, mouseXY.Y);
+                                endSelect.set(mouseXY.X, startXY.Y);
+                            }
+
+                            //D
+                            if (startXY.X > mouseXY.X && startXY.Y < mouseXY.Y){
+                                startSelect.set(mouseXY.X, startXY.Y);
+                                endSelect.set(startXY.X, mouseXY.Y);
+                            }
+
+                            //C
+                            if (startXY.X < mouseXY.X && startXY.Y < mouseXY.Y){
+                                startSelect.set(startXY);
+                                endSelect.set(mouseXY);
+                            }
+                            Board.select(startSelect, endSelect);
+                        }
+                        repaint();
+                        break;
+                    }
                     case CUBE: // vẽ hình hộp chữ nhật
                     {
                         MyFunction.clearArr(nextDrawing);
@@ -723,12 +854,19 @@ public class Paint extends JFrame implements ActionListener {
                     case ELLIPSE: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Ellipse elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
+                            if(startXY.X == mouseXY.X)
+                                mouseXY.X++;
+                            if(startXY.Y == mouseXY.Y)
+                                mouseXY.Y++;
                             if (mouseEvent.isShiftDown()) {
-                                new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                                elp.setCircle(startXY, mouseXY, chooseLineMode);
                             } else {
-                                new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, mouseXY, chooseLineMode);
+                                elp.setElip(startXY, mouseXY, chooseLineMode);
                             }
+                            elp.draw();
+                            Board.setNowHinhHoc(elp);
                         }
                         repaint();
                         break;
@@ -736,11 +874,14 @@ public class Paint extends JFrame implements ActionListener {
                     case GLOBULAR: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            new Circle(nextDrawing, nextPoint, chooseColor).drawingCircle(startXY, mouseXY, chooseLineMode);
+                            Glo.setGlobular(startXY, mouseXY, chooseLineMode);
                             Point2D temp = mouseXY;
-                            temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 3;
-                            new Ellipse(nextDrawing, nextPoint, chooseColor).drawEllipse(startXY, temp, chooseLineMode);
+                            temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 2;
+                            Glo.setGlobular(startXY, temp, chooseLineMode);
+                            Glo.draw();
+                            Board.setNowHinhHoc(Glo);
                         }
                         repaint();
                         break;
@@ -766,25 +907,6 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         break;
                     }
-                    /*case VETICALSYMETRY:{
-                        MyFunction.clearArr(nextDrawing);
-                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        if (startXY.X != -1 && startXY.Y != -1) {
-                            Board.SymOYNow(startXY,mouseXY);
-                            repaint();
-                        }
-                        break;
-                    }
-                    case HONRIZONTALSYMETRY:{
-                        MyFunction.clearArr(nextDrawing);
-                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        if (startXY.X != -1 && startXY.Y != -1) {
-                            MyFunction.clearArr(nextDrawing);
-                            Board.SymOXNow(startXY, mouseXY);
-                            repaint();
-                        }
-                        break;
-                    }*/
                 }
 
             }

@@ -32,7 +32,8 @@ public class Board extends JPanel {
         Vector2D a = new Vector2D(now.center, start);
         Vector2D b = new Vector2D(now.center, end);
         double alpha = a.alphaVector(b);
-        //System.out.println(alpha);
+
+        System.out.println(alpha);
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).rotate(alpha);
@@ -44,7 +45,6 @@ public class Board extends JPanel {
             }
         }
     }
-
 
     public static void moveNow(Point2D start, Point2D end) {
         Vector2D a = new Vector2D(start, end);
@@ -65,7 +65,6 @@ public class Board extends JPanel {
         }
     }
 
-
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay thật :v, xem hàm trên sẽ rõ
     public static void applyRotate(Point2D start, Point2D end) {
         Vector2D a = new Vector2D(now.center, start);
@@ -75,6 +74,29 @@ public class Board extends JPanel {
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).applyRotate(alpha);
+                break;
+            }
+            case ELLIPSE: {
+                ((Ellipse) now).applyRotate(alpha);
+                break;
+            }
+        }
+    }
+
+    public static void applyMove(Point2D start, Point2D end) {
+        Vector2D a = new Vector2D(start, end);
+        //System.out.println(alpha);
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).applyMove(a);
+                break;
+            }
+            case ELLIPSE: {
+                ((Ellipse) now).applyMove(a);
+                break;
+            }
+            case SELECT:{
+                ((Select) now).applyMove(a);
                 break;
             }
         }
@@ -155,6 +177,12 @@ public class Board extends JPanel {
         }
     }
 
+    public static void nextDo() {
+        Color[][] tmpBoard = new Color[width][height];
+        MyFunction.storePointColor(drawingBoard, tmpBoard);
+        undoBoard.push(tmpBoard);
+    }
+
     // quay lại trạng thái trước đó, push trạng thái hiện tại vào redo
     public static void undo() {
         if (!undoBoard.empty()) {
@@ -233,6 +261,28 @@ public class Board extends JPanel {
 //                    }
 //                }
 //            }
+        } else {
+            if (showAxis) {
+                g.setColor(Color.RED);
+                g.drawLine(1280, OY, OX, OY);
+                g.drawLine(OX, 0, OX, OY);
+                g.drawLine(OX - 800, OY + 800, OX, OY);
+
+
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(Color.pink);
+
+                float[] dashingPattern1 = {2f, 2f};
+                Stroke stroke1 = new BasicStroke(2f, BasicStroke.CAP_BUTT,
+                        BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 3.0f);
+
+                g2d.setStroke(stroke1);
+                g2d.drawLine(0, OY, OX, OY);
+                g2d.drawLine(OX, 800, OX, OY);
+                g2d.drawLine(OX + 800, OY - 800, OX, OY);
+
+
+            }
         }
 
 
@@ -243,11 +293,22 @@ public class Board extends JPanel {
             drawErase = false;
         }
 
-        if (isSelecting()) {
+//        if (drawSelect) {
+//            g.setColor(Color.BLACK);
+//            g.drawRect((erase.X - 1) * rectSize, (erase.Y - 1) * rectSize, rectSize * 3, rectSize * 3);
+//            drawSelect = false;
+//        }
+
+
+
+        if (!isNotSelecting()) {
             g.setColor(Color.BLACK);
-            g.drawRect(recStart.X * rectSize, recStart.Y * rectSize, Math.abs(recStart.Y - recEnd.Y), Math.abs(recStart.X - recEnd.X));
+            //System.out.println("ccccccccc");
+            g.drawRect(recStart.X * rectSize, recStart.Y * rectSize,
+                    Math.abs(recStart.X - recEnd.X)*rectSize, Math.abs(recStart.Y - recEnd.Y)*rectSize);
             recStart.set(-1, -1);
             recEnd.set(-1, -1);
+
         }
 
     }
@@ -265,10 +326,14 @@ public class Board extends JPanel {
         boardState = set;
     }
 
-    private boolean isSelecting() {
+    private boolean isNotSelecting() {
         return (recStart.equal(new Point2D(-1, -1)) && recEnd.equal(new Point2D(-1, -1)));
     }
 
+    public static void select(Point2D start, Point2D end){
+        recStart.set(start);
+        recEnd.set(end);
+    }
     // hàm vẽ biến hình hiện tại (now)
     // hình như bị dư :v
 //    public static void drawNow() {
@@ -282,6 +347,10 @@ public class Board extends JPanel {
 
     public static void setGridColor(Color tmp) {
         gridColor = tmp;
+    }
+
+    public static Color getGridColor() {
+        return gridColor;
     }
 //    public static void setBackgroundColor(Color tmp)
 //    {
@@ -307,6 +376,6 @@ public class Board extends JPanel {
     private int OY;     // trục tọa độ OY
     private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
     private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
-    private Point2D recStart;   // điểm bắt đầu của vùng chọn
-    private Point2D recEnd;     // điểm kết thúc của vùng chọn
+    private static Point2D recStart;   // điểm bắt đầu của vùng chọn
+    private static Point2D recEnd;     // điểm kết thúc của vùng chọn
 }

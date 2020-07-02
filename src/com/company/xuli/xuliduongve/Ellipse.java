@@ -1,8 +1,16 @@
 package com.company.xuli.xuliduongve;
-
+import com.company.Button;
 import java.awt.*;
 
 public class Ellipse extends HinhHoc {
+    private lineMode MODE;
+    private Point2D  first;
+    private Point2D  second;
+    private Point2D  third;
+    private Point2D  fourth;
+    private double   Major_rad;
+    private double   Minor_rad;
+    private boolean  formula;
     public Ellipse(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
         tag = Button.ELLIPSE;

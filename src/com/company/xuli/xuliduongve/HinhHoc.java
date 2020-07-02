@@ -12,7 +12,9 @@ public class HinhHoc {
     public Point2D center;            // tâm của hình
     public lineMode mode;             // chế độ nét vẽ
     public double alpha;              // góc xoay hiện tại của hình so với hình gốc, hình gốc sẽ có góc = 0
-    public com.company.Button tag;    // loại hình
+    public com.company.Button tag;// loại hình
+    public ArrayList<Point2D> listPointCoord;
+    public ArrayList<Color> listPointColor;
 
     // khởi tạo các thông số cơ bản của hình
     public HinhHoc(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
@@ -21,6 +23,8 @@ public class HinhHoc {
         this.nextPoint = nextPoint;
         this.center = new Point2D();
         this.alpha = 0;
+        listPointCoord = new ArrayList<>();
+        listPointColor = new ArrayList<>();
     }
 
     public void MidpointLine(Point2D start, Point2D end, lineMode Mode) {
@@ -93,68 +97,9 @@ public class HinhHoc {
             }
         }
     }
-    public void drawEllipse(Point2D start, Point2D end,lineMode mode) {
-//
-        //pt elip (x^2/a^2 + y^2/b^2 = 1) => y = sqrt(1 - (x^2/a^2))* b^2)
-        // tam  (xstart;ystart)
-        //truc
-        double a = Math.abs(start.X - end.X);
-        double b = Math.abs(start.Y - end.Y);
 
-        int x1_c = 0;
-        while(a>x1_c)
-        {
-            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //IV
-            x1_c++;
-            double y1_c = Math.sqrt((a*a*b*b - b*b*x1_c*x1_c)/(a*a*1.0));
-            double y2_c = start.Y - y1_c;
-            double tx_c = start.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
-
-            Quadrant(x1_c + start.X,ty1_c +start.Y,x2_c,ty2_c,mode);
-
-        }
-        int y1_r = 0;
-        while(y1_r<b)
-        {
-            y1_r++;
-            double x1_r = Math.sqrt((a*a*b*b - a*a*y1_r*y1_r)/(b*b*1.0));
-            double x2_r = start.X - x1_r;
-            double ty_r = start.Y - y1_r;
-
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
-
-            Quadrant(tx1_r+start.X,y1_r+start.Y,tx2_r,y2_r, mode);
-        }
-    }
-
-    public void Quadrant(int x1,int y1,int x2, int y2,lineMode mode)
-    {
-        //ve cac duong cong ung voi cac goc phan tu
-        if (MyFunction.isSafe(nextPoint, x1,y1) && MyFunction.chooseMode(x1, mode)) {
-            nextDrawing[x1][y1] = true;
-            nextPoint[x1][y1] = chooseColor;
-        } // IV
-        if (MyFunction.isSafe(nextPoint, x1,y2) && MyFunction.chooseMode(x1, mode)) {
-            nextDrawing[x1][y2] = true;
-            nextPoint[x1][y2] = chooseColor;
-        } //I
-        if (MyFunction.isSafe(nextPoint,x2,y1) && MyFunction.chooseMode(x2, mode)) {
-            nextDrawing[x2][y1] = true;
-            nextPoint[x2][y1] = chooseColor;
-        }//III
-        if (MyFunction.isSafe(nextPoint, x2,y2) && MyFunction.chooseMode(x2, mode)) {
-            nextDrawing[x2][y2] = true;
-            nextPoint[x2][y2] = chooseColor;
-        }//II
-    }
-
-    public void putPixel(int x, int y) {
+    private void putPixel(int x, int y) {
         float x1 = x, y1 = y;
         int tx = (int) (x1 + 0.5);
         int ty = (int) (y1 + 0.5);
@@ -181,5 +126,6 @@ public class HinhHoc {
         putPixel(-x + xd, -y + yd);
         putPixel(-x + xd, y + yd);
     }
+
 
 }
