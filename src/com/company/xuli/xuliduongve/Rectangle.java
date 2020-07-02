@@ -95,8 +95,6 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(C, D, MODE);
         super.MidpointLine(D, A, MODE);
     }
-<<<<<<< Updated upstream
-=======
 
     public void applyMove(Vector2D a) {
         A = A.moveVector(a);
@@ -141,5 +139,4 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(D, A, MODE);
     }
 
->>>>>>> Stashed changes
 }

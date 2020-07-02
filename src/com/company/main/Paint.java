@@ -155,9 +155,6 @@ public class Paint extends JFrame implements ActionListener {
         Export.addActionListener(this);
         globularButton.addActionListener(this);
         animalButton.addActionListener(this);
-<<<<<<< Updated upstream
-
-=======
         setCenter.addActionListener(this);
         moveButton.addActionListener(this);
         button2.addActionListener(this);
@@ -165,7 +162,6 @@ public class Paint extends JFrame implements ActionListener {
         symOXButton.addActionListener(this);
         symOYButton.addActionListener(this);
         symetryPointButton.addActionListener(this);
->>>>>>> Stashed changes
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -759,8 +755,6 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         break;
                     }
-<<<<<<< Updated upstream
-=======
                     case MOVE: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
@@ -791,7 +785,6 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         break;
                     }*/
->>>>>>> Stashed changes
                 }
 
             }

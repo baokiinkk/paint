@@ -38,8 +38,6 @@ public class Board extends JPanel {
                 ((Rectangle) now).rotate(alpha);
                 break;
             }
-<<<<<<< Updated upstream
-=======
             case ELLIPSE:{
                 ((Ellipse) now).rotate(alpha);
                 break;
@@ -64,7 +62,6 @@ public class Board extends JPanel {
                 ((Select) now).move(a);
                 break;
             }
->>>>>>> Stashed changes
         }
     }
 

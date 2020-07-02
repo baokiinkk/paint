@@ -5,8 +5,6 @@ import java.awt.*;
 public class Ellipse extends HinhHoc {
     public Ellipse(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
-<<<<<<< Updated upstream
-=======
         tag = Button.ELLIPSE;
         first = new Point2D();
         second = new Point2D();
@@ -290,7 +288,6 @@ public class Ellipse extends HinhHoc {
         fourth = fourth.moveVector(a);
         center = center.moveVector(a);
         draw();
->>>>>>> Stashed changes
     }
     public void SymOX()
     {

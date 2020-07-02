@@ -15,9 +15,6 @@ public enum Button {
     ELLIPSE,
     ROTATE,
     ANIMATION,
-<<<<<<< Updated upstream
-    ANIMAL
-=======
     ANIMAL,
     SETCENTER,
     MOVE,
@@ -26,6 +23,5 @@ public enum Button {
     VETICALSYMETRY,
     HONRIZONTALSYMETRY,
     POINTSYMETRY
->>>>>>> Stashed changes
 }
 
