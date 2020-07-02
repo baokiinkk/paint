@@ -96,6 +96,9 @@ public class Paint extends JFrame implements ActionListener {
     private JButton symetryPointButton;
     private JPanel mainArea;
     private JPanel drawArea;        // khu vực vẽ
+    private JPanel X;
+    private JPanel Y;
+    private JPanel Z;
 
     //========================= biến chứa chế độ đường thẳng đang chọn ==============
     private lineMode chooseLineMode = lineMode.DEFAULT;
