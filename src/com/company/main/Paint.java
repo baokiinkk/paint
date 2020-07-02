@@ -155,7 +155,17 @@ public class Paint extends JFrame implements ActionListener {
         Export.addActionListener(this);
         globularButton.addActionListener(this);
         animalButton.addActionListener(this);
+<<<<<<< Updated upstream
 
+=======
+        setCenter.addActionListener(this);
+        moveButton.addActionListener(this);
+        button2.addActionListener(this);
+        selectButton.addActionListener(this);
+        symOXButton.addActionListener(this);
+        symOYButton.addActionListener(this);
+        symetryPointButton.addActionListener(this);
+>>>>>>> Stashed changes
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -409,6 +419,19 @@ public class Paint extends JFrame implements ActionListener {
             }
             //break;
         }
+        else if(symOYButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = VETICALSYMETRY;
+        }
+        else if(symOXButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = HONRIZONTALSYMETRY;
+        }
+        else if(symetryPointButton.equals((source))){
+            startXY.set(-1, -1);
+            choose = POINTSYMETRY;
+        }
+
     }
 
 
@@ -422,6 +445,31 @@ public class Paint extends JFrame implements ActionListener {
                 case LINE: // vẽ đường thẳng
                 {
                     // nothing
+                    break;
+                }
+                case HONRIZONTALSYMETRY:{
+
+                    MyFunction.clearArr(nextDrawing);
+                    Board.SymOXNow();
+                    Board.applyNow();
+                    repaint();
+                    break;
+                }
+                case VETICALSYMETRY:{
+                    MyFunction.clearArr(nextDrawing);
+                    Board.SymOYNow();
+                    Board.applyNow();
+                    repaint();
+                    break;
+                }
+                case POINTSYMETRY:{
+                    MyFunction.clearArr(nextDrawing);
+                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    nextDrawing[mouseXY.X][mouseXY.Y] = true;
+                    nextPoint[mouseXY.X][mouseXY.Y] = chooseColor;
+                    Board.SymPointNow(mouseXY);
+                    Board.applyNow();
+                    repaint();
                     break;
                 }
             }
@@ -711,6 +759,39 @@ public class Paint extends JFrame implements ActionListener {
                         }
                         break;
                     }
+<<<<<<< Updated upstream
+=======
+                    case MOVE: {
+                        MyFunction.clearArr(nextDrawing);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            //System.out.println(Board.now.tag);
+                            Board.moveNow(startXY, mouseXY);
+                            //System.out.println("Move");
+                            repaint();
+                        }
+                        break;
+                    }
+                    /*case VETICALSYMETRY:{
+                        MyFunction.clearArr(nextDrawing);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            Board.SymOYNow(startXY,mouseXY);
+                            repaint();
+                        }
+                        break;
+                    }
+                    case HONRIZONTALSYMETRY:{
+                        MyFunction.clearArr(nextDrawing);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            MyFunction.clearArr(nextDrawing);
+                            Board.SymOXNow(startXY, mouseXY);
+                            repaint();
+                        }
+                        break;
+                    }*/
+>>>>>>> Stashed changes
                 }
 
             }

@@ -38,8 +38,36 @@ public class Board extends JPanel {
                 ((Rectangle) now).rotate(alpha);
                 break;
             }
+<<<<<<< Updated upstream
+=======
+            case ELLIPSE:{
+                ((Ellipse) now).rotate(alpha);
+                break;
+            }
         }
     }
+
+
+    public static void moveNow(Point2D start, Point2D end) {
+        Vector2D a = new Vector2D(start, end);
+        //System.out.println("---" + now.tag);
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).move(a);
+                break;
+            }
+            case ELLIPSE:{
+                ((Ellipse) now).move(a);
+                break;
+            }
+            case SELECT:{
+                ((Select) now).move(a);
+                break;
+            }
+>>>>>>> Stashed changes
+        }
+    }
+
 
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay thật :v, xem hàm trên sẽ rõ
     public static void applyRotate(Point2D start, Point2D end) {
@@ -54,6 +82,48 @@ public class Board extends JPanel {
             }
         }
     }
+    public static void SymOXNow() {
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).draw();
+                ((Rectangle) now).SymOX();
+                break;
+            }
+            case ELLIPSE:{
+                ((Ellipse) now).draw();
+                ((Ellipse) now).SymOX();
+                break;
+            }
+        }
+    }
+    public static void SymOYNow() {
+        switch (now.tag) {
+            case RECTANGLE: {
+                ((Rectangle) now).draw();
+                ((Rectangle) now).SymOY();
+                break;
+            }
+            case ELLIPSE:{
+                ((Ellipse) now).draw();
+                ((Ellipse) now).SymOY();
+                break;
+            }
+        }
+    }
+    public static void SymPointNow(Point2D point) {
+            switch (now.tag) {
+                case RECTANGLE: {
+                    ((Rectangle) now).draw();
+                    ((Rectangle) now).SymP(point);
+                    break;
+                }
+                case ELLIPSE:{
+                    ((Ellipse) now).draw();
+                    ((Ellipse) now).SymP(point);
+                    break;
+                }
+            }
+        }
 
     // đặt hình vẽ hiện tại
     // hình vừa vẽ xong sẽ được lưu vào biến now để thao tác xoay, zoom,...

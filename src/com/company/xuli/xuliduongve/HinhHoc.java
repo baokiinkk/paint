@@ -154,7 +154,7 @@ public class HinhHoc {
         }//II
     }
 
-    private void putPixel(int x, int y) {
+    public void putPixel(int x, int y) {
         float x1 = x, y1 = y;
         int tx = (int) (x1 + 0.5);
         int ty = (int) (y1 + 0.5);
