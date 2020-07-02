@@ -120,5 +120,8 @@ public class Rectangle extends HinhHoc {
         center = center.moveVector(a);
         draw();
     }
-
+    public void draw(Color color){
+        draw();
+        MyFunction.paintColor(nextPoint,nextDrawing,center,color);
+    }
 }

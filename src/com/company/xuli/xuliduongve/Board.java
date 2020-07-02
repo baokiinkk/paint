@@ -227,17 +227,17 @@ public class Board extends JPanel {
                 g.drawLine(OX - 800, OY + 800, OX, OY);
 
 
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setColor(Color.pink);
-
-                float[] dashingPattern1 = {2f, 2f};
-                Stroke stroke1 = new BasicStroke(2f, BasicStroke.CAP_BUTT,
-                        BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 3.0f);
-
-                g2d.setStroke(stroke1);
-                g2d.drawLine(0, OY, OX, OY);
-                g2d.drawLine(OX, 800, OX, OY);
-                g2d.drawLine(OX + 800, OY - 800, OX, OY);
+//                Graphics2D g2d = (Graphics2D) g;
+//                g2d.setColor(Color.pink);
+//
+//                float[] dashingPattern1 = {2f, 2f};
+//                Stroke stroke1 = new BasicStroke(2f, BasicStroke.CAP_BUTT,
+//                        BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 3.0f);
+//
+//                g2d.setStroke(stroke1);
+//                g2d.drawLine(0, OY, OX, OY);
+//                g2d.drawLine(OX, 800, OX, OY);
+//                g2d.drawLine(OX + 800, OY - 800, OX, OY);
 
 
             }

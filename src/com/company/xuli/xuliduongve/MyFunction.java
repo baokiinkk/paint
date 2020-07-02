@@ -111,19 +111,21 @@ public class MyFunction {
 
     // dùng loang để tô màu vùng có màu [x][y] bằng màu được chọn
     public static void paintColor(Color[][] sourceColor, boolean[][] sourceSet, Point2D cord, Color color) {
+
         // dùng hàng đợi để khử đệ quy loang
         Queue<Pair<Integer, Integer>> myQ = new LinkedList<>();
 
         // oldColor là màu của vùng được tô, những pixel nào nằm kệ có màu oldColor sẽ được thay bằng color
-        if (!isSafe(sourceColor, cord.X, cord.Y))
+        if (!isSafe(sourceColor, cord.X, cord.Y)) {
             return;
+        }
         Color oldColor = sourceColor[cord.X][cord.Y];
+        System.out.println(oldColor);
 
         // chỉ khi nào màu mới và màu cũ khác nhau thì mới loang
         if (!oldColor.equals(color)) {
             sourceSet[cord.X][cord.Y] = true;         // đánh dấu ô màu cũ, để sau này có thể merge được
             sourceColor[cord.X][cord.Y] = color;      // tô ô màu cũ = màu mới
-
             // thêm ô màu vào hàng đợi để loang sang các ô khác
             myQ.add(new Pair<Integer, Integer>(cord.X, cord.Y));
             // biến vị trí phụ để tính vị trí các ô sắp loang

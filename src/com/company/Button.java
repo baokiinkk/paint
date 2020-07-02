@@ -15,6 +15,7 @@ public enum Button {
     ELLIPSE,
     ROTATE,
     ANIMATION,
+    CARANIM,
     ANIMAL,
     SETCENTER,
     MOVE,

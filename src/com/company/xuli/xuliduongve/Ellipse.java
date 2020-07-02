@@ -301,4 +301,11 @@ public class Ellipse extends HinhHoc {
         center = center.moveVector(a);
         draw();
     }
+
+    public void draw(Color color){
+        draw();
+        //System.out.println(nextPoint[center.X][center.Y]);
+        //MyFunction.clearArr(nextDrawing);
+        MyFunction.paintColor(nextPoint,nextDrawing,start,color);
+    }
 }
