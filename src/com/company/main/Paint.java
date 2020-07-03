@@ -661,7 +661,6 @@ public class Paint extends JFrame implements ActionListener {
                     break;
                 }
                 case HONRIZONTALSYMETRY:{
-
                     MyFunction.clearArr(nextDrawing);
                     Board.SymOXNow();
                     Board.applyNow();
@@ -683,6 +682,7 @@ public class Paint extends JFrame implements ActionListener {
                     Board.SymPointNow(pointXY);
                     Board.applyNow();
                     repaint();
+                    pointXY.set(Width/2,Height/2);
                     break;
                 }
                 case SETCENTER: {
@@ -694,6 +694,7 @@ public class Paint extends JFrame implements ActionListener {
 //                    Board.applyNow();
                     repaint();
                     break;
+
                 }
                 case ROTATESYMETRY:
                 {
