@@ -79,11 +79,11 @@ public class Firework extends HinhHoc {
                 int red = chooseColor.getRed();
                 int green = chooseColor.getGreen();
                 int blue = chooseColor.getBlue();
-                red = red + (255 - red) / (endState - currentState);
-                green = green + (255 - green) / (endState - currentState);
-                blue = blue + (255 - blue) / (endState - currentState);
+//                red = red + (255 - red) / (endState - currentState);
+//                green = green + (255 - green) / (endState - currentState);
+//                blue = blue + (255 - blue) / (endState - currentState);
                 chooseColor = new Color(red, green, blue);
-           }
+            }
         }
         else
         {

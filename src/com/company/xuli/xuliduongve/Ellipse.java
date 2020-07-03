@@ -121,7 +121,7 @@ public class Ellipse extends HinhHoc {
     // khi xoay nháp sẽ có góc alpha lệch so với góc ban đầu, khi xoay xong, hàm này sẽ + góc vừa xoay vào góc hiện tại
     // ví dụ xoay hình gốc 1 góc 20 độ, thì sau khi xoay nháp xong, góc xoay gốc sẽ được cộng thêm 20 độ
     public void applyRotate(double alpha) {
-        System.out.println(this.alpha + " " + alpha);
+        //System.out.println(this.alpha + " " + alpha);
         this.alpha += alpha;
     }
 
@@ -210,7 +210,7 @@ public class Ellipse extends HinhHoc {
             third = third.rotatePoint(center, this.alpha);
             fourth = fourth.rotatePoint(center, this.alpha);
 
-            Quadrant(first,second,third,fourth, MODE);;
+            Quadrant(first, second, third, fourth, MODE);
             y1_r++;
         }
     }

@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.company.Animation2D.Firework;
+import com.company.Button;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Cube;
 import com.company.xuli.xuliduongve.Rectangle;
@@ -233,9 +234,16 @@ public class Paint extends JFrame implements ActionListener {
             source = actionEvent.getSource();
         } else {
             // nếu có animation đang chạy thì chỉ nhận nút Animation
-            if (animationButton.equals(actionEvent.getSource())) {
+            if (choose.equals(ANIMATION) && animationButton.equals(actionEvent.getSource())) {
                 source = actionEvent.getSource();
             }
+            if (choose.equals(CARANIM) && driveCarButton.equals(actionEvent.getSource())) {
+                source = actionEvent.getSource();
+            }
+            if (choose.equals(PLAY) && button2.equals(actionEvent.getSource())) {
+                source = actionEvent.getSource();
+            }
+
         }
 
         if (redoButton.equals(source)) {
@@ -276,14 +284,15 @@ public class Paint extends JFrame implements ActionListener {
             choose = ANIMAL;
         }
         else if(driveCarButton.equals(source)) {
-            MyFunction.clearArr(nextPoint);
-            Board.setGridColor(Color.BLACK);
-            DriveCarAnim carAnim = new DriveCarAnim(nextDrawing, nextPoint, chooseColor);
-            Board.applyNow();
-            MyFunction.clearArr(nextDrawing);
-            repaint();
+            choose = CARANIM;
             if (!playingAnimation) {
                 playingAnimation = true;
+                MyFunction.clearArr(nextPoint);
+                Board.setGridColor(Color.BLACK);
+                DriveCarAnim carAnim = new DriveCarAnim(nextDrawing, nextPoint, chooseColor);
+                Board.applyNow();
+                MyFunction.clearArr(nextDrawing);
+                repaint();
                 time = 0;
                 Random rd = new Random();
                 Board.setGridColor(Color.BLACK);
@@ -331,10 +340,12 @@ public class Paint extends JFrame implements ActionListener {
                         }
 
                         for (int i = 0; i < listTreeLeft.size(); i++) {
-                            System.out.println(i);
+                            //System.out.println(i);
                             Tree left = listTreeLeft.get(i);
                             Tree right = listTreeRight.get(i);
+                            left.tanCayColor = new Color(0, 100 + left.center.Y, 50);
                             left.draw();
+                            right.tanCayColor = new Color(0, 100 + left.center.Y, 50);
                             right.draw();
                             Point2D str = left.center;
                             Point2D en = left.end;
@@ -376,6 +387,7 @@ public class Paint extends JFrame implements ActionListener {
                 timer.removeActionListener(timer.getActionListeners()[0]);
                 playingAnimation = false;
                 Board.setGridColor(new Color(235, 235, 235));
+                MyFunction.clearArr(drawingBoard);
                 MyFunction.clearArr(nextDrawing);
                 MyFunction.clearArr(nextPoint);
                 repaint();
@@ -410,7 +422,7 @@ public class Paint extends JFrame implements ActionListener {
             System.out.println("Move Button");
         } else if (button2.equals(source)) {
             choose = PLAY;
-            final int[] stt = {0};
+            time = 1;
             //choose = ANIMATION;
             if (!playingAnimation) {
                 playingAnimation = true;
@@ -420,27 +432,28 @@ public class Paint extends JFrame implements ActionListener {
                     public void actionPerformed(ActionEvent actionEvent) {
                         //while(true)
                         {
-                            if (stt[0] == 641)
-                            {
+                            if (time == 640) {
                                 timer.stop();
+                                timer.removeActionListener(timer.getActionListeners()[0]);
+                                playingAnimation = false;
                             }
                             BufferedImage myNewPNGFile = null;
                             try {
-                                System.out.println("error");
+                                //System.out.println("error");
                                 String str = "";
-                                str += String.valueOf(stt[0]);
-                                while(str.length() < 3)
-                                    str = "0"+str;
+                                str += String.valueOf(time);
                                 //System.out.println(str);
-                                myNewPNGFile = ImageIO.read(new File("/Volumes/Data/java/KTDH/src/com/company/film/frame_"+ str +"_delay-0.04s.png"));
+                                str = "src/com/company/Stick/stick (" + str + ").png";
+                                //System.out.println(str);
+                                myNewPNGFile = ImageIO.read(new File(str));
                                 for (int i = 0; i < drawingBoard.length; i++) {
                                     for (int j = 0; j < drawingBoard[0].length; j++) {
                                         Color c = new Color(myNewPNGFile.getRGB(i * 3, j * 3), true);
                                         drawingBoard[i][j] = c;
                                     }
                                 }
-                                stt[0]++;
-                                System.out.println(stt[0]);
+                                time++;
+                                //System.out.println(stt[0]);
                                 repaint();
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -450,6 +463,15 @@ public class Paint extends JFrame implements ActionListener {
                 });
                 timer.start();
 
+            } else {
+                timer.stop();
+                timer.removeActionListener(timer.getActionListeners()[0]);
+                playingAnimation = false;
+                Board.setGridColor(new Color(235, 235, 235));
+                MyFunction.clearArr(nextDrawing);
+                MyFunction.clearArr(drawingBoard);
+                MyFunction.clearArr(nextPoint);
+                repaint();
             }
 
 
@@ -548,6 +570,18 @@ public class Paint extends JFrame implements ActionListener {
             choose = ANIMATION;
             if (!playingAnimation) {
                 playingAnimation = true;
+                BufferedImage myNewPNGFile = null;
+                try {
+                    myNewPNGFile = ImageIO.read(new File("src/com/company/Icons/New Project.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < drawingBoard.length; i++) {
+                    for (int j = 0; j < drawingBoard[0].length; j++) {
+                        Color c = new Color(myNewPNGFile.getRGB(i * 3, j * 3), true);
+                        drawingBoard[i][j] = c;
+                    }
+                }
                 java.util.List<Firework> listFW = new ArrayList<>();
                 Random rd = new Random();
                 Board.setGridColor(chooseColor);
@@ -574,7 +608,7 @@ public class Paint extends JFrame implements ActionListener {
                             }
                         }
                         repaint();
-                        System.out.println("list" + listFW.size());
+                        //System.out.println("list" + listFW.size());
                         try {
                             TimeUnit.MILLISECONDS.sleep(30);
                         } catch (InterruptedException e) {
@@ -703,7 +737,7 @@ public class Paint extends JFrame implements ActionListener {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1) {
                             Animal chon = new Animal(nextDrawing, nextPoint, chooseColor);
-                            System.out.println(startXY.X + "--" + startXY.Y);
+                            //System.out.println(startXY.X + "--" + startXY.Y);
                             chon.create(startXY,mouseXY,chooseLineMode);
                             chon.draw();
                         }

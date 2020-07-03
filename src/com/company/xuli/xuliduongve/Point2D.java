@@ -8,8 +8,8 @@ import static java.lang.Math.sin;
 public class Point2D {
     public int X;
     public int Y;
-    private int Width = 277;
-    private int Height = 172;
+    private int Width = 282;
+    private int Height = 177;
 
     public Point2D() {
     }
@@ -65,30 +65,27 @@ public class Point2D {
     }
 
     //public Point2D
-    public Point2D VerticalSymetry(Point2D other)
-    {
-        if(other.X >= Width)
-            other.X= Width - (other.X-Width);
+    public Point2D VerticalSymetry(Point2D other) {
+        if (other.X >= Width / 2)
+            other.X = Width / 2 - (other.X - Width / 2);
         else
-            other.X = Width + (Width - other.X);
+            other.X = Width / 2 + (Width / 2 - other.X);
         return other;
     }
-    public Point2D HonrizontalSymetry(Point2D other)
-    {
-        if(other.Y >= Height) {
-            other.Y = Height - (other.Y - Height);
-        }
-        else {
-            other.Y = Height + (Height - other.Y);
+
+    public Point2D HonrizontalSymetry(Point2D other) {
+        if (other.Y >= Height / 2) {
+            other.Y = Height / 2 - (other.Y - Height / 2);
+        } else {
+            other.Y = Height / 2 + (Height / 2 - other.Y);
         }
         return other;
     }
-    public Point2D PointSymetry(Point2D other, Point2D pointSym)
-    {
-        if(other.Y >= pointSym.Y) {
+
+    public Point2D PointSymetry(Point2D other, Point2D pointSym) {
+        if (other.Y >= pointSym.Y) {
             other.Y = pointSym.Y - (other.Y - pointSym.Y);
-        }
-        else {
+        } else {
             other.Y = pointSym.Y + (pointSym.Y - other.Y);
         }
 

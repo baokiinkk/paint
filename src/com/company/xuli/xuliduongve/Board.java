@@ -33,7 +33,7 @@ public class Board extends JPanel {
         Vector2D b = new Vector2D(now.center, end);
         double alpha = a.alphaVector(b);
 
-        System.out.println(alpha);
+        //System.out.println(alpha);
         switch (now.tag) {
             case RECTANGLE: {
                 ((Rectangle) now).rotate(alpha);

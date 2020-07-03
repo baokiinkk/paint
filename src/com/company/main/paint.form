@@ -693,7 +693,7 @@
               <contentAreaFilled value="true"/>
               <enabled value="true"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Pencil.png"/>
+              <icon value="com/company/Icons/Actionfilm.png"/>
               <text value=""/>
               <toolTipText value="Auto rotate"/>
             </properties>
@@ -779,7 +779,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Line.png"/>
+              <icon value="com/company/Icons/Car.png"/>
               <text value=""/>
               <toolTipText value="Nothing"/>
             </properties>
