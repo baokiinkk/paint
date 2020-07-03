@@ -84,7 +84,10 @@
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <enabled value="true"/>
+              <visible value="false"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="1ddab" binding="X" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -580,7 +583,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Zoom.png"/>
+              <icon value="com/company/Icons/RotationSym.png"/>
               <text value=""/>
               <toolTipText value="Rotate Symetry Point"/>
             </properties>

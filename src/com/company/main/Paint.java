@@ -419,7 +419,7 @@ public class Paint extends JFrame implements ActionListener {
         } else if (moveButton.equals(source)) {
             startXY.set(-1, -1);
             choose = MOVE;
-            System.out.println("Move Button");
+            //System.out.println("Move Button");
         } else if (button2.equals(source)) {
             choose = PLAY;
             time = 1;
@@ -865,12 +865,16 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case ROTATE: {
-                        Board.applyRotate(startXY, mouseXY);
+                        if (Board.now != null) {
+                            Board.applyRotate(startXY, mouseXY);
+                        }
                         Board.applyNow();
                         break;
                     }
                     case MOVE: {
-                        Board.applyMove(startXY, mouseXY);
+                        if (Board.now != null) {
+                            Board.applyMove(startXY, mouseXY);
+                        }
                         Board.applyNow();
                         repaint();
                         break;
@@ -917,7 +921,7 @@ public class Paint extends JFrame implements ActionListener {
                         // nếu vị trí bắt đầu không phải là (-1,-1) thì vẽ đường thẳng từ điểm đó tới vị trí hiện tại của con trỏ chuột
                         if (startXY.X != -1 && startXY.Y != -1) {
 //                            new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
-                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY,mouseXY,pointXY,chooseSideMode);
+                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY, mouseXY, pointXY, lineMode.DEFAULT, chooseSideMode);
                         }
                         startXY.set(mouseXY); // sau khi vẽ hàm trên thì điểm bắt đầu được set lại
                         drawArea.repaint();
@@ -929,7 +933,7 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextDrawing); // phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1)
-                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY,mouseXY,pointXY,chooseSideMode);
+                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY, mouseXY, pointXY, chooseLineMode, chooseSideMode);
                         repaint();
                         break;
                     }
@@ -1062,7 +1066,10 @@ public class Paint extends JFrame implements ActionListener {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1) {
                             //System.out.println(Board.now.tag);
-                            Board.rotateNow(startXY, mouseXY);
+                            if (Board.now != null) {
+                                Board.rotateNow(startXY, mouseXY);
+
+                            }
                             repaint();
                         }
                         break;
@@ -1072,7 +1079,9 @@ public class Paint extends JFrame implements ActionListener {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1) {
                             //System.out.println(Board.now.tag);
-                            Board.moveNow(startXY, mouseXY);
+                            if (Board.now != null) {
+                                Board.moveNow(startXY, mouseXY);
+                            }
                             //System.out.println("Move");
                             repaint();
                         }
