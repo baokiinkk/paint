@@ -47,7 +47,7 @@ public class DriveCarAnim extends HinhHoc{
         // màu đường lộ
         MyFunction.paintColor(nextPoint,nextDrawing,new Point2D(96,63),new Color(158, 156, 156, 255));
 
-        // mau may
+        // mau may sad
         may1.draw(Color.WHITE);
         may2.draw(Color.WHITE);
         may3.draw(Color.WHITE);
