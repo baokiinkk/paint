@@ -75,9 +75,9 @@ public class HinhHoc {
         }
     }
     public void drawZigZag(ArrayList<Point2D> diem){
-        System.out.println(diem.size());
+        //System.out.println(diem.size());
         for(int i=0;i<diem.size()-1;i++){
-            System.out.println(diem.get(i).X + "," + diem.get(i).Y + "--" + diem.get(i+1).X + "," + diem.get(i+1).Y);
+            //System.out.println(diem.get(i).X + "," + diem.get(i).Y + "--" + diem.get(i+1).X + "," + diem.get(i+1).Y);
             MidpointLine(diem.get(i), diem.get(i+1), this.mode);
         }
     }

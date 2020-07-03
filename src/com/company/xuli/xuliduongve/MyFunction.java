@@ -120,7 +120,7 @@ public class MyFunction {
             return;
         }
         Color oldColor = sourceColor[cord.X][cord.Y];
-        System.out.println(oldColor);
+        //System.out.println(oldColor);
 
         // chỉ khi nào màu mới và màu cũ khác nhau thì mới loang
         if (!oldColor.equals(color)) {
@@ -151,7 +151,27 @@ public class MyFunction {
                 }
             }
         }
+
+
     }
 
+    public static int leftCenter(int pos)
+    {
+        return (3827/28-(89*pos)/112);
+    }
+
+    public static int leftSize(int pos)
+    {
+        return (14524-59*pos)/115;
+    }
+
+    public static int rightCenter(int pos)
+    {
+        return (pos+184)*4/5;
+    }
+    public static int rightSize(int pos)
+    {
+        return (pos + 9041/29)*58/115;
+    }
 
 }

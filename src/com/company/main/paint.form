@@ -384,6 +384,7 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
+              <hideActionText value="false"/>
               <icon value="com/company/Icons/Rotate.png"/>
               <text value=""/>
               <toolTipText value="Rotate"/>
@@ -448,10 +449,10 @@
             </constraints>
             <properties>
               <background color="-1118482"/>
-              <borderPainted value="false"/>
-              <defaultCapable value="false"/>
+              <borderPainted value="true"/>
+              <defaultCapable value="true"/>
               <focusable value="false"/>
-              <foreground color="-4473925"/>
+              <foreground color="-16777216"/>
               <icon value="com/company/Icons/Clear.png"/>
               <text value=""/>
               <toolTipText value="Clear"/>
