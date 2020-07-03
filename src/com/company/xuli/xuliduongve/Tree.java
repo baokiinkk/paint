@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Tree extends HinhHoc {
     Rectangle thanCay;
+    public Color tanCayColor;
     ArrayList<Ellipse> tanCay;
 
     public Tree(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor, Point2D Start, Point2D End) {
@@ -24,6 +25,7 @@ public class Tree extends HinhHoc {
         }
         tanCay.get(0).setCircle(new Point2D(center.X, start.Y + (center.Y - start.Y) / 2),
                 new Point2D(center.X, center.Y), lineMode.DEFAULT);
+        tanCayColor = new Color(0, 150 + new Random().nextInt(100), 8);
 //        Random rd = new Random();
 //        for(int i=1;i<tanCay.size();i++){
 //            Point2D tmpStart = new Point2D(start.X+rd.nextInt(end.X-start.X),start.Y+rd.nextInt(center.Y-start.Y));
@@ -34,13 +36,14 @@ public class Tree extends HinhHoc {
     }
 
     public void draw(){
-        if(!start.equal(end))
-        {
-            for(int i=0;i<tanCay.size();i++){
-                tanCay.get(i).draw(new Color(0,150 + new Random().nextInt(100), 8));
+        if(!start.equal(end)) {
+            for (int i = 0; i < tanCay.size(); i++) {
+                //tanCay.get(i).draw(new Color(150 + new Random().nextInt(100),150 + new Random().nextInt(100), 150 + new Random().nextInt(100)));
+                tanCay.get(i).draw(tanCayColor);
 
             }
             thanCay.draw(new Color(177, 119, 46));
         }
     }
+
 }

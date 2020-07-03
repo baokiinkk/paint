@@ -74,7 +74,7 @@ public class Car extends HinhHoc {
     }
 
     public void draw() {
-        System.out.println("88888: " + colorCar.size());
+        //System.out.println("88888: " + colorCar.size());
         drawList(diem);
         drawList(diem2);
         for (int i = 0; i < diemColor.size(); i++) {
