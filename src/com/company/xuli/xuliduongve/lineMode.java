@@ -8,3 +8,4 @@ public enum lineMode {
     DASHDOTDOT,
     ARROW
 }
+

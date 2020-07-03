@@ -65,7 +65,6 @@ public class MyFunction {
         return false;
     }
 
-
     // gán toàn bộ mảng thảnh màu trắng
     public static void clearArr(Color[][] board) {
         for (int i = 0; i < board.length; i++)

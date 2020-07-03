@@ -1,11 +1,15 @@
 package com.company.xuli.xuliduongve;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class Point2D {
     public int X;
     public int Y;
+    private int Width = 277;
+    private int Height = 172;
 
     public Point2D() {
     }
@@ -63,20 +67,19 @@ public class Point2D {
     //public Point2D
     public Point2D VerticalSymetry(Point2D other)
     {
-        System.out.println("buggg");
-        if(other.X >= 138)
-            other.X= 138 - (other.X-138);
+        if(other.X >= Width)
+            other.X= Width - (other.X-Width);
         else
-            other.X = 138 + (138 - other.X);
+            other.X = Width + (Width - other.X);
         return other;
     }
     public Point2D HonrizontalSymetry(Point2D other)
     {
-        if(other.Y >= 86) {
-            other.Y = 86 - (other.Y - 86);
+        if(other.Y >= Height) {
+            other.Y = Height - (other.Y - Height);
         }
         else {
-            other.Y = 86 + (86 - other.Y);
+            other.Y = Height + (Height - other.Y);
         }
         return other;
     }
@@ -96,6 +99,108 @@ public class Point2D {
             other.X = pointSym.X + (pointSym.X - other.X);
         }
         return other;
+    }
+
+    public ArrayList<Point2D> chooseSideMode(Point2D pointSym, Point2D pointRotate, sideMode MODE) {
+        switch (MODE) {
+            case DEFAULT: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                tmpPoint.add(pointRotate);
+                return tmpPoint;
+            }
+            case DYAD: {
+                int step = 0;
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                for(int i = 0;i<2;i++)
+                {
+
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 180;
+                }
+                return tmpPoint;
+            }
+            case TRIAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<3;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 120;
+                }
+                return tmpPoint;
+            }
+            case TETRAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<4;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 90;
+                }
+                return tmpPoint;
+            }
+            case PENTAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<5;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 72;
+                }
+                return tmpPoint;
+            }
+            case HEXAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<6;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 60;
+                }
+                return tmpPoint;
+            }
+            case HEPTAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                double step = 0;
+                for(int i = 0;i<7;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= (360.0/7.0);
+                }
+                return tmpPoint;
+            }
+            case OCTAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<8;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 45;
+                }
+                return tmpPoint;
+            }
+            case NONAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<9;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 40;
+                }
+                return tmpPoint;
+            }
+            case DECAD: {
+                ArrayList<Point2D> tmpPoint = new ArrayList<>();
+                int step = 0;
+                for(int i = 0;i<10;i++)
+                {
+                    tmpPoint.add(pointRotate.rotatePoint(pointSym,Math.toRadians(step)));
+                    step+= 36;
+                }
+                return tmpPoint;
+            }
+        }
+        return new ArrayList<>();
     }
 
     //public Point2D

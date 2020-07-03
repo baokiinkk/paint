@@ -2,6 +2,7 @@ package com.company.xuli.xuliduongve;
 
 import java.awt.*;
 import java.util.ArrayList;
+import com.company.xuli.xuliduongve.Point2D;
 
 public class HinhHoc {
     public boolean[][] nextDrawing;

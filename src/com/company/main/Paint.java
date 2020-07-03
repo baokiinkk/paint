@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import com.company.Animation2D.Firework;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Cube;
+import com.company.xuli.xuliduongve.Rectangle;
 
 import static com.company.Button.*;
 
@@ -47,7 +48,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton symOXButton;
     private JButton symOYButton;
     private JPanel sizeCBPanel;
-    private JButton zoomButton;
+    private JButton rotateSymButton;
     private JPanel toolPanel;
     private JButton button2;
     private JPanel Panel2D;
@@ -97,15 +98,19 @@ public class Paint extends JFrame implements ActionListener {
 
     //========================= biến chứa chế độ đường thẳng đang chọn ==============
     private lineMode chooseLineMode = lineMode.DEFAULT;
+    private sideMode chooseSideMode = sideMode.DEFAULT;
 
     //========================= danh sách các loại nét vẽ ===========================
     private lineMode[] lineModeArr = {lineMode.DEFAULT, lineMode.DASH, lineMode.DOT, lineMode.DASHDOT, lineMode.DASHDOTDOT, lineMode.ARROW};
+    private sideMode[] sideModeArr = {sideMode.DEFAULT, sideMode.DYAD, sideMode.TRIAD, sideMode.TETRAD, sideMode.PENTAD,
+                                      sideMode.HEXAD, sideMode.HEPTAD, sideMode.OCTAD, sideMode.NONAD, sideMode.DECAD};
 
 
     // ======================== CÁC BIẾN LIÊN QUAN TỚI CHUỘT ========================
     // khi kéo thả, startXY là điểm đầu tiên click chuột vào, mouseXY là điểm hiện tại
     private Point2D startXY;
     private Point2D mouseXY;
+    private Point2D pointXY;
     private Point2D test;
     private boolean firstClick = false; // biến xác định click chuột đầu trong 2 lần click
 
@@ -117,9 +122,10 @@ public class Paint extends JFrame implements ActionListener {
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
         styleComboBox = new JComboBox<lineMode>(lineModeArr);
-        sizeComboBox = new JComboBox<lineMode>(lineModeArr);
+        sizeComboBox = new JComboBox<sideMode>(sideModeArr);
         mouseXY = new Point2D(-1, -1);
         startXY = new Point2D(-1, -1);
+        pointXY = new Point2D(Width/2,Height/2);
         startSelect = new Point2D();
         endSelect = new Point2D();
         timer = new Timer(0, null);
@@ -166,6 +172,7 @@ public class Paint extends JFrame implements ActionListener {
         symOXButton.addActionListener(this);
         symOYButton.addActionListener(this);
         symetryPointButton.addActionListener(this);
+        rotateSymButton.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -203,7 +210,7 @@ public class Paint extends JFrame implements ActionListener {
         sizeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                chooseLineMode = lineModeArr[sizeComboBox.getSelectedIndex()];
+                chooseSideMode = sideModeArr[sizeComboBox.getSelectedIndex()];
             }
         });
         //sizeSlider.addChangeListener((ChangeListener) this);
@@ -499,6 +506,10 @@ public class Paint extends JFrame implements ActionListener {
             startXY.set(-1, -1);
             choose = POINTSYMETRY;
         }
+        else if(rotateSymButton.equals(source)){
+            startXY.set(-1, -1);
+            choose = ROTATESYMETRY;
+        }
 
     }
 
@@ -532,10 +543,30 @@ public class Paint extends JFrame implements ActionListener {
                 }
                 case POINTSYMETRY:{
                     MyFunction.clearArr(nextDrawing);
-                    mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                    nextDrawing[mouseXY.X][mouseXY.Y] = true;
-                    nextPoint[mouseXY.X][mouseXY.Y] = chooseColor;
-                    Board.SymPointNow(mouseXY);
+                    pointXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    nextDrawing[pointXY.X][pointXY.Y] = true;
+                    nextPoint[pointXY.X][pointXY.Y] = chooseColor;
+                    Board.SymPointNow(pointXY);
+                    Board.applyNow();
+                    repaint();
+                    break;
+                }
+                case SETCENTER: {
+                    MyFunction.clearArr(nextDrawing);
+                    pointXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    nextDrawing[pointXY.X][pointXY.Y] = true;
+                    nextPoint[pointXY.X][pointXY.Y] = chooseColor;
+                    Board.now.center = new Point2D(pointXY);
+//                    Board.applyNow();
+                    repaint();
+                    break;
+                }
+                case ROTATESYMETRY:
+                {
+                    MyFunction.clearArr(nextDrawing);
+                    pointXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                    nextDrawing[pointXY.X][pointXY.Y] = true;
+                    nextPoint[pointXY.X][pointXY.Y] = chooseColor;
                     Board.applyNow();
                     repaint();
                     break;
@@ -630,11 +661,6 @@ public class Paint extends JFrame implements ActionListener {
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         Board.previousDo();
-                        break;
-                    }
-                    case SETCENTER: {
-                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        Board.now.center = new Point2D(startXY);
                         break;
                     }
                     case MOVE: {
@@ -754,10 +780,10 @@ public class Paint extends JFrame implements ActionListener {
                 switch (choose) {
                     case PENCIL: {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-
                         // nếu vị trí bắt đầu không phải là (-1,-1) thì vẽ đường thẳng từ điểm đó tới vị trí hiện tại của con trỏ chuột
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
+//                            new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
+                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY,mouseXY,pointXY,chooseSideMode);
                         }
                         startXY.set(mouseXY); // sau khi vẽ hàm trên thì điểm bắt đầu được set lại
                         drawArea.repaint();
@@ -769,25 +795,24 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextDrawing); // phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1)
-                            new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, chooseLineMode);
+                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY,mouseXY,pointXY,chooseSideMode);
                         repaint();
                         break;
                     }
 
-                    case RECTANGLE: // vẽ đường thẳng
+                    case RECTANGLE:
                     {
                         MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
                         MyFunction.clearArr(nextPoint);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            //Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
-                            Tree rec = new Tree(nextDrawing, nextPoint, chooseColor,startXY,mouseXY); // khởi tạo class HCN
-//                            if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
-//                                rec.setSquare(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
-//                            } else {
-//                                rec.setRectangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
-//                            }
-                            rec.draw(); // cho vẽ hình
+                            Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                            if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
+                                rec.setSquare(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
+                            } else {
+                                rec.setRectangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
+                            }
+                            rec.draw(pointXY,chooseSideMode); // cho vẽ hình
 
                             Board.setNowHinhHoc(rec); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
@@ -877,7 +902,7 @@ public class Paint extends JFrame implements ActionListener {
                             } else {
                                 elp.setElip(startXY, mouseXY, chooseLineMode);
                             }
-                            elp.draw();
+                            elp.draw(pointXY,chooseSideMode);
                             Board.setNowHinhHoc(elp);
                         }
                         repaint();

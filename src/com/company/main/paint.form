@@ -509,7 +509,7 @@
             <children>
               <component id="65ed5" class="javax.swing.JComboBox" binding="styleComboBox" custom-create="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <background color="-1118482"/>
@@ -531,14 +531,14 @@
             <children>
               <component id="11871" class="javax.swing.JComboBox" binding="sizeComboBox" custom-create="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <background color="-1118482"/>
                   <focusable value="false"/>
                   <inheritsPopupMenu value="true"/>
                   <lightWeightPopupEnabled value="true"/>
-                  <toolTipText value="Choose Size"/>
+                  <toolTipText value="Choose side to rotate symetry"/>
                 </properties>
               </component>
             </children>
@@ -572,7 +572,7 @@
               <toolTipText value="Select"/>
             </properties>
           </component>
-          <component id="f33b1" class="javax.swing.JButton" binding="zoomButton">
+          <component id="f33b1" class="javax.swing.JButton" binding="rotateSymButton">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -582,7 +582,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Zoom.png"/>
               <text value=""/>
-              <toolTipText value="Zoom"/>
+              <toolTipText value="Rotate Symetry Point"/>
             </properties>
           </component>
         </children>

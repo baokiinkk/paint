@@ -3,6 +3,7 @@ package com.company.xuli.xuliduongve;
 import com.company.Button;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Rectangle extends HinhHoc {
     private Point2D A;
@@ -97,6 +98,24 @@ public class Rectangle extends HinhHoc {
         super.MidpointLine(tmpD, tmpA, MODE);
     }
 
+    public void draw(Point2D centerPoint, sideMode SIDEMODE){
+        ArrayList<Point2D> tmpA = A.chooseSideMode(centerPoint, A, SIDEMODE);
+        ArrayList<Point2D> tmpB = B.chooseSideMode(centerPoint, B, SIDEMODE);
+        ArrayList<Point2D> tmpC = C.chooseSideMode(centerPoint, C, SIDEMODE);
+        ArrayList<Point2D> tmpD = D.chooseSideMode(centerPoint, D, SIDEMODE);
+        /*Point2D tmpA = A.rotatePoint(center, this.alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha);*/
+        for(int i = 0;i<tmpA.size();i++)
+        {
+            super.MidpointLine(tmpA.get(i), tmpB.get(i), MODE);
+            super.MidpointLine(tmpB.get(i), tmpC.get(i), MODE);
+            super.MidpointLine(tmpC.get(i), tmpD.get(i), MODE);
+            super.MidpointLine(tmpD.get(i), tmpA.get(i), MODE);
+        }
+    }
+
     public void move(Vector2D a) {
         Point2D tmpA = A.rotatePoint(center, this.alpha);
         Point2D tmpB = B.rotatePoint(center, this.alpha);
@@ -120,7 +139,6 @@ public class Rectangle extends HinhHoc {
         center = center.moveVector(a);
         draw();
     }
-
     public void SymOY()
     {
         A = A.VerticalSymetry(A);
