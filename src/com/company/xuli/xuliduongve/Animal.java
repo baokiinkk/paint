@@ -71,7 +71,7 @@ public class Animal extends HinhHoc {
     }
     public void draw()
     {
-        System.out.println("88888: " + colorAnimal.size());
+        //System.out.println("88888: " + colorAnimal.size());
         drawList(diem);
         drawList(diem2);
         for (int i = 0; i < diemColor.size(); i++)

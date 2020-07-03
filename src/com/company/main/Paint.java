@@ -1,5 +1,6 @@
 package com.company.main;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -21,8 +22,8 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
     // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 277;     // độ rộng bảng vẽ
-    private static int Height = 172;    // độ cao
+    private static int Width = 282;     // độ rộng bảng vẽ
+    private static int Height = 177;    // độ cao
     //=================================== Các biến ánh xạ với UI ================
     private JButton lineButton;             // vẽ đường thẳng
     private JButton clearButton;            // xóa sạch
@@ -64,6 +65,7 @@ public class Paint extends JFrame implements ActionListener {
     private int rectSize = 4;          // tổng của kích thước pixel và spacing
     private boolean playingAnimation = false;
     private Timer timer;
+    private int time = 0;
     private int sizeLine = 1;          // kích thước nét vẽ
     private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
     private com.company.Button choose = PENCIL; // nút vừa chọn
@@ -276,10 +278,108 @@ public class Paint extends JFrame implements ActionListener {
         else if(driveCarButton.equals(source)) {
             MyFunction.clearArr(nextPoint);
             Board.setGridColor(Color.BLACK);
-            DriveCarAnim carAnim = new DriveCarAnim(nextDrawing,nextPoint,chooseColor);
+            DriveCarAnim carAnim = new DriveCarAnim(nextDrawing, nextPoint, chooseColor);
             Board.applyNow();
             MyFunction.clearArr(nextDrawing);
             repaint();
+            if (!playingAnimation) {
+                playingAnimation = true;
+                time = 0;
+                Random rd = new Random();
+                Board.setGridColor(Color.BLACK);
+                java.util.List<Rectangle> listFW = new ArrayList<>();
+                java.util.List<Tree> listTreeLeft = new ArrayList<>();
+                java.util.List<Tree> listTreeRight = new ArrayList<>();
+                int pos = 64, len = 3, spc = 3, spd = 1;
+                Rectangle base = new Rectangle(nextDrawing, nextPoint, Color.WHITE);
+                base.setRectangle(new Point2D(138, pos), new Point2D(139, pos + len), lineMode.DEFAULT);
+
+                Tree leftCenterBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(89, 60), new Point2D(91, 67));
+                //Tree leftSizeBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(), new Point2D());
+                Tree rightCenterBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(188, 61), new Point2D(193, 68));
+                //Tree rightSizeBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(), new Point2D());
+                //listFW.add(base);
+
+                timer.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        MyFunction.clearArr(nextDrawing);
+                        MyFunction.clearArr(nextPoint);
+                        repaint();
+                        if (time % 75 == 0) {
+                            Rectangle now = new Rectangle(nextDrawing, nextPoint, Color.WHITE);
+                            now.setRectangle(new Point2D(base.start.X, base.start.Y),
+                                    new Point2D(base.end.X, base.end.Y), lineMode.DEFAULT);
+                            listFW.add(now);
+
+                            Tree leftNow = new Tree(nextDrawing, nextPoint, Color.BLACK,
+                                    new Point2D(leftCenterBase.center), new Point2D(leftCenterBase.end));
+                            listTreeLeft.add(leftNow);
+                            Tree rightNow = new Tree(nextDrawing, nextPoint, Color.BLACK,
+                                    new Point2D(rightCenterBase.center), new Point2D(rightCenterBase.end));
+                            listTreeRight.add(rightNow);
+                        }
+                        for (int i = 0; i < listFW.size(); i++) {
+                            Rectangle now = listFW.get(i);
+                            now.draw();
+                            Point2D str = now.start;
+                            Point2D en = now.end;
+                            str.set(str.X, str.Y + 1);
+                            en.set(en.X, en.Y + 2);
+                            now.setRectangle(str, en, lineMode.DEFAULT);
+                            listFW.set(i, now);
+                        }
+
+                        for (int i = 0; i < listTreeLeft.size(); i++) {
+                            System.out.println(i);
+                            Tree left = listTreeLeft.get(i);
+                            Tree right = listTreeRight.get(i);
+                            left.draw();
+                            right.draw();
+                            Point2D str = left.center;
+                            Point2D en = left.end;
+                            str.Y += 1;
+                            str.X = MyFunction.leftCenter(str.Y) - 5;
+                            en.Y += 1 + time % 2;
+                            en.X = MyFunction.leftSize(en.Y);
+                            listTreeLeft.set(i, new Tree(nextDrawing, nextPoint, Color.BLACK, str, en));
+
+                            str = right.center;
+                            en = right.end;
+                            str.Y += 1;
+                            str.X = MyFunction.rightCenter(str.Y) + 5;
+                            en.Y += 1 + time % 2;
+                            en.X = MyFunction.rightSize(en.Y);
+                            listTreeRight.set(i, new Tree(nextDrawing, nextPoint, Color.BLACK, str, en));
+                        }
+                        //repaint();
+                        //System.out.println(listTreeLeft.get(0).center.X);
+                        if (listTreeLeft.get(0).center.Y > 150) {
+                            listTreeLeft.remove(0);
+                            listTreeRight.remove(0);
+                        }
+                        time += 1;
+                        if (time % 150 == 0) {
+                            time = 0;
+                            listFW.remove(0);
+                        }
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(0);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                timer.start();
+            } else {
+                timer.stop();
+                timer.removeActionListener(timer.getActionListeners()[0]);
+                playingAnimation = false;
+                Board.setGridColor(new Color(235, 235, 235));
+                MyFunction.clearArr(nextDrawing);
+                MyFunction.clearArr(nextPoint);
+                repaint();
+            }
         }
         else if (colorButton.equals(source)) {
             Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
@@ -331,7 +431,7 @@ public class Paint extends JFrame implements ActionListener {
                                 str += String.valueOf(stt[0]);
                                 while(str.length() < 3)
                                     str = "0"+str;
-                                System.out.println(str);
+                                //System.out.println(str);
                                 myNewPNGFile = ImageIO.read(new File("/Volumes/Data/java/KTDH/src/com/company/film/frame_"+ str +"_delay-0.04s.png"));
                                 for (int i = 0; i < drawingBoard.length; i++) {
                                     for (int j = 0; j < drawingBoard[0].length; j++) {

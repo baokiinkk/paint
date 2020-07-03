@@ -9,21 +9,21 @@ public class Tree extends HinhHoc {
     Rectangle thanCay;
     ArrayList<Ellipse> tanCay;
 
-    public Tree(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor,Point2D start,Point2D end) {
+    public Tree(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor, Point2D Start, Point2D End) {
         super(nextDrawing, nextPoint, chooseColor);
-        this.start = start;
-        this.end = end;
-        this.center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-        thanCay =  new Rectangle(nextDrawing,nextPoint,chooseColor);
+        this.center = (Start);
+        this.end = (End);
+        this.start = new Point2D(2 * center.X - end.X, 2 * center.Y - end.Y);
+        thanCay = new Rectangle(nextDrawing, nextPoint, Color.BLACK);
         tanCay = new ArrayList<>();
-        Point2D startThanCay =  new Point2D(center.X-(end.X-start.X)/8,center.Y);
-        Point2D endThanCay =  new Point2D(center.X+(end.X-start.X)/8,end.Y);
-        thanCay.setRectangle(startThanCay,endThanCay,lineMode.DEFAULT);
-        for(int i=0;i<1;i++){
-            tanCay.add(new Ellipse(nextDrawing,nextPoint,chooseColor));
+        Point2D startThanCay = new Point2D(center.X - (end.X - start.X) / 8, center.Y);
+        Point2D endThanCay = new Point2D(center.X + (end.X - start.X) / 8, end.Y);
+        thanCay.setRectangle(startThanCay, endThanCay, lineMode.DEFAULT);
+        for (int i = 0; i < 1; i++) {
+            tanCay.add(new Ellipse(nextDrawing, nextPoint, Color.BLACK));
         }
-        tanCay.get(0).setCircle(new Point2D(center.X,start.Y+(center.Y-start.Y)/2),
-                new Point2D(center.X,center.Y),lineMode.DEFAULT);
+        tanCay.get(0).setCircle(new Point2D(center.X, start.Y + (center.Y - start.Y) / 2),
+                new Point2D(center.X, center.Y), lineMode.DEFAULT);
 //        Random rd = new Random();
 //        for(int i=1;i<tanCay.size();i++){
 //            Point2D tmpStart = new Point2D(start.X+rd.nextInt(end.X-start.X),start.Y+rd.nextInt(center.Y-start.Y));

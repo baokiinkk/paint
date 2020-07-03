@@ -65,6 +65,7 @@ public class MyFunction {
         return false;
     }
 
+
     // gán toàn bộ mảng thảnh màu trắng
     public static void clearArr(Color[][] board) {
         for (int i = 0; i < board.length; i++)
@@ -119,7 +120,7 @@ public class MyFunction {
             return;
         }
         Color oldColor = sourceColor[cord.X][cord.Y];
-        System.out.println(oldColor);
+        //System.out.println(oldColor);
 
         // chỉ khi nào màu mới và màu cũ khác nhau thì mới loang
         if (!oldColor.equals(color)) {
@@ -133,15 +134,13 @@ public class MyFunction {
             while (myQ.size() > 0) {
                 // lấy 1 ô ra khỏi hàng đợi, duyệt và tính 4 vị trí kề nó
                 Pair<Integer, Integer> tmpCord = myQ.poll();
-                for (int move = 0; move < 4; move++)
-                {
+                for (int move = 0; move < 4; move++) {
 
                     tmpX = tmpCord.getKey() + XX[move];
                     tmpY = tmpCord.getValue() + YY[move];
 
                     // nếu vị trí kề tiếp theo an toàn và có màu cũ -> tô màu nó sang màu mới và bỏ vào hàng đợi để tí loang 4 ô cạnh nó
-                    if (isSafe(sourceColor, tmpX, tmpY) && sourceColor[tmpX][tmpY].equals(oldColor))
-                    {
+                    if (isSafe(sourceColor, tmpX, tmpY) && sourceColor[tmpX][tmpY].equals(oldColor)) {
                         //System.out.println("Added");
                         sourceSet[tmpX][tmpY] = true;
                         sourceColor[tmpX][tmpY] = color;
@@ -150,7 +149,24 @@ public class MyFunction {
                 }
             }
         }
+
+
     }
 
+    public static int leftCenter(int pos) {
+        return (3827 / 28 - (89 * pos) / 112);
+    }
+
+    public static int leftSize(int pos) {
+        return (14524 - 59 * pos) / 115;
+    }
+
+    public static int rightCenter(int pos) {
+        return (pos + 184) * 4 / 5;
+    }
+
+    public static int rightSize(int pos) {
+        return (pos + 9041 / 29) * 58 / 115;
+    }
 
 }
