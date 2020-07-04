@@ -1,0 +1,49 @@
+<changelist name="Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]" date="1593824566134" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 7/4/20, 08:02 [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/main/Paint$Click.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/main/Paint$Click.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Paint$Click.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/main/Paint$Move.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/main/Paint$Move.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Paint$Move.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/main/Paint$6.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/main/Paint$6.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Paint$6.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/xuli/xuliduongve/Tree.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/xuli/xuliduongve/Tree.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Tree.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/xuli/xuliduongve/Point2D.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/xuli/xuliduongve/Point2D.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Point2D.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/main/Paint$5.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/main/Paint$5.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Paint$5.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/main/Paint.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/main/Paint.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Paint.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/main/Paint$4.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/main/Paint$4.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Paint$4.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/paint/com/company/xuli/xuliduongve/Point2D$1.class" />
+    <option name="AFTER_PATH" value="out/production/paint/com/company/xuli/xuliduongve/Point2D$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_4_20,_08_02_[Default_Changelist]/Point2D$1.class" />
+  </binary>
+</changelist>
