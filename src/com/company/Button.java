@@ -10,9 +10,15 @@ public enum Button {
     PAINT,
     CUBE,
     GLOBULAR,
+    PYRAMID,
+    CIRCULAR,
+    CONICAL,
+    TETRAHEDRON,
     RECTANGLE,
-    ERASE,
     ELLIPSE,
+    PARALLELOGRAM,
+    TRIANGLE,
+    ERASE,
     ROTATE,
     ANIMATION,
     CARANIM,
@@ -25,7 +31,6 @@ public enum Button {
     HONRIZONTALSYMETRY,
     POINTSYMETRY,
     ROTATESYMETRY,
-    PYRAMID,
-    CIRCULAR
+
 }
 

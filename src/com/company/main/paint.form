@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="activity_main" layout-manager="GridLayoutManager" row-count="6" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="1124" height="960"/>
+      <xy x="20" y="20" width="1124" height="964"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -63,7 +63,7 @@
                 <children>
                   <component id="ec594" class="javax.swing.JLabel" binding="xCoord2D">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <horizontalAlignment value="0"/>
@@ -590,7 +590,7 @@
           </component>
         </children>
       </grid>
-      <grid id="913b5" binding="Panel2D" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+      <grid id="913b5" binding="Panel2D" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="true"/>
@@ -674,7 +674,7 @@
           </component>
           <component id="73438" class="javax.swing.JButton" binding="animalButton">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1118482"/>
@@ -688,7 +688,7 @@
           </component>
           <component id="79912" class="javax.swing.JButton" binding="button2" default-binding="true">
             <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1118482"/>
@@ -704,9 +704,28 @@
               <hideActionText class="java.lang.Boolean" value="false"/>
             </clientProperties>
           </component>
+          <component id="31999" class="javax.swing.JButton" binding="Triangle">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Triangle"/>
+            </properties>
+          </component>
+          <component id="578d4" class="javax.swing.JButton" binding="parallelogramButton">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1118482"/>
+              <icon value="com/company/Icons/Parallelogram.png"/>
+              <text value=""/>
+              <toolTipText value="Draw Parallelogram"/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <grid id="de65f" binding="Panel3D" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+      <grid id="de65f" binding="Panel3D" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -747,12 +766,15 @@
               <toolTipText value="Draw Globular"/>
             </properties>
           </component>
-          <component id="6350c" class="javax.swing.JButton" binding="pyramidButton">
+          <component id="6350c" class="javax.swing.JButton" binding="conicalButton">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Pyramid"/>
+              <background color="-1118482"/>
+              <icon value="com/company/Icons/Conical.png"/>
+              <text value=""/>
+              <toolTipText value="Draw conical"/>
             </properties>
           </component>
           <component id="43369" class="javax.swing.JButton" binding="circularButton">
@@ -760,15 +782,36 @@
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Circular"/>
+              <background color="-1118482"/>
+              <icon value="com/company/Icons/Circular.png"/>
+              <text value=""/>
+              <toolTipText value="Draw circular"/>
             </properties>
           </component>
           <component id="fafec" class="javax.swing.JButton" binding="customButton">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Custom"/>
+            </properties>
+          </component>
+          <component id="78d4d" class="javax.swing.JButton" binding="pyramidButton">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="pyramid"/>
+            </properties>
+          </component>
+          <component id="90a48" class="javax.swing.JButton" binding="tetrahedronButton">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1118482"/>
+              <icon value="com/company/Icons/Tetrahedron.png"/>
+              <text value=""/>
             </properties>
           </component>
         </children>

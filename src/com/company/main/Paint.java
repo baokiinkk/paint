@@ -1,6 +1,5 @@
 package com.company.main;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -14,7 +13,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.company.Animation2D.Firework;
-import com.company.Button;
 import com.company.xuli.xuliduongve.*;
 import com.company.xuli.xuliduongve.Cube;
 import com.company.xuli.xuliduongve.Rectangle;
@@ -24,14 +22,14 @@ import static com.company.Button.*;
 public class Paint extends JFrame implements ActionListener {
     // ================================== CÁC BIẾN ĐƠN ==========================
     private static int Width = 282;     // độ rộng bảng vẽ
-    private static int Height = 177;    // độ cao
+    private static int Height = 181;    // độ cao
     //=================================== Các biến ánh xạ với UI ================
     private JButton lineButton;             // vẽ đường thẳng
     private JButton clearButton;            // xóa sạch
     private JButton pencilButton;           // đè là vẽ
     private JButton undoButton;             // Undo
     private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton pyramidButton;
+    private JButton conicalButton;
     private JButton circularButton;
     private JButton redoButton;             // Redo
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
@@ -101,6 +99,10 @@ public class Paint extends JFrame implements ActionListener {
     private JPanel Y;
     private JPanel Z;
     private JButton customButton;
+    private JButton pyramidButton;
+    private JButton tetrahedronButton;
+    private JButton Triangle;
+    private JButton parallelogramButton;
 
 
     //========================= biến chứa chế độ đường thẳng đang chọn ==============
@@ -143,7 +145,8 @@ public class Paint extends JFrame implements ActionListener {
         this.setContentPane(activity_main);// liên kết với màn hình form
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0"); // đặt tiêu đề
-        this.setSize(1279, 748); // kích thước cửa sổ
+//        this.setSize(1279, 748); // kích thước cửa sổ
+        this.setSize(1279, 780); // kích thước cửa sổ
         this.setResizable(false);
         ImageIcon icon = new ImageIcon("/com/company/Icons/Color.png");
         this.setIconImage(icon.getImage());
@@ -181,7 +184,7 @@ public class Paint extends JFrame implements ActionListener {
         symetryPointButton.addActionListener(this);
         rotateSymButton.addActionListener(this);
         circularButton.addActionListener(this);
-        pyramidButton.addActionListener(this);
+        conicalButton.addActionListener(this);
         customButton.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
@@ -279,7 +282,7 @@ public class Paint extends JFrame implements ActionListener {
         } else if (globularButton.equals(source)) {
             startXY.set(-1, -1);
             choose = GLOBULAR;
-        } else if (pyramidButton.equals(source)) {
+        } else if (conicalButton.equals(source)) {
             startXY.set(-1, -1);
             choose = PYRAMID;
         }else if (circularButton.equals(source)) {
@@ -519,13 +522,13 @@ public class Paint extends JFrame implements ActionListener {
                     repaint();
                     break;
                 }
-                case PYRAMID: {
+                case CONICAL: {
                     MyFunction.clearArr(nextDrawing);
                     Point2D tmpStart = new Point2D(dialog.getStart2D());
                     Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Pyramid Py = new Pyramid(nextDrawing, nextPoint, chooseColor);
-                        Py.setPyramid(tmpStart, tmpEnd, chooseLineMode);
-                        Py.draw();
+                    Conical Con = new Conical(nextDrawing, nextPoint, chooseColor);
+                        Con.setConical(tmpStart, tmpEnd, chooseLineMode);
+                        Con.draw();
                     repaint();
                     break;
                 }
@@ -750,6 +753,7 @@ public class Paint extends JFrame implements ActionListener {
                     Board.SymPointNow(pointXY);
                     Board.applyNow();
                     repaint();
+                    pointXY.set(-1,-1);
                     break;
                 }
                 case SETCENTER: {
@@ -1157,11 +1161,11 @@ public class Paint extends JFrame implements ActionListener {
                     case PYRAMID: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        Pyramid Py = new Pyramid(nextDrawing, nextPoint, chooseColor);
+                        Conical con = new Conical(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            Py.setPyramid(startXY, mouseXY, chooseLineMode);
-                            Py.draw();
-                            Board.setNowHinhHoc(Py);
+                            con.setConical(startXY, mouseXY, chooseLineMode);
+                            con.draw();
+                            Board.setNowHinhHoc(con);
                         }
                         repaint();
                         break;
