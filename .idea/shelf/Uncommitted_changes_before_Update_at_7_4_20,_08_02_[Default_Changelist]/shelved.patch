@@ -1,0 +1,18 @@
+Index: src/com/company/main/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.company.main;\n\nimport javax.swing.*;\n\npublic class Main {\n\n    public static void main(String[] args) {\n        // write your code here\n        //\n        try {\n            // Set System L&F\n            UIManager.setLookAndFeel(\"javax.swing.plaf.nimbus.NimbusLookAndFeel\");\n        } catch (UnsupportedLookAndFeelException e) {\n            // handle exception\n        } catch (ClassNotFoundException e) {\n            // handle exception\n        } catch (InstantiationException e) {\n            // handle exception\n        } catch (IllegalAccessException e) {\n            // handle exception\n        }\n        Paint ui = new Paint();\n        ui.run();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/company/main/Main.java	(revision ae76e136024489983ba7d4d0667826ec667ebdd8)
++++ src/com/company/main/Main.java	(date 1593824562990)
+@@ -6,7 +6,7 @@
+ 
+     public static void main(String[] args) {
+         // write your code here
+-        //
++
+         try {
+             // Set System L&F
+             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

@@ -31,6 +31,8 @@ public class Paint extends JFrame implements ActionListener {
     private JButton pencilButton;           // đè là vẽ
     private JButton undoButton;             // Undo
     private JButton rectangleButton;        // vẽ hình chữ nhật
+    private JButton pyramidButton;
+    private JButton circularButton;
     private JButton redoButton;             // Redo
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton selectButton;               // hiển thị màu đang chọn
@@ -98,6 +100,8 @@ public class Paint extends JFrame implements ActionListener {
     private JPanel X;
     private JPanel Y;
     private JPanel Z;
+    private JButton customButton;
+
 
     //========================= biến chứa chế độ đường thẳng đang chọn ==============
     private lineMode chooseLineMode = lineMode.DEFAULT;
@@ -176,6 +180,9 @@ public class Paint extends JFrame implements ActionListener {
         symOYButton.addActionListener(this);
         symetryPointButton.addActionListener(this);
         rotateSymButton.addActionListener(this);
+        circularButton.addActionListener(this);
+        pyramidButton.addActionListener(this);
+        customButton.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -272,7 +279,13 @@ public class Paint extends JFrame implements ActionListener {
         } else if (globularButton.equals(source)) {
             startXY.set(-1, -1);
             choose = GLOBULAR;
-        } else if (eraseButton.equals(source)) {
+        } else if (pyramidButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = PYRAMID;
+        }else if (circularButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = CIRCULAR;
+        }else if (eraseButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ERASE;
         } else if (pencilButton.equals(source)) {
@@ -475,7 +488,62 @@ public class Paint extends JFrame implements ActionListener {
             }
 
 
-        } else if (settingButton.equals(source)) {
+        }
+        else if (customButton.equals(source)){
+            Input3D dialog = new Input3D(Width, Height);
+            dialog.pack();
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            switch (choose)
+            {
+                case CUBE:
+                {
+                    Point2D tmpStart = new Point2D(dialog.getStart2D());
+                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
+                    //System.out.println(tmpStart.X +"/" + tmpStart.Y +"---" + tmpEnd.X +"/"+tmpEnd.Y);
+                    Cube cube = new Cube(nextDrawing, nextPoint, chooseColor);
+                    cube.setCube(tmpStart, tmpEnd, chooseLineMode);
+                    cube.draw();
+                    repaint();
+                    break;
+                }
+                case GLOBULAR: {
+                    MyFunction.clearArr(nextDrawing);
+                    Point2D tmpStart = new Point2D(dialog.getStart2D());
+                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
+                    Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
+                        Glo.setGlobular(startXY, mouseXY, chooseLineMode);
+                        Point2D temp = mouseXY;
+                        temp.Y = tmpStart.Y + Math.abs(tmpEnd.X - tmpStart.X) / 2;
+                        Glo.setGlobular(tmpStart, temp, chooseLineMode);
+                        Glo.draw();
+                    repaint();
+                    break;
+                }
+                case PYRAMID: {
+                    MyFunction.clearArr(nextDrawing);
+                    Point2D tmpStart = new Point2D(dialog.getStart2D());
+                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
+                    Pyramid Py = new Pyramid(nextDrawing, nextPoint, chooseColor);
+                        Py.setPyramid(tmpStart, tmpEnd, chooseLineMode);
+                        Py.draw();
+                    repaint();
+                    break;
+                }
+                case CIRCULAR: {
+                    MyFunction.clearArr(nextDrawing);
+                    Point2D tmpStart = new Point2D(dialog.getStart2D());
+                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
+                    Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
+                        Cir.setCircular(tmpStart, tmpEnd, chooseLineMode);
+                        Cir.draw();
+                    repaint();
+                    break;
+                }
+
+            }
+        }
+        else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
             Setting.setGridColor(Board.getGridColor());
             dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
@@ -683,6 +751,7 @@ public class Paint extends JFrame implements ActionListener {
                     Board.SymPointNow(pointXY);
                     Board.applyNow();
                     repaint();
+                    pointXY.set(Width/2,Height/2);
                     break;
                 }
                 case SETCENTER: {
@@ -773,6 +842,20 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case PYRAMID: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case CIRCULAR: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                     case ERASE: // vẽ cục gôm
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -849,6 +932,16 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
+                    case PYRAMID: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case CIRCULAR: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
                     case PAINT: {
                         Board.applyNow();
                         MyFunction.storePointColor(drawingBoard, nextPoint);
@@ -915,6 +1008,8 @@ public class Paint extends JFrame implements ActionListener {
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {      // nắm kéo thả chuột
             if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+                xCoord2D.setText("X: " + (mouseEvent.getX() / rectSize - OX / rectSize));
+                yCoord2D.setText("Y: " + (-(mouseEvent.getY() / rectSize - OY / rectSize)));
                 switch (choose) {
                     case PENCIL: {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
@@ -1057,6 +1152,30 @@ public class Paint extends JFrame implements ActionListener {
                             Glo.setGlobular(startXY, temp, chooseLineMode);
                             Glo.draw();
                             Board.setNowHinhHoc(Glo);
+                        }
+                        repaint();
+                        break;
+                    }
+                    case PYRAMID: {
+                        MyFunction.clearArr(nextDrawing);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Pyramid Py = new Pyramid(nextDrawing, nextPoint, chooseColor);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            Py.setPyramid(startXY, mouseXY, chooseLineMode);
+                            Py.draw();
+                            Board.setNowHinhHoc(Py);
+                        }
+                        repaint();
+                        break;
+                    }
+                    case CIRCULAR: {
+                        MyFunction.clearArr(nextDrawing);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            Cir.setCircular(startXY, mouseXY, chooseLineMode);
+                            Cir.draw();
+                            Board.setNowHinhHoc(Cir);
                         }
                         repaint();
                         break;
