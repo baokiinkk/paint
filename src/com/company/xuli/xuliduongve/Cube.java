@@ -38,7 +38,7 @@ public class Cube extends HinhHoc {
         E.set(start.X+d, start.Y-d);
         F.set(end.X+d, start.Y-d);
         G.set(end.X+d, end.Y-d);
-        H.set(start.X+d, end.Y-d);
+        H.set(start.X + d, end.Y - d);
     }
 
     public void setCube(Point2D start, Point2D end, lineMode mode) {
@@ -48,16 +48,77 @@ public class Cube extends HinhHoc {
         MODE = mode;
     }
 
+    public void setCube(Point3D Start, Point3D End) {
+        if (Start.Y > End.Y) {
+            Point3D tmp = new Point3D(Start.X, Start.Y, Start.X);
+            Start.set(End);
+            End.set(tmp);
+        }
+//        Point3D tmp = new Point3D(End.X-Start.X, End.Y-Start.Y, End.Z-Start.Z);
+//        if (Start.Y > End.Y)
+//            tmp = new Point3D(Start.X-End.X, Start.Y-End.Y, Start.Z-End.Z);
+//        Point3D unit = new Point3D(1, 1, 1);
+//        if (tmp.X < 0) unit.X = -1;
+//        if (tmp.Y < 0) unit.Y = -1;
+//        if (tmp.Z < 0) unit.Z = -1;
+        MODE = lineMode.DEFAULT;
+
+//        Point3D A3 = new Point3D(Start.X, End.Y, Start.Z);
+//        Point3D B3 = new Point3D(End.X, End.Y, Start.Z);
+//        Point3D C3 = new Point3D(End.X, End.Y, End.Z);
+//        Point3D D3 = new Point3D(Start.X, End.Y, End.Z);
+//
+//        Point3D E3 = new Point3D(Start.X, Start.Y, Start.Z);
+//        Point3D F3 = new Point3D(End.X, Start.Y, Start.Z);
+//        Point3D G3 = new Point3D(End.X, Start.Y, End.Z);
+//        Point3D H3 = new Point3D(Start.X, Start.Y, End.Z);
+        Point3D A3 = new Point3D(Start.X, Start.Y, Start.Z);
+        Point3D B3 = new Point3D(End.X, Start.Y, Start.Z);
+        Point3D C3 = new Point3D(End.X, Start.Y, End.Z);
+        Point3D D3 = new Point3D(Start.X, Start.Y, End.Z);
+        Point3D E3 = new Point3D(Start.X, End.Y, Start.Z);
+        Point3D F3 = new Point3D(End.X, End.Y, Start.Z);
+        Point3D G3 = new Point3D(End.X, End.Y, End.Z);
+        Point3D H3 = new Point3D(Start.X, End.Y, End.Z);
+//
+
+        A.set(A3.to2D());
+        B.set(B3.to2D());
+        C.set(C3.to2D());
+        D.set(D3.to2D());
+        E.set(E3.to2D());
+        F.set(F3.to2D());
+        G.set(G3.to2D());
+        H.set(H3.to2D());
+        //MODE = mode;
+    }
+
+    public void draw3D() {
+        super.MidpointLine(A, B, lineMode.DASH);
+        super.MidpointLine(A, D, lineMode.DASH);
+        super.MidpointLine(A, E, lineMode.DASH);
+        super.MidpointLine(C, D, MODE);
+        super.MidpointLine(C, B, MODE);
+        super.MidpointLine(D, H, MODE);
+        super.MidpointLine(C, G, MODE);
+        super.MidpointLine(B, F, MODE);
+        super.MidpointLine(H, G, MODE);
+        super.MidpointLine(G, F, MODE);
+        super.MidpointLine(F, E, MODE);
+        super.MidpointLine(E, H, MODE);
+    }
+
+
     public void draw() {
-        A = A.rotatePoint(center, this.alpha);
-        B = B.rotatePoint(center, this.alpha);
-        C = C.rotatePoint(center, this.alpha);
-        D = D.rotatePoint(center, this.alpha);
-        E = E.rotatePoint(center, this.alpha);
-        F = F.rotatePoint(center, this.alpha);
-        G = G.rotatePoint(center, this.alpha);
-        H = H.rotatePoint(center, this.alpha);
-        if( B.X <= D.X && B.Y >= D.Y){
+//        A = A.rotatePoint(center, this.alpha);
+//        B = B.rotatePoint(center, this.alpha);
+//        C = C.rotatePoint(center, this.alpha);
+//        D = D.rotatePoint(center, this.alpha);
+//        E = E.rotatePoint(center, this.alpha);
+//        F = F.rotatePoint(center, this.alpha);
+//        G = G.rotatePoint(center, this.alpha);
+//        H = H.rotatePoint(center, this.alpha);
+        if (B.X <= D.X && B.Y >= D.Y) {
             super.MidpointLine(A, B, lineMode.DASH);
             super.MidpointLine(B, C, lineMode.DASH);
             super.MidpointLine(C, D, MODE);

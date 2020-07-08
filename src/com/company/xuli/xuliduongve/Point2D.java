@@ -1,5 +1,7 @@
 package com.company.xuli.xuliduongve;
 
+import com.company.main.Paint;
+
 import java.util.ArrayList;
 
 import static java.lang.Math.cos;
@@ -8,8 +10,8 @@ import static java.lang.Math.sin;
 public class Point2D {
     public int X;
     public int Y;
-    private int Width = 282;
-    private int Height = 177;
+    protected int Width = Paint.Width;
+    protected int Height = Paint.Height;
 
     public Point2D() {
     }

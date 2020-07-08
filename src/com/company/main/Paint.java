@@ -21,8 +21,8 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
     // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 282;     // độ rộng bảng vẽ
-    private static int Height = 181;    // độ cao
+    public static int Width = 282;     // độ rộng bảng vẽ
+    public static int Height = 181;    // độ cao
     //=================================== Các biến ánh xạ với UI ================
     private JButton lineButton;             // vẽ đường thẳng
     private JButton clearButton;            // xóa sạch
@@ -284,7 +284,7 @@ public class Paint extends JFrame implements ActionListener {
             choose = GLOBULAR;
         } else if (conicalButton.equals(source)) {
             startXY.set(-1, -1);
-            choose = PYRAMID;
+            choose = CONICAL;
         }else if (circularButton.equals(source)) {
             startXY.set(-1, -1);
             choose = CIRCULAR;
@@ -492,58 +492,66 @@ public class Paint extends JFrame implements ActionListener {
 
 
         }
-        else if (customButton.equals(source)){
-            Input3D dialog = new Input3D(Width, Height);
+        else if (customButton.equals(source)) {
+            Input3D dialog = new Input3D(Width, Height, choose);
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
-            switch (choose)
-            {
-                case CUBE:
-                {
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    //System.out.println(tmpStart.X +"/" + tmpStart.Y +"---" + tmpEnd.X +"/"+tmpEnd.Y);
-                    Cube cube = new Cube(nextDrawing, nextPoint, chooseColor);
-                    cube.setCube(tmpStart, tmpEnd, chooseLineMode);
-                    cube.draw();
-                    repaint();
-                }
-                case GLOBULAR: {
-                    MyFunction.clearArr(nextDrawing);
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
+            if (dialog.isOK()) {
+                switch (choose) {
+                    case CUBE: {
+//                        Point2D tmpStart = new Point2D(dialog.getStart2D().to2D());
+//                        Point2D tmpEnd = new Point2D(dialog.getEnd2D().to2D());
+//                        System.out.println(tmpStart.X +"/" + tmpStart.Y +"---" + tmpEnd.X +"/"+tmpEnd.Y);
+                        Cube cube = new Cube(nextDrawing, nextPoint, chooseColor);
+                        cube.setCube(dialog.getStart3D(), dialog.getEnd3D());
+                        cube.draw3D();
+//                        tmpStart.set(tmpStart.X + Width / 2, -tmpStart.Y + Height / 2);
+//                        tmpEnd.set(tmpEnd.X + Width / 2, -tmpEnd.Y + Height / 2);
+//                        System.out.println("Start: " + tmpStart.X + ", " + tmpStart.Y);
+//                        System.out.println("End: " + tmpEnd.X + ", " + tmpEnd.Y);
+                        //new HinhHoc(nextDrawing, nextPoint, chooseColor).MidpointLine(tmpStart, tmpEnd, lineMode.DEFAULT);
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case GLOBULAR: {
+                        MyFunction.clearArr(nextDrawing);
+                        Point2D tmpStart = new Point2D(dialog.getStart3D());
+                        Point2D tmpEnd = new Point2D(dialog.getEnd3D());
+                        Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
                         Glo.setGlobular(startXY, mouseXY, chooseLineMode);
                         Point2D temp = mouseXY;
                         temp.Y = tmpStart.Y + Math.abs(tmpEnd.X - tmpStart.X) / 2;
                         Glo.setGlobular(tmpStart, temp, chooseLineMode);
                         Glo.draw();
-                    repaint();
-                    break;
-                }
-                case CONICAL: {
-                    MyFunction.clearArr(nextDrawing);
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Conical Con = new Conical(nextDrawing, nextPoint, chooseColor);
+                        repaint();
+                        break;
+                    }
+                    case CONICAL: {
+                        MyFunction.clearArr(nextDrawing);
+                        Point2D tmpStart = new Point2D(dialog.getStart3D());
+                        Point2D tmpEnd = new Point2D(dialog.getEnd3D());
+                        Conical Con = new Conical(nextDrawing, nextPoint, chooseColor);
                         Con.setConical(tmpStart, tmpEnd, chooseLineMode);
                         Con.draw();
-                    repaint();
-                    break;
-                }
-                case CIRCULAR: {
-                    MyFunction.clearArr(nextDrawing);
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
+                        repaint();
+                        break;
+                    }
+                    case CIRCULAR: {
+                        MyFunction.clearArr(nextDrawing);
+                        Point2D tmpStart = new Point2D(dialog.getStart3D());
+                        Point2D tmpEnd = new Point2D(dialog.getEnd3D());
+                        Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
                         Cir.setCircular(tmpStart, tmpEnd, chooseLineMode);
                         Cir.draw();
-                    repaint();
-                    break;
-                }
+                        repaint();
+                        break;
+                    }
 
+                }
             }
+
         }
         else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
@@ -851,6 +859,13 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case CONICAL: // vẽ hinh hộp chữ nhật
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                     case CIRCULAR: // vẽ hinh hộp chữ nhật
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -935,6 +950,11 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case PYRAMID: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case CONICAL: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -1158,7 +1178,7 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
-                    case PYRAMID: {
+                    case CONICAL: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         Conical con = new Conical(nextDrawing, nextPoint, chooseColor);
