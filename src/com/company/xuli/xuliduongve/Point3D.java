@@ -29,4 +29,9 @@ public class Point3D extends Point2D {
         return res;
     }
 
+    public void set(int x, int y, int z) {
+        this.X = x;
+        this.Y = y;
+        this.Z = z;
+    }
 }

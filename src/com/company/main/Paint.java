@@ -511,7 +511,6 @@ public class Paint extends JFrame implements ActionListener {
 //                        System.out.println("Start: " + tmpStart.X + ", " + tmpStart.Y);
 //                        System.out.println("End: " + tmpEnd.X + ", " + tmpEnd.Y);
                         //new HinhHoc(nextDrawing, nextPoint, chooseColor).MidpointLine(tmpStart, tmpEnd, lineMode.DEFAULT);
-                        Board.applyNow();
                         repaint();
                         break;
                     }
@@ -550,6 +549,7 @@ public class Paint extends JFrame implements ActionListener {
                     }
 
                 }
+                Board.applyNow();
             }
 
         }
@@ -704,6 +704,7 @@ public class Paint extends JFrame implements ActionListener {
                 MyFunction.clearArr(nextPoint);
                 repaint();
             }
+
             //break;
         }
         else if(symOYButton.equals(source)) {
@@ -713,16 +714,15 @@ public class Paint extends JFrame implements ActionListener {
         else if(symOXButton.equals(source)) {
             startXY.set(-1, -1);
             choose = HONRIZONTALSYMETRY;
-        }
-        else if(symetryPointButton.equals((source))){
+        } else if (symetryPointButton.equals((source))) {
             startXY.set(-1, -1);
             choose = POINTSYMETRY;
-        }
-        else if(rotateSymButton.equals(source)){
+        } else if (rotateSymButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ROTATESYMETRY;
         }
-
+        undoButton.setEnabled(Board.ableUndo());
+        redoButton.setEnabled(Board.ableRedo());
     }
 
 
