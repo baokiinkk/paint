@@ -16,6 +16,13 @@ public class Point3D extends Point2D {
         this.Z = z;
     }
 
+    public Point3D(Point3D other) {
+        super();
+        this.X = other.X;
+        this.Y = other.Y;
+        this.Z = other.Z;
+    }
+
     public void set(Point3D other) {
         this.X = other.X;
         this.Y = other.Y;

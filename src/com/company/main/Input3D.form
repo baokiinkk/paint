@@ -310,7 +310,7 @@
                       <text value="X:"/>
                     </properties>
                   </component>
-                  <component id="9eef8" class="javax.swing.JTextField" default-binding="true">
+                  <component id="9eef8" class="javax.swing.JTextField" binding="centerX">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="50" height="-1"/>
@@ -330,7 +330,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="7fd06" class="javax.swing.JTextField" default-binding="true">
+                  <component id="7fd06" class="javax.swing.JTextField" binding="centerZ">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="50" height="-1"/>
@@ -366,7 +366,7 @@
                       <text value="Y:"/>
                     </properties>
                   </component>
-                  <component id="e4982" class="javax.swing.JTextField" default-binding="true">
+                  <component id="e4982" class="javax.swing.JTextField" binding="centerY">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="50" height="-1"/>
@@ -404,7 +404,7 @@
                       <text value="Height"/>
                     </properties>
                   </component>
-                  <component id="a51be" class="javax.swing.JTextField" default-binding="true">
+                  <component id="a51be" class="javax.swing.JTextField" binding="sizeHeight">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="50" height="-1"/>
@@ -424,7 +424,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="baef7" class="javax.swing.JTextField" default-binding="true">
+                  <component id="baef7" class="javax.swing.JTextField" binding="sizeDepth">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="50" height="-1"/>
@@ -460,7 +460,7 @@
                       <text value="Width"/>
                     </properties>
                   </component>
-                  <component id="aa4dd" class="javax.swing.JTextField" default-binding="true">
+                  <component id="aa4dd" class="javax.swing.JTextField" binding="sizeWidth">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="50" height="-1"/>

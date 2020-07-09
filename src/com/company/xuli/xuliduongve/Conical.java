@@ -6,13 +6,16 @@ import java.awt.*;
 
 public class Conical extends HinhHoc {
     private lineMode MODE;
-    private Point2D  first;
-    private Point2D  second;
-    private Point2D  third;
-    private Point2D  fourth;
-    private double   Major_rad;
-    private double   Minor_rad;
-    private Point2D      centerElip;
+    private Point2D first;
+    private Point2D second;
+    private Point2D third;
+    private Point2D fourth;
+    private double Major_rad;
+    private double Minor_rad;
+    private Point2D centerElip;
+    private Point3D top3D;
+    private Point3D center3D;
+    private Point3D rad3D;
 
     //khởi tạo hình hộp chữ nhật
     public Conical(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
@@ -29,17 +32,37 @@ public class Conical extends HinhHoc {
         this.start = start;
         this.end = end;
         MODE = mode;
-        centerElip.set(start.X,end.Y);
+        centerElip.set(start.X, end.Y);
         Major_rad = Math.abs(centerElip.X - this.end.X);
-        Minor_rad = Math.abs(start.Y - end.Y)/8;
+        Minor_rad = Math.abs(start.Y - end.Y) / 8;
     }
 
-    public void drawElip(boolean checkDash)
-    {
+    public void setConical3D(Point3D Start, Point3D End, lineMode mode) {
+        this.top3D = new Point3D(Start.X, Start.Y, Start.Z);
+        this.center3D = new Point3D(Start.X, Start.Y, End.Z);
+
+        this.start = Start.to2D();
+        MODE = mode;
+        centerElip.set(center3D.to2D());
+        int dis = (int) Math.round(Math.sqrt(Math.pow(Start.X - End.X, 2) + Math.pow(Start.Y - End.Y, 2)));
+        this.rad3D = new Point3D(center3D.X + dis, center3D.Y, center3D.Z);
+        this.end = rad3D.to2D();
+        Major_rad = dis;
+        Minor_rad = Math.abs(Start.Z - End.Z) / 8;
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        top3D.saveCoord(coord);
+        center3D.saveCoord(coord);
+        rad3D.saveCoord(coord);
+    }
+
+    public void drawElip(boolean checkDash) {
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
-            double y1_c= Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            double y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                     - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
 
             double y2_c = centerElip.Y - y1_c;

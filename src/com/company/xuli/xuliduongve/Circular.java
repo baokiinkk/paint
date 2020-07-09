@@ -6,14 +6,19 @@ import java.awt.*;
 
 public class Circular extends HinhHoc {
     private lineMode MODE;
-    private Point2D  first;
-    private Point2D  second;
-    private Point2D  third;
-    private Point2D  fourth;
-    private double   Major_rad;
-    private double   Minor_rad;
-    private Point2D      centerElipT;
-    private Point2D      centerElipD;
+    private Point2D first;
+    private Point2D second;
+    private Point2D third;
+    private Point2D fourth;
+    private double Major_rad;
+    private double Minor_rad;
+    private Point2D centerElipT;
+    private Point2D centerElipD;
+
+    private Point3D top3D;
+    private Point3D center3D;
+    private Point3D rad3D;
+
     //khởi tạo hình hộp chữ nhật
     public Circular(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
@@ -31,11 +36,37 @@ public class Circular extends HinhHoc {
         this.start = start;
         this.end = end;
         MODE = mode;
-        centerElipT.set(start.X,start.Y);
-        centerElipD.set(start.X,end.Y);
+        centerElipT.set(start.X, start.Y);
+        centerElipD.set(start.X, end.Y);
         Major_rad = Math.abs(centerElipT.X - this.end.X);
-        Minor_rad = Major_rad/3;
+        Minor_rad = Major_rad / 3;
     }
+
+    public void setCircular3D(Point3D Start, Point3D End, lineMode mode) {
+        this.top3D = new Point3D(Start.X, Start.Y, Start.Z);
+        this.center3D = new Point3D(Start.X, Start.Y, End.Z);
+
+        this.start = Start.to2D();
+
+        MODE = mode;
+        centerElipT.set(top3D.to2D());
+        centerElipD.set(center3D.to2D());
+        int dis = (int) Math.round(Math.sqrt(Math.pow(Start.X - End.X, 2) + Math.pow(Start.Y - End.Y, 2)));
+        this.rad3D = new Point3D(center3D.X + dis, center3D.Y, center3D.Z);
+        this.end = rad3D.to2D();
+
+        Major_rad = dis;
+        Minor_rad = Major_rad / 3;
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        //super.saveCoord(coord);
+        top3D.saveCoord(coord);
+        center3D.saveCoord(coord);
+        rad3D.saveCoord(coord);
+    }
+
     public void drawElip(Point2D point, boolean checkDash) {
         int x1_c = 0;
         while (Major_rad > x1_c) {

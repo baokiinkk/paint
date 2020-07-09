@@ -505,51 +505,38 @@ public class Paint extends JFrame implements ActionListener {
                 choose = dialog.get3DShape();
                 switch (choose) {
                     case CUBE: {
-//                        Point2D tmpStart = new Point2D(dialog.getStart2D().to2D());
-//                        Point2D tmpEnd = new Point2D(dialog.getEnd2D().to2D());
-//                        System.out.println(tmpStart.X +"/" + tmpStart.Y +"---" + tmpEnd.X +"/"+tmpEnd.Y);
                         Cube cube = new Cube(nextDrawing, nextPoint, chooseColor);
                         cube.setCube(dialog.getStart3D(), dialog.getEnd3D());
                         cube.draw3D();
-//                        tmpStart.set(tmpStart.X + Width / 2, -tmpStart.Y + Height / 2);
-//                        tmpEnd.set(tmpEnd.X + Width / 2, -tmpEnd.Y + Height / 2);
-//                        System.out.println("Start: " + tmpStart.X + ", " + tmpStart.Y);
-//                        System.out.println("End: " + tmpEnd.X + ", " + tmpEnd.Y);
-                        //new HinhHoc(nextDrawing, nextPoint, chooseColor).MidpointLine(tmpStart, tmpEnd, lineMode.DEFAULT);
+
                         cube.saveCoord(nextCoord);
                         repaint();
                         break;
                     }
                     case GLOBULAR: {
                         MyFunction.clearArr(nextDrawing);
-                        Point2D tmpStart = new Point2D(dialog.getStart3D());
-                        Point2D tmpEnd = new Point2D(dialog.getEnd3D());
                         Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
-                        Glo.setGlobular(startXY, mouseXY, chooseLineMode);
-                        Point2D temp = mouseXY;
-                        temp.Y = tmpStart.Y + Math.abs(tmpEnd.X - tmpStart.X) / 2;
-                        Glo.setGlobular(tmpStart, temp, chooseLineMode);
+                        Glo.setGlobular3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
                         Glo.draw();
+                        Glo.saveCoord(nextCoord);
                         repaint();
                         break;
                     }
                     case CONICAL: {
                         MyFunction.clearArr(nextDrawing);
-                        Point2D tmpStart = new Point2D(dialog.getStart3D());
-                        Point2D tmpEnd = new Point2D(dialog.getEnd3D());
                         Conical Con = new Conical(nextDrawing, nextPoint, chooseColor);
-                        Con.setConical(tmpStart, tmpEnd, chooseLineMode);
+                        Con.setConical3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
                         Con.draw();
+                        Con.saveCoord(nextCoord);
                         repaint();
                         break;
                     }
                     case CIRCULAR: {
                         MyFunction.clearArr(nextDrawing);
-                        Point2D tmpStart = new Point2D(dialog.getStart3D());
-                        Point2D tmpEnd = new Point2D(dialog.getEnd3D());
                         Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
-                        Cir.setCircular(tmpStart, tmpEnd, chooseLineMode);
+                        Cir.setCircular3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
                         Cir.draw();
+                        Cir.saveCoord(nextCoord);
                         repaint();
                         break;
                     }

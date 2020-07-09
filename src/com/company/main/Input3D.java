@@ -29,6 +29,12 @@ public class Input3D extends JDialog {
     private JButton pyramid;
     private JButton tetrahedral;
     private JButton shapShower;
+    private JTextField centerX;
+    private JTextField centerY;
+    private JTextField centerZ;
+    private JTextField sizeHeight;
+    private JTextField sizeWidth;
+    private JTextField sizeDepth;
 
     private Point3D start;
     private Point3D end;
@@ -55,7 +61,7 @@ public class Input3D extends JDialog {
         shape = Button.CUBE;
         shapShower.setIcon(cube.getIcon());
         refreshState();
-        System.out.println(shape);
+        //System.out.println(shape);
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
@@ -177,16 +183,43 @@ public class Input3D extends JDialog {
 
     private void onOK () {
         // add your code here
-        start = new Point3D(Integer.valueOf(textField1.getText().trim()), Integer.valueOf(textField2.getText().trim()), Integer.valueOf(textField3.getText().trim()));
-        end = new Point3D(Integer.valueOf(textField4.getText().trim()), Integer.valueOf(textField5.getText().trim()), Integer.valueOf(textField6.getText().trim()));
-        System.out.println(start.X + "/" + start.Y + "+++" + end.X + "/" + end.Y);
-        //vec = new Point3D(end.X-start.X, end.Y-start.Y, end.Z-start.Z);
-        //start.X += OX;
-        //start.Y += OX;
-        //start.Z = OY - start.Z;
-        //end.X += OX;
-        //end.Y += OX;
-        //end.Y += OY - start.Z;
+        if (vectorRadioButton.isSelected()) {
+            start = new Point3D(Integer.valueOf(textField1.getText().trim()),
+                    Integer.valueOf(textField2.getText().trim()), Integer.valueOf(textField3.getText().trim()));
+            end = new Point3D(Integer.valueOf(textField4.getText().trim()),
+                    Integer.valueOf(textField5.getText().trim()), Integer.valueOf(textField6.getText().trim()));
+        } else {
+            Point3D tmpStart = new Point3D(Integer.valueOf(centerX.getText().trim()),
+                    Integer.valueOf(centerY.getText().trim()), Integer.valueOf(centerZ.getText().trim()));
+            switch (shape) {
+                case CUBE: {
+                    Point3D tmpEnd = new Point3D(Integer.valueOf(sizeWidth.getText().trim()),
+                            Integer.valueOf(sizeDepth.getText().trim()), Integer.valueOf(sizeHeight.getText().trim()));
+                    start = new Point3D(tmpStart.X - Math.round(tmpEnd.X / 2),
+                            tmpStart.Y - Math.round(tmpEnd.Y / 2), tmpStart.Z - Math.round(tmpEnd.Z / 2));
+                    end = new Point3D(tmpStart.X + Math.round(tmpEnd.X / 2),
+                            tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z + Math.round(tmpEnd.Z / 2));
+                    break;
+                }
+                case GLOBULAR: {
+                    start = new Point3D(tmpStart);
+                    end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
+                    break;
+                }
+                case CONICAL: {
+                    start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + Integer.valueOf(sizeHeight.getText().trim()));
+                    end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
+                    break;
+                }
+                case CIRCULAR: {
+                    start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + Integer.valueOf(sizeHeight.getText().trim()));
+                    end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
+                    break;
+                }
+            }
+        }
+
+
         isChoosing = true;
         dispose();
     }
