@@ -49,8 +49,8 @@ public class Cube extends HinhHoc {
     }
 
     public void setCube(Point3D Start, Point3D End) {
-        Point3D tmpS = new Point3D(Start.X, Start.Y, Start.X);
-        Point3D tmpE = new Point3D(End.X, End.Y, End.X);
+        Point3D tmpS = new Point3D(Start.X, Start.Y, Start.Z);
+        Point3D tmpE = new Point3D(End.X, End.Y, End.Z);
         End.set(Math.max(tmpS.X, tmpE.X), Math.max(tmpS.Y, tmpE.Y), Math.max(tmpS.Z, tmpE.Z));
         Start.set(Math.min(tmpS.X, tmpE.X), Math.min(tmpS.Y, tmpE.Y), Math.min(tmpS.Z, tmpE.Z));
 //        Point3D tmp = new Point3D(End.X-Start.X, End.Y-Start.Y, End.Z-Start.Z);
@@ -60,6 +60,9 @@ public class Cube extends HinhHoc {
 //        if (tmp.X < 0) unit.X = -1;
 //        if (tmp.Y < 0) unit.Y = -1;
 //        if (tmp.Z < 0) unit.Z = -1;
+
+        System.out.println(tmpS.X + " " + tmpS.Y + " " + tmpS.Z);
+        System.out.println(tmpE.X + " " + tmpE.Y + " " + tmpE.Z);
         MODE = lineMode.DEFAULT;
 
 //        Point3D A3 = new Point3D(Start.X, End.Y, Start.Z);

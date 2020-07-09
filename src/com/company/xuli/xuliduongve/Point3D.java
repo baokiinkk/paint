@@ -22,8 +22,8 @@ public class Point3D extends Point2D {
 
     public Point2D to2D() {
         Point2D res = new Point2D();
-        int tmpX = (int) (X - Math.round(Z * Math.cos(Math.toRadians(45))));
-        int tmpY = (int) (Y - Math.round(Z * Math.sin(Math.toRadians(45))));
+        int tmpX = (int) (X - Math.round(Y * Math.cos(Math.toRadians(45))));
+        int tmpY = (int) (Z - Math.round(Y * Math.sin(Math.toRadians(45))));
         res.set(tmpX + this.Width / 2, -tmpY + this.Height / 2);
         //System.out.println(X +"/" + Y +"->" + res.X +"/"+res.Y);
         return res;

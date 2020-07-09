@@ -30,6 +30,14 @@ public class Rectangle extends HinhHoc {
         D.set(start.X, end.Y);                //         D-----------------C  (end)
     }
 
+
+    public void saveCoord(String[][] coord) {
+        A.rotatePoint(center, this.alpha).saveCoord(coord);
+        B.rotatePoint(center, this.alpha).saveCoord(coord);
+        C.rotatePoint(center, this.alpha).saveCoord(coord);
+        D.rotatePoint(center, this.alpha).saveCoord(coord);
+    }
+
     // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
     public void setRectangle(Point2D start, Point2D end, lineMode mode) {
         this.setRectangle(start, end);

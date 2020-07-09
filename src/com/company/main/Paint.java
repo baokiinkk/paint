@@ -62,8 +62,8 @@ public class Paint extends JFrame implements ActionListener {
     private JButton animalButton;
     private JPanel settingPanel;
     private JPanel filePanel;
-    private int spacing = 1;           // khoảng cách giữa 2 pixels
-    private int rectSize = 4;          // tổng của kích thước pixel và spacing
+    public static int spacing = 1;           // khoảng cách giữa 2 pixels
+    public static int rectSize = 4;          // tổng của kích thước pixel và spacing
     private boolean playingAnimation = false;
     private Timer timer;
     private int time = 0;
@@ -75,8 +75,8 @@ public class Paint extends JFrame implements ActionListener {
     private boolean show3DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
     private boolean show2DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
     private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
-    private int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
+    public static int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
+    public static int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
     private Point2D startSelect;
     private Point2D endSelect;
     private JPanel Coord2D;
@@ -89,6 +89,8 @@ public class Paint extends JFrame implements ActionListener {
     private boolean[][] nextDrawing = new boolean[Width][Height];
     private Color[][] nextPoint = new Color[Width][Height];
     private Color[][] drawingBoard = new Color[Width][Height];
+    private String[][] Coord = new String[Width][Height];
+    private String[][] nextCoord = new String[Width][Height];
 
     // ================================== CÁC LOẠI PANEL ==========================
     private JPanel activity_main;
@@ -127,7 +129,7 @@ public class Paint extends JFrame implements ActionListener {
     // hàm custom cho các thành phần trong form
 
     private void createUIComponents() {
-        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Width, Height, spacing, rectSize);
+        drawArea = new Board(nextDrawing, nextPoint, drawingBoard, Coord, nextCoord);
         drawArea.addMouseMotionListener(new Move());
         drawArea.addMouseListener(new Click());
         styleComboBox = new JComboBox<lineMode>(lineModeArr);
@@ -262,6 +264,8 @@ public class Paint extends JFrame implements ActionListener {
             redoButton.setEnabled(Board.ableRedo());
             repaint();
         } else if (clearButton.equals(source)) {//choose = Button.CLEAR;
+            MyFunction.clearArr(Coord);
+            MyFunction.clearArr(nextCoord);
             MyFunction.clearArr(drawingBoard);
             MyFunction.clearArr(nextPoint);
             repaint();
@@ -498,6 +502,7 @@ public class Paint extends JFrame implements ActionListener {
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
             if (dialog.isOK()) {
+                choose = dialog.get3DShape();
                 switch (choose) {
                     case CUBE: {
 //                        Point2D tmpStart = new Point2D(dialog.getStart2D().to2D());
@@ -981,14 +986,19 @@ public class Paint extends JFrame implements ActionListener {
                     }
                     case ROTATE: {
                         if (Board.now != null) {
+                            MyFunction.clearArr(nextCoord);
                             Board.applyRotate(startXY, mouseXY);
+                            Board.now.saveCoord(nextCoord);
                         }
                         Board.applyNow();
+                        repaint();
                         break;
                     }
                     case MOVE: {
                         if (Board.now != null) {
+                            MyFunction.clearArr(nextCoord);
                             Board.applyMove(startXY, mouseXY);
+                            Board.now.saveCoord(nextCoord);
                         }
                         Board.applyNow();
                         repaint();
@@ -1067,8 +1077,9 @@ public class Paint extends JFrame implements ActionListener {
                             } else {
                                 rec.setRectangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
                             }
-                            rec.draw(pointXY,chooseSideMode); // cho vẽ hình
-
+                            rec.draw(pointXY, chooseSideMode); // cho vẽ hình
+                            MyFunction.clearArr(nextCoord);
+                            rec.saveCoord(nextCoord);
                             Board.setNowHinhHoc(rec); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
                         repaint();
@@ -1148,16 +1159,18 @@ public class Paint extends JFrame implements ActionListener {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         Ellipse elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            if(startXY.X == mouseXY.X)
+                            if (startXY.X == mouseXY.X)
                                 mouseXY.X++;
-                            if(startXY.Y == mouseXY.Y)
+                            if (startXY.Y == mouseXY.Y)
                                 mouseXY.Y++;
                             if (mouseEvent.isShiftDown()) {
                                 elp.setCircle(startXY, mouseXY, chooseLineMode);
                             } else {
                                 elp.setElip(startXY, mouseXY, chooseLineMode);
                             }
-                            elp.draw(pointXY,chooseSideMode);
+                            elp.draw(pointXY, chooseSideMode);
+                            MyFunction.clearArr(nextCoord);
+                            elp.saveCoord(nextCoord);
                             Board.setNowHinhHoc(elp);
                         }
                         repaint();
@@ -1209,7 +1222,8 @@ public class Paint extends JFrame implements ActionListener {
                             //System.out.println(Board.now.tag);
                             if (Board.now != null) {
                                 Board.rotateNow(startXY, mouseXY);
-
+                                MyFunction.clearArr(nextCoord);
+                                Board.now.saveCoord(nextCoord);
                             }
                             repaint();
                         }
@@ -1222,6 +1236,8 @@ public class Paint extends JFrame implements ActionListener {
                             //System.out.println(Board.now.tag);
                             if (Board.now != null) {
                                 Board.moveNow(startXY, mouseXY);
+                                MyFunction.clearArr(nextCoord);
+                                Board.now.saveCoord(nextCoord);
                             }
                             //System.out.println("Move");
                             repaint();

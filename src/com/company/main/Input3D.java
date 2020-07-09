@@ -22,6 +22,13 @@ public class Input3D extends JDialog {
     private JPanel vectorPanel;
     private JPanel depthPanel;
     private JPanel heightPanel;
+    private JButton cube;
+    private JButton globular;
+    private JButton concical;
+    private JButton circular;
+    private JButton pyramid;
+    private JButton tetrahedral;
+    private JButton shapShower;
 
     private Point3D start;
     private Point3D end;
@@ -45,15 +52,10 @@ public class Input3D extends JDialog {
         OY = Height / 2;
         isVector = true;
         isChoosing = false;
-        shape = Choose;
+        shape = Button.CUBE;
+        shapShower.setIcon(cube.getIcon());
         refreshState();
         System.out.println(shape);
-        if (shape.equals(Button.GLOBULAR) || shape.equals(Button.CONICAL) || shape.equals(Button.CIRCULAR)) {
-            depthPanel.setVisible(false);
-            if (shape.equals(Button.GLOBULAR)) {
-                heightPanel.setVisible(false);
-            }
-        }
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
@@ -83,6 +85,73 @@ public class Input3D extends JDialog {
                 }
             }
         });
+
+        cube.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == cube) {
+                    shape = Button.CUBE;
+                    shapShower.setIcon(cube.getIcon());
+                    refreshState();
+                }
+            }
+        });
+
+        tetrahedral.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == tetrahedral) {
+                    shape = Button.TETRAHEDRON;
+                    shapShower.setIcon(tetrahedral.getIcon());
+                    refreshState();
+                }
+            }
+        });
+
+        circular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == circular) {
+                    shape = Button.CIRCULAR;
+                    shapShower.setIcon(circular.getIcon());
+                    refreshState();
+                }
+            }
+        });
+
+        globular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == globular) {
+                    shape = Button.GLOBULAR;
+                    shapShower.setIcon(globular.getIcon());
+                    refreshState();
+                }
+            }
+        });
+
+        concical.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == concical) {
+                    shape = Button.CONICAL;
+                    shapShower.setIcon(concical.getIcon());
+                    refreshState();
+                }
+            }
+        });
+
+        pyramid.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == pyramid) {
+                    shape = Button.PYRAMID;
+                    shapShower.setIcon(pyramid.getIcon());
+                    refreshState();
+                }
+            }
+        });
+
 
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -142,11 +211,28 @@ public class Input3D extends JDialog {
         return end;
     }
 
+    public Button get3DShape() {
+        return shape;
+    }
+
+
     public void refreshState() {
         vectorRadioButton.setSelected(isVector);
         positionRadioButton.setSelected(!isVector);
         vectorPanel.setVisible(isVector);
         positionPanel.setVisible(!isVector);
+        //System.out.println(shape);
+        if (shape.equals(Button.GLOBULAR) || shape.equals(Button.CONICAL) || shape.equals(Button.CIRCULAR)) {
+            depthPanel.setVisible(false);
+            if (shape.equals(Button.GLOBULAR)) {
+                heightPanel.setVisible(false);
+            } else {
+                heightPanel.setVisible(true);
+            }
+        } else {
+            depthPanel.setVisible(true);
+            heightPanel.setVisible(true);
+        }
     }
 
     public boolean isOK() {

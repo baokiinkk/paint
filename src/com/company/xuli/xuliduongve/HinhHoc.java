@@ -28,13 +28,17 @@ public class HinhHoc {
         listPointColor = new ArrayList<>();
     }
 
+    public void saveCoord(String[][] coord) {
+
+    }
+
     public void MidpointLine(Point2D start, Point2D end, lineMode Mode) {
         // tính khoảng cách 2 điểm
         float x = start.X, y = start.Y, temp = (Math.abs(end.X - start.X) >= Math.abs(end.Y - start.Y)) ? Math.abs(end.X - start.X) : Math.abs(end.Y - start.Y);
 
         // lm tron len điểm đó
-        int tx = (int) (x + 0.5);
-        int ty = (int) (y + 0.5);
+        int tx = Math.round(x);
+        int ty = Math.round(y);
 
         // lưu vị trí điểm và màu của điểm đó vào danh sách
 
@@ -52,8 +56,8 @@ public class HinhHoc {
             y += (end.Y - start.Y) / temp;
 
             // lm tròn lên điểm đó
-            tx = (int) (x + 0.5);
-            ty = (int) (y + 0.5);
+            tx = Math.round(x);
+            ty = Math.round(y);
 
             // lưu vị trí điểm và màu của điểm đó vào danh sách
             if (MyFunction.isSafe(nextPoint, tx, ty) && MyFunction.chooseMode(i, Mode)) {
@@ -92,7 +96,7 @@ public class HinhHoc {
                 Draw8Point(x, y, start.X, start.Y);
             while (x <= y) {
                 x++;
-                y = (int) (Math.round(Math.sqrt(Math.pow(r, 2) - Math.pow(x, 2))) + 0.5);
+                y = (int) (Math.round(Math.sqrt(Math.pow(r, 2) - Math.pow(x, 2))));
                 if (MyFunction.chooseMode(x, mode))
                     Draw8Point(x, y, start.X, start.Y);
             }
@@ -102,8 +106,8 @@ public class HinhHoc {
 
     private void putPixel(int x, int y) {
         float x1 = x, y1 = y;
-        int tx = (int) (x1 + 0.5);
-        int ty = (int) (y1 + 0.5);
+        int tx = Math.round(x1);
+        int ty = Math.round(y1);
         if (MyFunction.isSafe(nextPoint, tx, ty)) {
             nextDrawing[tx][ty] = true;
             nextPoint[tx][ty] = chooseColor;
