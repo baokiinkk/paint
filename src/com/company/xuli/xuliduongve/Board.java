@@ -340,27 +340,6 @@ public class Board extends JPanel {
                 g.drawLine(OX, 0, OX, 800);
             }
 
-            if (showCoord)  // hiện tọa độ
-            {
-                for (int i = 0; i < width; i++) {
-                    for (int j = 0; j < height; j++) {
-                        if (coordBoard[i][j] != null) {
-                            g.setColor(drawingBoard[i][j]);
-                            if (drawingBoard[i][j].equals(Color.WHITE)) {
-                                g.setColor(Color.BLACK);
-                            }
-                            int x = spacing + i * rectSize;
-                            int y = spacing + j * rectSize;
-                            if (y < 15)
-                                y = 15;
-                            if (x + 40 > (width - 4) * rectSize)
-                                x -= 40;
-                            //System.out.println(x + " " + y);
-                            g.drawString(coordBoard[i][j], x, y);
-                        }
-                    }
-                }
-            }
         } else {
             if (showAxis) {
                 g.setColor(Color.RED);
@@ -382,6 +361,27 @@ public class Board extends JPanel {
 //                g2d.drawLine(OX + 800, OY - 800, OX, OY);
 
 
+            }
+        }
+        if (showCoord)  // hiện tọa độ
+        {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    if (coordBoard[i][j] != null) {
+                        g.setColor(drawingBoard[i][j]);
+                        if (drawingBoard[i][j].equals(Color.WHITE)) {
+                            g.setColor(Color.BLACK);
+                        }
+                        int x = spacing + i * rectSize + 5;
+                        int y = spacing + j * rectSize - 2;
+                        if (y < 15)
+                            y = 15;
+                        if (x + 40 > (width - 4) * rectSize)
+                            x -= 40;
+                        //System.out.println(x + " " + y);
+                        g.drawString(coordBoard[i][j], x, y);
+                    }
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 package com.company.xuli.xuliduongve;
 
+import com.company.main.Paint;
+
 public class Point3D extends Point2D {
     public int Z;
 
@@ -33,5 +35,14 @@ public class Point3D extends Point2D {
         this.X = x;
         this.Y = y;
         this.Z = z;
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        //super.saveCoord(coord);
+        String pos = "";
+        pos = "(" + X + ", " + Y + "," + Z + ")";
+
+        coord[this.to2D().X][this.to2D().Y] = pos;
     }
 }

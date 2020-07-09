@@ -516,6 +516,7 @@ public class Paint extends JFrame implements ActionListener {
 //                        System.out.println("Start: " + tmpStart.X + ", " + tmpStart.Y);
 //                        System.out.println("End: " + tmpEnd.X + ", " + tmpEnd.Y);
                         //new HinhHoc(nextDrawing, nextPoint, chooseColor).MidpointLine(tmpStart, tmpEnd, lineMode.DEFAULT);
+                        cube.saveCoord(nextCoord);
                         repaint();
                         break;
                     }
@@ -573,6 +574,8 @@ public class Paint extends JFrame implements ActionListener {
             if (currentBoardState != dialog.getState()) {
                 currentBoardState = dialog.getState();
                 ((Board) drawArea).setBoardState(currentBoardState);
+                MyFunction.clearArr(nextCoord);
+                MyFunction.clearArr(Coord);
                 MyFunction.clearArr(drawingBoard);
                 MyFunction.clearArr(nextPoint);
                 MyFunction.clearArr(nextDrawing);

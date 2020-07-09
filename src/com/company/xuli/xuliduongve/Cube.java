@@ -14,6 +14,14 @@ public class Cube extends HinhHoc {
     private Point2D G;
     private Point2D H;
     private lineMode MODE;
+    private Point3D A3;
+    private Point3D B3;
+    private Point3D C3;
+    private Point3D D3;
+    private Point3D E3;
+    private Point3D F3;
+    private Point3D G3;
+    private Point3D H3;
 
     //khởi tạo hình hộp chữ nhật
     public Cube(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
@@ -53,35 +61,19 @@ public class Cube extends HinhHoc {
         Point3D tmpE = new Point3D(End.X, End.Y, End.Z);
         End.set(Math.max(tmpS.X, tmpE.X), Math.max(tmpS.Y, tmpE.Y), Math.max(tmpS.Z, tmpE.Z));
         Start.set(Math.min(tmpS.X, tmpE.X), Math.min(tmpS.Y, tmpE.Y), Math.min(tmpS.Z, tmpE.Z));
-//        Point3D tmp = new Point3D(End.X-Start.X, End.Y-Start.Y, End.Z-Start.Z);
-//        if (Start.Y > End.Y)
-//            tmp = new Point3D(Start.X-End.X, Start.Y-End.Y, Start.Z-End.Z);
-//        Point3D unit = new Point3D(1, 1, 1);
-//        if (tmp.X < 0) unit.X = -1;
-//        if (tmp.Y < 0) unit.Y = -1;
-//        if (tmp.Z < 0) unit.Z = -1;
 
-        System.out.println(tmpS.X + " " + tmpS.Y + " " + tmpS.Z);
-        System.out.println(tmpE.X + " " + tmpE.Y + " " + tmpE.Z);
+//        System.out.println(tmpS.X + " " + tmpS.Y + " " + tmpS.Z);
+//        System.out.println(tmpE.X + " " + tmpE.Y + " " + tmpE.Z);
         MODE = lineMode.DEFAULT;
 
-//        Point3D A3 = new Point3D(Start.X, End.Y, Start.Z);
-//        Point3D B3 = new Point3D(End.X, End.Y, Start.Z);
-//        Point3D C3 = new Point3D(End.X, End.Y, End.Z);
-//        Point3D D3 = new Point3D(Start.X, End.Y, End.Z);
-//
-//        Point3D E3 = new Point3D(Start.X, Start.Y, Start.Z);
-//        Point3D F3 = new Point3D(End.X, Start.Y, Start.Z);
-//        Point3D G3 = new Point3D(End.X, Start.Y, End.Z);
-//        Point3D H3 = new Point3D(Start.X, Start.Y, End.Z);
-        Point3D A3 = new Point3D(Start.X, Start.Y, Start.Z);
-        Point3D B3 = new Point3D(End.X, Start.Y, Start.Z);
-        Point3D C3 = new Point3D(End.X, Start.Y, End.Z);
-        Point3D D3 = new Point3D(Start.X, Start.Y, End.Z);
-        Point3D E3 = new Point3D(Start.X, End.Y, Start.Z);
-        Point3D F3 = new Point3D(End.X, End.Y, Start.Z);
-        Point3D G3 = new Point3D(End.X, End.Y, End.Z);
-        Point3D H3 = new Point3D(Start.X, End.Y, End.Z);
+        A3 = new Point3D(Start.X, Start.Y, Start.Z);
+        B3 = new Point3D(End.X, Start.Y, Start.Z);
+        C3 = new Point3D(End.X, Start.Y, End.Z);
+        D3 = new Point3D(Start.X, Start.Y, End.Z);
+        E3 = new Point3D(Start.X, End.Y, Start.Z);
+        F3 = new Point3D(End.X, End.Y, Start.Z);
+        G3 = new Point3D(End.X, End.Y, End.Z);
+        H3 = new Point3D(Start.X, End.Y, End.Z);
 //
 
         A.set(A3.to2D());
@@ -93,6 +85,19 @@ public class Cube extends HinhHoc {
         G.set(G3.to2D());
         H.set(H3.to2D());
         //MODE = mode;
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        //super.saveCoord(coord);
+        A3.saveCoord(coord);
+        B3.saveCoord(coord);
+        C3.saveCoord(coord);
+        D3.saveCoord(coord);
+        E3.saveCoord(coord);
+        F3.saveCoord(coord);
+        G3.saveCoord(coord);
+        H3.saveCoord(coord);
     }
 
     public void draw3D() {
