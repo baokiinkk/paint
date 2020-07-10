@@ -23,9 +23,9 @@ public class Input3D extends JDialog {
     private JPanel depthPanel;
     private JPanel heightPanel;
     private JButton cube;
-    private JButton sphere;
-    private JButton cone;
-    private JButton cylinder;
+    private JButton globular;
+    private JButton concical;
+    private JButton circular;
     private JButton pyramid;
     private JButton tetrahedral;
     private JButton shapShower;
@@ -114,34 +114,34 @@ public class Input3D extends JDialog {
             }
         });
 
-        cylinder.addActionListener(new ActionListener() {
+        circular.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == cylinder) {
-                    shape = Button.CYLINDER;
-                    shapShower.setIcon(cylinder.getIcon());
+                if (e.getSource() == circular) {
+                    shape = Button.CIRCULAR;
+                    shapShower.setIcon(circular.getIcon());
                     refreshState();
                 }
             }
         });
 
-        sphere.addActionListener(new ActionListener() {
+        globular.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == sphere) {
-                    shape = Button.SPHERE;
-                    shapShower.setIcon(sphere.getIcon());
+                if (e.getSource() == globular) {
+                    shape = Button.GLOBULAR;
+                    shapShower.setIcon(globular.getIcon());
                     refreshState();
                 }
             }
         });
 
-        cone.addActionListener(new ActionListener() {
+        concical.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == cone) {
-                    shape = Button.CONE;
-                    shapShower.setIcon(cone.getIcon());
+                if (e.getSource() == concical) {
+                    shape = Button.CONICAL;
+                    shapShower.setIcon(concical.getIcon());
                     refreshState();
                 }
             }
@@ -201,17 +201,17 @@ public class Input3D extends JDialog {
                             tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z + Math.round(tmpEnd.Z / 2));
                     break;
                 }
-                case SPHERE: {
+                case GLOBULAR: {
                     start = new Point3D(tmpStart);
                     end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
                     break;
                 }
-                case CONE: {
+                case CONICAL: {
                     start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + Integer.valueOf(sizeHeight.getText().trim()));
                     end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
                     break;
                 }
-                case CYLINDER: {
+                case CIRCULAR: {
                     start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + Integer.valueOf(sizeHeight.getText().trim()));
                     end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
                     break;
@@ -255,9 +255,9 @@ public class Input3D extends JDialog {
         vectorPanel.setVisible(isVector);
         positionPanel.setVisible(!isVector);
         //System.out.println(shape);
-        if (shape.equals(Button.SPHERE) || shape.equals(Button.CONE) || shape.equals(Button.CYLINDER)) {
+        if (shape.equals(Button.GLOBULAR) || shape.equals(Button.CONICAL) || shape.equals(Button.CIRCULAR)) {
             depthPanel.setVisible(false);
-            if (shape.equals(Button.SPHERE)) {
+            if (shape.equals(Button.GLOBULAR)) {
                 heightPanel.setVisible(false);
             } else {
                 heightPanel.setVisible(true);

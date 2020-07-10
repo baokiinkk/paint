@@ -2,23 +2,23 @@ package com.company.xuli.xuliduongve;
 import com.company.Button;
 import java.awt.*;
 
-public class Sphere extends HinhHoc {
+public class Globular extends HinhHoc {
     private lineMode MODE;
-    private Point2D  first;
-    private Point2D  second;
-    private Point2D  third;
-    private Point2D  fourth;
-    private double   Major_rad;
-    private double   Minor_rad;
-    private Ellipse  elp;
-
+    private Point2D first;
+    private Point2D second;
+    private Point2D third;
+    private Point2D fourth;
+    private double Major_rad;
+    private double Minor_rad;
+    private boolean formula;
+    private Ellipse elp;
     private Point3D Center;
     private Point3D rad;
 
     //khởi tạo hình hộp chữ nhật
-    public Sphere(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
+    public Globular(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
-        tag = Button.SPHERE;
+        tag = Button.GLOBULAR;
         first = new Point2D();
         second = new Point2D();
         third = new Point2D();
@@ -26,16 +26,16 @@ public class Sphere extends HinhHoc {
         elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
     }
 
-    public void setSphere(Point2D start, Point2D end, lineMode mode) {
+    public void setGlobular(Point2D start, Point2D end, lineMode mode) {
         this.start = start;
         this.end = end;
         MODE = mode;
-        center.set(start.X,start.Y);
+        center.set(start.X, start.Y);
         Major_rad = Math.abs(this.start.X - this.end.X);
         Minor_rad = Math.abs(this.start.Y - this.end.Y);
     }
 
-    public void setSphere3D(Point3D Start, Point3D End, lineMode mode) {
+    public void setGlobular3D(Point3D Start, Point3D End, lineMode mode) {
         Center = new Point3D(Start.X, Start.Y, Start.Z);
         this.start = Start.to2D();
         int dis = (int) Math.round(Math.sqrt(Math.pow(Start.X - End.X, 2) + Math.pow(Start.Y - End.Y, 2) + Math.pow(Start.Z - End.Z, 2)));
@@ -50,19 +50,20 @@ public class Sphere extends HinhHoc {
         Minor_rad = dis / 2;
     }
 
+    @Override
     public void saveCoord(String[][] coord) {
         Center.saveCoord(coord);
         rad.saveCoord(coord);
     }
 
     public void draw() {
-        elp.setCircle(this.start, this.end,MODE);
+        elp.setCircle(this.start, this.end, MODE);
         elp.draw();
 
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
-            double y1_c= Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            double y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                     - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
 
             double y2_c = center.Y - y1_c;
@@ -102,7 +103,7 @@ public class Sphere extends HinhHoc {
             third.set(tx2_r, y1_r + center.Y);
             fourth.set(tx1_r +  center.X, y1_r + center.Y);
 
-            QuadrantEllipse(first,second,third,fourth, MODE);;
+            QuadrantEllipse(first, second, third, fourth, MODE);
             y1_r++;
         }
 

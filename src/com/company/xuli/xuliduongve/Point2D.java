@@ -48,6 +48,7 @@ public class Point2D {
 //        return res;
 //    }
 
+
     public void saveCoord(String[][] coord) {
         String pos = "";
         pos = "(" + (X - Paint.OX / Paint.rectSize) + ", " + (-(Y - Paint.OY / Paint.rectSize)) + ")";

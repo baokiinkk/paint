@@ -518,33 +518,33 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="b4a93" class="javax.swing.JButton" binding="sphere">
+          <component id="b4a93" class="javax.swing.JButton" binding="globular">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Sphere.png"/>
+              <icon value="com/company/Icons/Globular.png"/>
               <text value=""/>
             </properties>
           </component>
-          <component id="f9f9" class="javax.swing.JButton" binding="cone">
+          <component id="f9f9" class="javax.swing.JButton" binding="concical">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Cone.png"/>
+              <icon value="com/company/Icons/Conical.png"/>
               <text value=""/>
             </properties>
           </component>
-          <component id="eea7e" class="javax.swing.JButton" binding="cylinder">
+          <component id="eea7e" class="javax.swing.JButton" binding="circular">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Cylinder.png"/>
+              <icon value="com/company/Icons/Circular.png"/>
               <text value=""/>
             </properties>
           </component>
@@ -554,7 +554,7 @@
             </constraints>
             <properties>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Pyramid.png"/>
+              <icon value="com/company/Icons/Conical.png"/>
               <text value=""/>
             </properties>
           </component>
