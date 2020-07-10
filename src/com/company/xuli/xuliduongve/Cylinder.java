@@ -4,7 +4,7 @@ import com.company.Button;
 
 import java.awt.*;
 
-public class Conical extends HinhHoc {
+public class Cylinder extends HinhHoc {
     private lineMode MODE;
     private Point2D  first;
     private Point2D  second;
@@ -12,38 +12,69 @@ public class Conical extends HinhHoc {
     private Point2D  fourth;
     private double   Major_rad;
     private double   Minor_rad;
-    private Point2D      centerElip;
+    private Point2D  centerElipT;
+    private Point2D  centerElipD;
+
+    private Point3D top3D;
+    private Point3D center3D;
+    private Point3D rad3D;
 
     //khởi tạo hình hộp chữ nhật
-    public Conical(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
+    public Cylinder(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
-        tag = Button.PYRAMID;
+        tag = Button.CYLINDER;
         first = new Point2D();
         second = new Point2D();
         third = new Point2D();
         fourth = new Point2D();
-        centerElip = new Point2D();
+        centerElipT = new Point2D();
+        centerElipD = new Point2D();
+
     }
 
-    public void setConical(Point2D start, Point2D end, lineMode mode) {
+    public void setCylinder(Point2D start, Point2D end, lineMode mode) {
         this.start = start;
         this.end = end;
         MODE = mode;
-        centerElip.set(start.X,end.Y);
-        Major_rad = Math.abs(centerElip.X - this.end.X);
-        Minor_rad = Math.abs(start.Y - end.Y)/8;
+        centerElipT.set(start.X,start.Y);
+        centerElipD.set(start.X,end.Y);
+        Major_rad = Math.abs(centerElipT.X - this.end.X);
+        Minor_rad = Major_rad/3;
     }
 
-    public void drawElip(boolean checkDash)
-    {
+    public void setCylinder3D(Point3D Start, Point3D End, lineMode mode) {
+        this.top3D = new Point3D(Start.X, Start.Y, Start.Z);
+        this.center3D = new Point3D(Start.X, Start.Y, End.Z);
+
+        this.start = Start.to2D();
+
+        MODE = mode;
+        centerElipT.set(top3D.to2D());
+        centerElipD.set(center3D.to2D());
+        int dis = (int) Math.round(Math.sqrt(Math.pow(Start.X - End.X, 2) + Math.pow(Start.Y - End.Y, 2)));
+        this.rad3D = new Point3D(center3D.X + dis, center3D.Y, center3D.Z);
+        this.end = rad3D.to2D();
+
+        Major_rad = dis;
+        Minor_rad = Major_rad / 3;
+    }
+
+    public void saveCoord(String[][] coord) {
+        //super.saveCoord(coord);
+        top3D.saveCoord(coord);
+        center3D.saveCoord(coord);
+        rad3D.saveCoord(coord);
+    }
+
+    public void drawElip(Point2D point, boolean checkDash) {
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c= Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
                     - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
 
-            double y2_c = centerElip.Y - y1_c;
-            double tx_c = centerElip.X - x1_c;
+            double y2_c = point.Y - y1_c;
+            double tx_c = point.X - x1_c;
 
             int ty1_c = (int) (y1_c + 0.5);
             int ty2_c = (int) (y2_c + 0.5);
@@ -52,10 +83,11 @@ public class Conical extends HinhHoc {
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
-            first.set(x1_c + centerElip.X, ty2_c);
+            first.set(x1_c + point.X, ty2_c);
             second.set(x2_c,ty2_c);
-            third.set(x2_c, ty1_c + centerElip.Y);
-            fourth.set(x1_c +  centerElip.X, ty1_c + centerElip.Y);
+            third.set(x2_c, ty1_c + point.Y);
+            fourth.set(x1_c +  point.X, ty1_c + point.Y);
+
             if(checkDash)
                 QuadrantEllipse(first,second,third,fourth, MODE);
             else
@@ -66,8 +98,8 @@ public class Conical extends HinhHoc {
         while (y1_r < Minor_rad) {
             double x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
                     - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
-            double x2_r = centerElip.X - x1_r;
-            double ty_r = centerElip.Y - y1_r;
+            double x2_r = point.X - x1_r;
+            double ty_r = point.Y - y1_r;
 
             int tx1_r = (int) (x1_r + 0.5);
             int tx2_r = (int) (x2_r + 0.5);
@@ -76,27 +108,32 @@ public class Conical extends HinhHoc {
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
-            first.set(tx1_r + centerElip.X, y2_r);
+            first.set(tx1_r + point.X, y2_r);
             second.set(tx2_r,y2_r);
-            third.set(tx2_r, y1_r + centerElip.Y);
-            fourth.set(tx1_r +  centerElip.X, y1_r + centerElip.Y);
+            third.set(tx2_r, y1_r + point.Y);
+            fourth.set(tx1_r +  point.X, y1_r + point.Y);
 
             if(checkDash)
                 QuadrantEllipse(first,second,third,fourth, MODE);
             else
                 Quadrant(first,second,third,fourth,MODE);
+
             y1_r++;
         }
     }
 
     public void draw() {
-        if (end.Y > start.Y)
-            drawElip(true);
-        else
-            drawElip(false);
-        super.MidpointLine(start, end, MODE);
-        super.MidpointLine(start, new Point2D(end.X > centerElip.X ? centerElip.X - (int) Major_rad : centerElip.X + (int) Major_rad, end.Y), MODE);
-
+        if(end.Y > start.Y)
+        {
+            drawElip(centerElipT,false);
+            drawElip(centerElipD,true);
+        }
+        else{
+            drawElip(centerElipT,true);
+            drawElip(centerElipD,false);
+        }
+        super.MidpointLine(new Point2D(centerElipT.X - (int) Major_rad,start.Y), new Point2D(centerElipT.X - (int) Major_rad,end.Y),MODE);
+        super.MidpointLine(new Point2D(centerElipD.X + (int) Major_rad,start.Y), new Point2D(centerElipD.X + (int) Major_rad,end.Y),MODE);
     }
 
     public void QuadrantEllipse(Point2D first, Point2D second, Point2D third, Point2D fourth,lineMode mode)
@@ -120,7 +157,6 @@ public class Conical extends HinhHoc {
             nextPoint[fourth.X][fourth.Y] = chooseColor;
         } // IV
     }
-
     public void Quadrant(Point2D first, Point2D second, Point2D third, Point2D fourth,lineMode mode)
     {
 

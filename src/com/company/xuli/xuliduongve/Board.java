@@ -43,6 +43,14 @@ public class Board extends JPanel {
                 ((Ellipse) now).rotate(alpha);
                 break;
             }
+            case TRIANGLE:{
+                ((Triangle) now).rotate(alpha);
+                break;
+            }
+            case PARALLELOGRAM:{
+                ((Parallelogram) now).rotate(alpha);
+                break;
+            }
         }
     }
 
@@ -56,6 +64,14 @@ public class Board extends JPanel {
             }
             case ELLIPSE:{
                 ((Ellipse) now).move(a);
+                break;
+            }
+            case TRIANGLE:{
+                ((Triangle) now).move(a);
+                break;
+            }
+            case PARALLELOGRAM:{
+                ((Parallelogram) now).move(a);
                 break;
             }
             case SELECT:{
@@ -80,6 +96,14 @@ public class Board extends JPanel {
                 ((Ellipse) now).applyRotate(alpha);
                 break;
             }
+            case TRIANGLE:{
+                ((Triangle) now).applyRotate(alpha);
+                break;
+            }
+            case PARALLELOGRAM:{
+                ((Parallelogram) now).applyRotate(alpha);
+                break;
+            }
         }
     }
 
@@ -93,6 +117,14 @@ public class Board extends JPanel {
             }
             case ELLIPSE: {
                 ((Ellipse) now).applyMove(a);
+                break;
+            }
+            case TRIANGLE:{
+                ((Triangle) now).applyMove(a);
+                break;
+            }
+            case PARALLELOGRAM:{
+                ((Parallelogram) now).applyMove(a);
                 break;
             }
             case SELECT:{
@@ -113,6 +145,16 @@ public class Board extends JPanel {
                 ((Ellipse) now).SymOX();
                 break;
             }
+            case TRIANGLE:{
+                ((Triangle) now).draw();
+                ((Triangle) now).SymOX();
+                break;
+            }
+            case PARALLELOGRAM:{
+                ((Parallelogram) now).draw();
+                ((Parallelogram) now).SymOX();
+                break;
+            }
         }
     }
     public static void SymOYNow() {
@@ -127,6 +169,16 @@ public class Board extends JPanel {
                 ((Ellipse) now).SymOY();
                 break;
             }
+            case TRIANGLE:{
+                ((Triangle) now).draw();
+                ((Triangle) now).SymOY();
+                break;
+            }
+            case PARALLELOGRAM:{
+                ((Parallelogram) now).draw();
+                ((Parallelogram) now).SymOY();
+                break;
+            }
         }
     }
     public static void SymPointNow(Point2D point) {
@@ -139,6 +191,16 @@ public class Board extends JPanel {
                 case ELLIPSE:{
                     ((Ellipse) now).draw();
                     ((Ellipse) now).SymP(point);
+                    break;
+                }
+                case TRIANGLE:{
+                    ((Triangle) now).draw();
+                    ((Triangle) now).SymP(point);
+                    break;
+                }
+                case PARALLELOGRAM:{
+                    ((Parallelogram) now).draw();
+                    ((Parallelogram) now).SymP(point);
                     break;
                 }
             }

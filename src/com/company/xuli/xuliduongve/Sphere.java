@@ -2,7 +2,7 @@ package com.company.xuli.xuliduongve;
 import com.company.Button;
 import java.awt.*;
 
-public class Globular extends HinhHoc {
+public class Sphere extends HinhHoc {
     private lineMode MODE;
     private Point2D  first;
     private Point2D  second;
@@ -10,13 +10,15 @@ public class Globular extends HinhHoc {
     private Point2D  fourth;
     private double   Major_rad;
     private double   Minor_rad;
-    private boolean  formula;
     private Ellipse  elp;
 
+    private Point3D Center;
+    private Point3D rad;
+
     //khởi tạo hình hộp chữ nhật
-    public Globular(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
+    public Sphere(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
-        tag = Button.GLOBULAR;
+        tag = Button.SPHERE;
         first = new Point2D();
         second = new Point2D();
         third = new Point2D();
@@ -24,13 +26,33 @@ public class Globular extends HinhHoc {
         elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
     }
 
-    public void setGlobular(Point2D start, Point2D end, lineMode mode) {
+    public void setSphere(Point2D start, Point2D end, lineMode mode) {
         this.start = start;
         this.end = end;
         MODE = mode;
         center.set(start.X,start.Y);
         Major_rad = Math.abs(this.start.X - this.end.X);
         Minor_rad = Math.abs(this.start.Y - this.end.Y);
+    }
+
+    public void setSphere3D(Point3D Start, Point3D End, lineMode mode) {
+        Center = new Point3D(Start.X, Start.Y, Start.Z);
+        this.start = Start.to2D();
+        int dis = (int) Math.round(Math.sqrt(Math.pow(Start.X - End.X, 2) + Math.pow(Start.Y - End.Y, 2) + Math.pow(Start.Z - End.Z, 2)));
+        End.set(Start.X + dis, Start.Y, Start.Z);
+        rad = new Point3D(End.X, End.Y, End.Z);
+        this.end = End.to2D();
+        MODE = mode;
+        center.set(start.X, start.Y);
+        System.out.println(start.X + "," + start.Y);
+        System.out.println(end.X + "," + end.Y);
+        Major_rad = dis;
+        Minor_rad = dis / 2;
+    }
+
+    public void saveCoord(String[][] coord) {
+        Center.saveCoord(coord);
+        rad.saveCoord(coord);
     }
 
     public void draw() {

@@ -21,16 +21,16 @@ import static com.company.Button.*;
 
 public class Paint extends JFrame implements ActionListener {
     // ================================== CÁC BIẾN ĐƠN ==========================
-    private static int Width = 282;     // độ rộng bảng vẽ
-    private static int Height = 181;    // độ cao
+    public static int Width = 282;     // độ rộng bảng vẽ
+    public static int Height = 181;    // độ cao
     //=================================== Các biến ánh xạ với UI ================
     private JButton lineButton;             // vẽ đường thẳng
     private JButton clearButton;            // xóa sạch
     private JButton pencilButton;           // đè là vẽ
     private JButton undoButton;             // Undo
     private JButton rectangleButton;        // vẽ hình chữ nhật
-    private JButton conicalButton;
-    private JButton circularButton;
+    private JButton coneButton;
+    private JButton cylinderButton;
     private JButton redoButton;             // Redo
     private JButton paintButton;            // tô màu, thay thế vùng pixel được chọn thành màu
     private JButton selectButton;               // hiển thị màu đang chọn
@@ -43,7 +43,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton cubeButton;             // vẽ đường gấp khúc
     private JButton colorButton;            // chọn màu
     private JButton moveButton;             // vẽ hình tròn
-    private JButton globularButton;         // vẽ hình cầu
+    private JButton sphereButton;         // vẽ hình cầu
     private JButton animationButton;        // nút mở hoạt cảnh
     private JButton setCenter;
     private JPanel styleCBPanel;
@@ -62,8 +62,8 @@ public class Paint extends JFrame implements ActionListener {
     private JButton animalButton;
     private JPanel settingPanel;
     private JPanel filePanel;
-    private int spacing = 1;           // khoảng cách giữa 2 pixels
-    private int rectSize = 4;          // tổng của kích thước pixel và spacing
+    public static int spacing = 1;           // khoảng cách giữa 2 pixels
+    public static int rectSize = 4;           // tổng của kích thước pixel và spacing
     private boolean playingAnimation = false;
     private Timer timer;
     private int time = 0;
@@ -75,8 +75,8 @@ public class Paint extends JFrame implements ActionListener {
     private boolean show3DAxis = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
     private boolean show2DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
     private boolean show3DCoord = false;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
-    private int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
-    private int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
+    public static int OX = spacing + Width / 2 * rectSize + (rectSize - spacing) / 2;     // vị trí trục OX
+    public static int OY = spacing + Height / 2 * rectSize + (rectSize - spacing) / 2;    // vị trí trục OY
     private Point2D startSelect;
     private Point2D endSelect;
     private JPanel Coord2D;
@@ -89,6 +89,8 @@ public class Paint extends JFrame implements ActionListener {
     private boolean[][] nextDrawing = new boolean[Width][Height];
     private Color[][] nextPoint = new Color[Width][Height];
     private Color[][] drawingBoard = new Color[Width][Height];
+    private String[][] Coord = new String[Width][Height];
+    private String[][] nextCoord = new String[Width][Height];
 
     // ================================== CÁC LOẠI PANEL ==========================
     private JPanel activity_main;
@@ -101,7 +103,7 @@ public class Paint extends JFrame implements ActionListener {
     private JButton customButton;
     private JButton pyramidButton;
     private JButton tetrahedronButton;
-    private JButton Triangle;
+    private JButton triangleButton;
     private JButton parallelogramButton;
 
 
@@ -172,7 +174,7 @@ public class Paint extends JFrame implements ActionListener {
         animationButton.addActionListener(this);
         Import.addActionListener(this);
         Export.addActionListener(this);
-        globularButton.addActionListener(this);
+        sphereButton.addActionListener(this);
         animalButton.addActionListener(this);
         setCenter.addActionListener(this);
         moveButton.addActionListener(this);
@@ -183,9 +185,13 @@ public class Paint extends JFrame implements ActionListener {
         symOYButton.addActionListener(this);
         symetryPointButton.addActionListener(this);
         rotateSymButton.addActionListener(this);
-        circularButton.addActionListener(this);
-        conicalButton.addActionListener(this);
+        cylinderButton.addActionListener(this);
+        coneButton.addActionListener(this);
         customButton.addActionListener(this);
+        parallelogramButton.addActionListener(this);
+        triangleButton.addActionListener(this);
+        tetrahedronButton.addActionListener(this);
+        pyramidButton.addActionListener(this);
         //settingPanel.setSize(70, 30);
 //        styleComboBox.setUI(new BasicComboBoxUI() {
 //            @Override
@@ -264,42 +270,51 @@ public class Paint extends JFrame implements ActionListener {
         } else if (clearButton.equals(source)) {//choose = Button.CLEAR;
             MyFunction.clearArr(drawingBoard);
             MyFunction.clearArr(nextPoint);
+            pointXY.set(Width/2,Height/2);
             repaint();
         } else if (lineButton.equals(source)) {
             startXY.set(-1, -1);
             choose = LINE;
-        }
-        else if(selectButton.equals(source)){
+        } else if (selectButton.equals(source)) {
             startXY.set(-1, -1);
             choose = SELECT;
-        }
-        else if (rectangleButton.equals(source)) {
+        } else if (rectangleButton.equals(source)) {
             startXY.set(-1, -1);
             choose = RECTANGLE;
         } else if (cubeButton.equals(source)) {
             startXY.set(-1, -1);
             choose = CUBE;
-        } else if (globularButton.equals(source)) {
+        } else if (sphereButton.equals(source)) {
             startXY.set(-1, -1);
-            choose = GLOBULAR;
-        } else if (conicalButton.equals(source)) {
+            choose = SPHERE;
+        } else if (coneButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = CONE;
+        } else if (cylinderButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = CYLINDER;
+        } else if (parallelogramButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = PARALLELOGRAM;
+        } else if (triangleButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = TRIANGLE;
+        } else if (tetrahedronButton.equals(source)) {
+            startXY.set(-1, -1);
+            choose = TETRAHEDRON;
+        } else if (pyramidButton.equals(source)) {
             startXY.set(-1, -1);
             choose = PYRAMID;
-        }else if (circularButton.equals(source)) {
-            startXY.set(-1, -1);
-            choose = CIRCULAR;
-        }else if (eraseButton.equals(source)) {
+        } else if (eraseButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ERASE;
         } else if (pencilButton.equals(source)) {
             startXY.set(-1, -1);
             choose = PENCIL;
-        }
-        else if (animalButton.equals(source)){
+        } else if (animalButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ANIMAL;
-        }
-        else if(driveCarButton.equals(source)) {
+        } else if (driveCarButton.equals(source)) {
             choose = CARANIM;
             if (!playingAnimation) {
                 playingAnimation = true;
@@ -327,7 +342,7 @@ public class Paint extends JFrame implements ActionListener {
 
                 timer.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
+                    public void actionPerformed (ActionEvent actionEvent) {
                         MyFunction.clearArr(nextDrawing);
                         MyFunction.clearArr(nextPoint);
                         repaint();
@@ -408,8 +423,7 @@ public class Paint extends JFrame implements ActionListener {
                 MyFunction.clearArr(nextPoint);
                 repaint();
             }
-        }
-        else if (colorButton.equals(source)) {
+        } else if (colorButton.equals(source)) {
             Color c = JColorChooser.showDialog(this, "Choose Color", chooseColor);
             if (c != null)
                 chooseColor = c;
@@ -445,7 +459,7 @@ public class Paint extends JFrame implements ActionListener {
                 int timerDelay = 30;
                 timer.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
+                    public void actionPerformed (ActionEvent actionEvent) {
                         //while(true)
                         {
                             if (time == 640) {
@@ -491,61 +505,64 @@ public class Paint extends JFrame implements ActionListener {
             }
 
 
-        }
-        else if (customButton.equals(source)){
-            Input3D dialog = new Input3D(Width, Height);
+        } else if (customButton.equals(source)) {
+            Input3D dialog = new Input3D(Width, Height, choose);
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
-            switch (choose)
-            {
-                case CUBE:
-                {
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    //System.out.println(tmpStart.X +"/" + tmpStart.Y +"---" + tmpEnd.X +"/"+tmpEnd.Y);
-                    Cube cube = new Cube(nextDrawing, nextPoint, chooseColor);
-                    cube.setCube(tmpStart, tmpEnd, chooseLineMode);
-                    cube.draw();
-                    repaint();
-                }
-                case GLOBULAR: {
-                    MyFunction.clearArr(nextDrawing);
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
-                        Glo.setGlobular(startXY, mouseXY, chooseLineMode);
-                        Point2D temp = mouseXY;
-                        temp.Y = tmpStart.Y + Math.abs(tmpEnd.X - tmpStart.X) / 2;
-                        Glo.setGlobular(tmpStart, temp, chooseLineMode);
-                        Glo.draw();
-                    repaint();
-                    break;
-                }
-                case CONICAL: {
-                    MyFunction.clearArr(nextDrawing);
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Conical Con = new Conical(nextDrawing, nextPoint, chooseColor);
-                        Con.setConical(tmpStart, tmpEnd, chooseLineMode);
-                        Con.draw();
-                    repaint();
-                    break;
-                }
-                case CIRCULAR: {
-                    MyFunction.clearArr(nextDrawing);
-                    Point2D tmpStart = new Point2D(dialog.getStart2D());
-                    Point2D tmpEnd = new Point2D(dialog.getEnd2D());
-                    Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
-                        Cir.setCircular(tmpStart, tmpEnd, chooseLineMode);
-                        Cir.draw();
-                    repaint();
-                    break;
-                }
+            if (dialog.isOK()) {
+                choose = dialog.get3DShape();
+                switch (choose) {
+                    case CUBE: {
+                        Cube cube = new Cube(nextDrawing, nextPoint, chooseColor);
+                        cube.setCube(dialog.getStart3D(), dialog.getEnd3D());
+                        cube.draw3D();
 
+                        cube.saveCoord(nextCoord);
+                        repaint();
+                        break;
+                    }
+                    case SPHERE: {
+                        MyFunction.clearArr(nextDrawing);
+                        Sphere Sp = new Sphere(nextDrawing, nextPoint, chooseColor);
+                        Sp.setSphere3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
+                        Sp.draw();
+                        Sp.saveCoord(nextCoord);
+                        repaint();
+                        break;
+                    }
+                    case CONE: {
+                        MyFunction.clearArr(nextDrawing);
+                        Cone Con = new Cone(nextDrawing, nextPoint, chooseColor);
+                        Con.setCone3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
+                        Con.draw();
+                        Con.saveCoord(nextCoord);
+                        repaint();
+                        break;
+                    }
+                    case CYLINDER: {
+                        MyFunction.clearArr(nextDrawing);
+                        Cylinder Cy = new Cylinder(nextDrawing, nextPoint, chooseColor);
+                        Cy.setCylinder3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
+                        Cy.draw();
+                        Cy.saveCoord(nextCoord);
+                        repaint();
+                        break;
+                    }
+                    case PYRAMID: {
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+                    case TETRAHEDRON: {
+                        MyFunction.clearArr(nextDrawing);
+                        repaint();
+                        break;
+                    }
+
+                }
             }
-        }
-        else if (settingButton.equals(source)) {
+        } else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
             Setting.setGridColor(Board.getGridColor());
             dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
@@ -658,12 +675,12 @@ public class Paint extends JFrame implements ActionListener {
                 int timerDelay = 20;
                 timer.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
+                    public void actionPerformed (ActionEvent actionEvent) {
                         MyFunction.clearArr(nextDrawing);
                         MyFunction.clearArr(nextPoint);
                         if (rd.nextInt() % 3 == 0) {
                             Firework FW = new Firework(nextDrawing, nextPoint, new Color(rd.nextFloat(), rd.nextFloat(), rd.nextFloat()));
-                            FW.initFirework(100 + rd.nextInt(Height-100), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)], 1 + rd.nextInt(20)/10);
+                            FW.initFirework(100 + rd.nextInt(Height - 100), rd.nextInt(50), lineModeArr[rd.nextInt(lineModeArr.length)], 1 + rd.nextInt(20) / 10);
                             //FW.initFirework(rd.nextInt(Height), rd.nextInt(Width), Color.BLACK);
                             listFW.add(FW);
                         }
@@ -697,26 +714,21 @@ public class Paint extends JFrame implements ActionListener {
                 repaint();
             }
             //break;
-        }
-        else if(symOYButton.equals(source)) {
+        } else if (symOYButton.equals(source)) {
             startXY.set(-1, -1);
             choose = VETICALSYMETRY;
-        }
-        else if(symOXButton.equals(source)) {
+        } else if (symOXButton.equals(source)) {
             startXY.set(-1, -1);
             choose = HONRIZONTALSYMETRY;
-        }
-        else if(symetryPointButton.equals((source))){
+        } else if (symetryPointButton.equals((source))) {
             startXY.set(-1, -1);
             choose = POINTSYMETRY;
-        }
-        else if(rotateSymButton.equals(source)){
+        } else if (rotateSymButton.equals(source)) {
             startXY.set(-1, -1);
             choose = ROTATESYMETRY;
         }
 
     }
-
 
     // thư viện click
     public class Click implements MouseListener {
@@ -822,6 +834,34 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
+                    case PARALLELOGRAM: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case TRIANGLE: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case TETRAHEDRON: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
+                    case PYRAMID: // vẽ hinh cn
+                    {
+                        // lấy tọa độ điểm bắt đầu
+                        startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        MyFunction.clearArr(nextPoint);
+                        break;
+                    }
                     case SELECT: // vẽ hinh cn
                     {
                         // lấy tọa độ điểm bắt đầu
@@ -837,21 +877,21 @@ public class Paint extends JFrame implements ActionListener {
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
-                    case GLOBULAR: // vẽ hinh hộp chữ nhật
+                    case SPHERE:
                     {
                         // lấy tọa độ điểm bắt đầu
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
-                    case PYRAMID: // vẽ hinh hộp chữ nhật
+                    case CONE:
                     {
                         // lấy tọa độ điểm bắt đầu
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         MyFunction.clearArr(nextPoint);
                         break;
                     }
-                    case CIRCULAR: // vẽ hinh hộp chữ nhật
+                    case CYLINDER:
                     {
                         // lấy tọa độ điểm bắt đầu
                         startXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
@@ -924,22 +964,27 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
+                    case PARALLELOGRAM: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
                     case CUBE: {
                         Board.applyNow();
                         repaint();
                         break;
                     }
-                    case GLOBULAR: {
+                    case SPHERE: {
                         Board.applyNow();
                         repaint();
                         break;
                     }
-                    case PYRAMID: {
+                    case CONE: {
                         Board.applyNow();
                         repaint();
                         break;
                     }
-                    case CIRCULAR: {
+                    case CYLINDER: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -951,6 +996,21 @@ public class Paint extends JFrame implements ActionListener {
                         break;
                     }
                     case ELLIPSE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case TRIANGLE: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case TETRAHEDRON: {
+                        Board.applyNow();
+                        repaint();
+                        break;
+                    }
+                    case PYRAMID: {
                         Board.applyNow();
                         repaint();
                         break;
@@ -1054,6 +1114,82 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
+                    case PARALLELOGRAM:
+                    {
+
+                        MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        MyFunction.clearArr(nextPoint);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Parallelogram par = new Parallelogram(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            if(startXY.X == mouseXY.X)
+                                mouseXY.X++;
+                            if(startXY.Y == mouseXY.Y)
+                                mouseXY.Y++;
+                            par.setParallelogram(startXY, mouseXY, chooseLineMode); //  hàm set HC
+                            par.draw(pointXY,chooseSideMode); // cho vẽ hình
+                            Board.setNowHinhHoc(par); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        }
+                        repaint();
+                        break;
+                    }
+                    case TRIANGLE:
+                    {
+
+                        MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        MyFunction.clearArr(nextPoint);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Triangle tri = new Triangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            if(startXY.X == mouseXY.X)
+                                mouseXY.X++;
+                            if(startXY.Y == mouseXY.Y)
+                                mouseXY.Y++;
+                            if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
+                                tri.setTri(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
+                            } else {
+                                tri.setTriangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
+                            }
+                            tri.draw(pointXY,chooseSideMode); // cho vẽ hình
+                            Board.setNowHinhHoc(tri); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        }
+                        repaint();
+                        break;
+                    }
+                    case TETRAHEDRON:
+                    {
+
+                        MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        MyFunction.clearArr(nextPoint);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Tetrahedron tet = new Tetrahedron(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            if(startXY.X == mouseXY.X)
+                                mouseXY.X++;
+                            if(startXY.Y == mouseXY.Y)
+                                mouseXY.Y++;
+                            tet.setTetrahedron(startXY, mouseXY, chooseLineMode); //  hàm set HC
+                            tet.draw(); // cho vẽ hình
+                            Board.setNowHinhHoc(tet); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        }
+                        repaint();
+                        break;
+                    }
+                    case PYRAMID:
+                    {
+
+                        MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        MyFunction.clearArr(nextPoint);
+                        mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
+                        Pyramid py = new Pyramid(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            py.setPyramid(startXY, mouseXY, chooseLineMode); //  hàm set HC
+                            py.draw(); // cho vẽ hình
+                            Board.setNowHinhHoc(py); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
+                        }
+                        repaint();
+                        break;
+                    }
                     case SELECT:
                     {
                         MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
@@ -1143,39 +1279,39 @@ public class Paint extends JFrame implements ActionListener {
                         repaint();
                         break;
                     }
-                    case GLOBULAR: {
+                    case SPHERE: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        Globular Glo = new Globular(nextDrawing, nextPoint, chooseColor);
+                        Sphere Glo = new Sphere(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            Glo.setGlobular(startXY, mouseXY, chooseLineMode);
+                            Glo.setSphere(startXY, mouseXY, chooseLineMode);
                             Point2D temp = mouseXY;
                             temp.Y = startXY.Y + Math.abs(mouseXY.X - startXY.X) / 2;
-                            Glo.setGlobular(startXY, temp, chooseLineMode);
+                            Glo.setSphere(startXY, temp, chooseLineMode);
                             Glo.draw();
                             Board.setNowHinhHoc(Glo);
                         }
                         repaint();
                         break;
                     }
-                    case PYRAMID: {
+                    case CONE: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        Conical con = new Conical(nextDrawing, nextPoint, chooseColor);
+                        Cone con = new Cone(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            con.setConical(startXY, mouseXY, chooseLineMode);
+                            con.setCone(startXY, mouseXY, chooseLineMode);
                             con.draw();
                             Board.setNowHinhHoc(con);
                         }
                         repaint();
                         break;
                     }
-                    case CIRCULAR: {
+                    case CYLINDER: {
                         MyFunction.clearArr(nextDrawing);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        Circular Cir = new Circular(nextDrawing, nextPoint, chooseColor);
+                        Cylinder Cir = new Cylinder(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
-                            Cir.setCircular(startXY, mouseXY, chooseLineMode);
+                            Cir.setCylinder(startXY, mouseXY, chooseLineMode);
                             Cir.draw();
                             Board.setNowHinhHoc(Cir);
                         }

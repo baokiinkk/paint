@@ -28,6 +28,10 @@ public class HinhHoc {
         listPointColor = new ArrayList<>();
     }
 
+    public void saveCoord(String[][] coord) {
+
+    }
+
     public void MidpointLine(Point2D start, Point2D end, lineMode Mode) {
         // tính khoảng cách 2 điểm
         float x = start.X, y = start.Y, temp = (Math.abs(end.X - start.X) >= Math.abs(end.Y - start.Y)) ? Math.abs(end.X - start.X) : Math.abs(end.Y - start.Y);

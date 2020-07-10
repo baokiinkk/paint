@@ -1,5 +1,7 @@
 package com.company.xuli.xuliduongve;
 
+import com.company.main.Paint;
+
 import java.util.ArrayList;
 
 import static java.lang.Math.cos;
@@ -8,8 +10,8 @@ import static java.lang.Math.sin;
 public class Point2D {
     public int X;
     public int Y;
-    private int Width = 282;
-    private int Height = 177;
+    protected int Height = Paint.Height;
+    protected int Width = Paint.Width;
 
     public Point2D() {
     }
@@ -45,6 +47,12 @@ public class Point2D {
 //        res.set((center.X + this.X * cos(alpha) - this.Y * sin(alpha) + 0.5), (center.Y + this.X * sin(alpha) + this.Y * cos(alpha) + 0.5));
 //        return res;
 //    }
+
+    public void saveCoord(String[][] coord) {
+        String pos = "";
+        pos = "(" + (X - Paint.OX / Paint.rectSize) + ", " + (-(Y - Paint.OY / Paint.rectSize)) + ")";
+        coord[X][Y] = pos;
+    }
 
     // xoay điểm hiện tại quanh tâm center với 1 góc alpha
     public Point2D rotatePoint(Point2D center, double alpha) {

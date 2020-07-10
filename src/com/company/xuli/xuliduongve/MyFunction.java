@@ -73,9 +73,14 @@ public class MyFunction {
                 board[i][j] = Color.WHITE;
     }
 
+    public static void clearArr(String[][] board) {
+        for (int i = 0; i < board.length; i++)
+            for (int j = 0; j < board[0].length; j++)
+                board[i][j] = null;
+    }
+
     // gán toàn bộ mảng thành false
-    public static void clearArr(boolean[][] board)
-    {
+    public static void clearArr(boolean[][] board) {
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[0].length; j++)
                 board[i][j] = false;
@@ -88,21 +93,24 @@ public class MyFunction {
     }
 
     // copy mảng màu Source sang mảng Des
-    public static void storePointColor(Color[][] sourceColor, Color[][] desColor)
-    {
+    public static void storePointColor(Color[][] sourceColor, Color[][] desColor) {
         for (int i = 0; i < sourceColor.length; i++)
-            for (int j = 0; j < sourceColor[0].length; j++)
-            {
+            for (int j = 0; j < sourceColor[0].length; j++) {
                 desColor[i][j] = new Color(sourceColor[i][j].getRGB());
             }
     }
 
+    public static void storePointColor(String[][] sourceCoord, String[][] desCoord) {
+        for (int i = 0; i < sourceCoord.length; i++)
+            for (int j = 0; j < sourceCoord[0].length; j++) {
+                desCoord[i][j] = sourceCoord[i][j];
+            }
+    }
+
     // trộn mảng source vào mảng des, với điều kiện chỉ những pixel nào được đánh dấu ở mảng set mới được ghi đè
-    public static void mergePointColor(Color[][] sourceColor, boolean[][] sourceSet, Color[][] desColor)
-    {
+    public static void mergePointColor(Color[][] sourceColor, boolean[][] sourceSet, Color[][] desColor) {
         for (int i = 0; i < sourceColor.length; i++)
-            for (int j = 0; j < sourceColor[0].length; j++)
-            {
+            for (int j = 0; j < sourceColor[0].length; j++) {
                 if (sourceSet[i][j]) {
                     desColor[i][j] = new Color(sourceColor[i][j].getRGB());
                 }

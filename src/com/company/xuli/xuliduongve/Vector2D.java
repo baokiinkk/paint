@@ -13,14 +13,14 @@ public class Vector2D {
 
     }
 
-    public Vector2D(double X, double Y) {
-        this.X = X;
-        this.Y = Y;
-    }
-
     public Vector2D(Point2D start, Point2D end) {
         this.X = end.X - start.X;
         this.Y = end.Y - start.Y;
+    }
+
+    public Vector2D(double X, double Y) {
+        this.X = X;
+        this.Y = Y;
     }
 
     public Vector2D(Vector2D other) {
@@ -31,6 +31,10 @@ public class Vector2D {
     public void set(double X, double Y) {
         this.X = X;
         this.Y = Y;
+    }
+    public void set(Point2D start, Point2D end) {
+        this.X = end.X - start.X;
+        this.Y = end.Y - start.Y;
     }
 
     // trả về vector đơn vị của vector hiện tại
