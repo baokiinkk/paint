@@ -4,25 +4,25 @@ import com.company.Button;
 
 import java.awt.*;
 
-public class Circular extends HinhHoc {
+public class Cylinder extends HinhHoc {
     private lineMode MODE;
-    private Point2D first;
-    private Point2D second;
-    private Point2D third;
-    private Point2D fourth;
-    private double Major_rad;
-    private double Minor_rad;
-    private Point2D centerElipT;
-    private Point2D centerElipD;
+    private Point2D  first;
+    private Point2D  second;
+    private Point2D  third;
+    private Point2D  fourth;
+    private double   Major_rad;
+    private double   Minor_rad;
+    private Point2D  centerElipT;
+    private Point2D  centerElipD;
 
     private Point3D top3D;
     private Point3D center3D;
     private Point3D rad3D;
 
     //khởi tạo hình hộp chữ nhật
-    public Circular(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
+    public Cylinder(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
-        tag = Button.GLOBULAR;
+        tag = Button.CYLINDER;
         first = new Point2D();
         second = new Point2D();
         third = new Point2D();
@@ -32,17 +32,17 @@ public class Circular extends HinhHoc {
 
     }
 
-    public void setCircular(Point2D start, Point2D end, lineMode mode) {
+    public void setCylinder(Point2D start, Point2D end, lineMode mode) {
         this.start = start;
         this.end = end;
         MODE = mode;
-        centerElipT.set(start.X, start.Y);
-        centerElipD.set(start.X, end.Y);
+        centerElipT.set(start.X,start.Y);
+        centerElipD.set(start.X,end.Y);
         Major_rad = Math.abs(centerElipT.X - this.end.X);
-        Minor_rad = Major_rad / 3;
+        Minor_rad = Major_rad/3;
     }
 
-    public void setCircular3D(Point3D Start, Point3D End, lineMode mode) {
+    public void setCylinder3D(Point3D Start, Point3D End, lineMode mode) {
         this.top3D = new Point3D(Start.X, Start.Y, Start.Z);
         this.center3D = new Point3D(Start.X, Start.Y, End.Z);
 
@@ -59,7 +59,6 @@ public class Circular extends HinhHoc {
         Minor_rad = Major_rad / 3;
     }
 
-    @Override
     public void saveCoord(String[][] coord) {
         //super.saveCoord(coord);
         top3D.saveCoord(coord);
@@ -71,25 +70,25 @@ public class Circular extends HinhHoc {
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
-            double y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+            double y1_c= Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
                     - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
 
             double y2_c = point.Y - y1_c;
             double tx_c = point.X - x1_c;
 
-            int ty1_c = (int) Math.round(y1_c);
-            int ty2_c = (int) Math.round(y2_c);
-            int x2_c = (int) Math.round(tx_c);
+            int ty1_c = (int) (y1_c + 0.5);
+            int ty2_c = (int) (y2_c + 0.5);
+            int x2_c = (int) (tx_c + 0.5);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + point.X, ty2_c);
-            second.set(x2_c, ty2_c);
+            second.set(x2_c,ty2_c);
             third.set(x2_c, ty1_c + point.Y);
-            fourth.set(x1_c + point.X, ty1_c + point.Y);
+            fourth.set(x1_c +  point.X, ty1_c + point.Y);
 
-            if (checkDash)
+            if(checkDash)
                 QuadrantEllipse(first,second,third,fourth, MODE);
             else
                 Quadrant(first,second,third,fourth,MODE);
@@ -97,24 +96,24 @@ public class Circular extends HinhHoc {
         }
         int y1_r = 0;
         while (y1_r < Minor_rad) {
-            double x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+            double x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
                     - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             double x2_r = point.X - x1_r;
             double ty_r = point.Y - y1_r;
 
-            int tx1_r = (int) Math.round(x1_r);
-            int tx2_r = (int) Math.round(x2_r);
-            int y2_r = (int) Math.round(ty_r);
+            int tx1_r = (int) (x1_r + 0.5);
+            int tx2_r = (int) (x2_r + 0.5);
+            int y2_r = (int) (ty_r + 0.5);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + point.X, y2_r);
-            second.set(tx2_r, y2_r);
+            second.set(tx2_r,y2_r);
             third.set(tx2_r, y1_r + point.Y);
-            fourth.set(tx1_r + point.X, y1_r + point.Y);
+            fourth.set(tx1_r +  point.X, y1_r + point.Y);
 
-            if (checkDash)
+            if(checkDash)
                 QuadrantEllipse(first,second,third,fourth, MODE);
             else
                 Quadrant(first,second,third,fourth,MODE);

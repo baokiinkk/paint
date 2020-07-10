@@ -37,8 +37,8 @@ public class HinhHoc {
         float x = start.X, y = start.Y, temp = (Math.abs(end.X - start.X) >= Math.abs(end.Y - start.Y)) ? Math.abs(end.X - start.X) : Math.abs(end.Y - start.Y);
 
         // lm tron len điểm đó
-        int tx = Math.round(x);
-        int ty = Math.round(y);
+        int tx = (int) (x + 0.5);
+        int ty = (int) (y + 0.5);
 
         // lưu vị trí điểm và màu của điểm đó vào danh sách
 
@@ -56,8 +56,8 @@ public class HinhHoc {
             y += (end.Y - start.Y) / temp;
 
             // lm tròn lên điểm đó
-            tx = Math.round(x);
-            ty = Math.round(y);
+            tx = (int) (x + 0.5);
+            ty = (int) (y + 0.5);
 
             // lưu vị trí điểm và màu của điểm đó vào danh sách
             if (MyFunction.isSafe(nextPoint, tx, ty) && MyFunction.chooseMode(i, Mode)) {
@@ -96,7 +96,7 @@ public class HinhHoc {
                 Draw8Point(x, y, start.X, start.Y);
             while (x <= y) {
                 x++;
-                y = (int) (Math.round(Math.sqrt(Math.pow(r, 2) - Math.pow(x, 2))));
+                y = (int) (Math.round(Math.sqrt(Math.pow(r, 2) - Math.pow(x, 2))) + 0.5);
                 if (MyFunction.chooseMode(x, mode))
                     Draw8Point(x, y, start.X, start.Y);
             }
@@ -106,8 +106,8 @@ public class HinhHoc {
 
     private void putPixel(int x, int y) {
         float x1 = x, y1 = y;
-        int tx = Math.round(x1);
-        int ty = Math.round(y1);
+        int tx = (int) (x1 + 0.5);
+        int ty = (int) (y1 + 0.5);
         if (MyFunction.isSafe(nextPoint, tx, ty)) {
             nextDrawing[tx][ty] = true;
             nextPoint[tx][ty] = chooseColor;

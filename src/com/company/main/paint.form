@@ -704,12 +704,16 @@
               <hideActionText class="java.lang.Boolean" value="false"/>
             </clientProperties>
           </component>
-          <component id="31999" class="javax.swing.JButton" binding="Triangle">
+          <component id="31999" class="javax.swing.JButton" binding="triangleButton">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Triangle"/>
+              <background color="-1118482"/>
+              <focusable value="false"/>
+              <icon value="com/company/Icons/Triangle.png"/>
+              <text value=""/>
+              <toolTipText value="Draw triangle"/>
             </properties>
           </component>
           <component id="578d4" class="javax.swing.JButton" binding="parallelogramButton">
@@ -753,7 +757,7 @@
               <toolTipText value="Draw Cube"/>
             </properties>
           </component>
-          <component id="6d2e2" class="javax.swing.JButton" binding="globularButton">
+          <component id="6d2e2" class="javax.swing.JButton" binding="sphereButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -761,29 +765,29 @@
               <background color="-1118482"/>
               <borderPainted value="false"/>
               <focusable value="false"/>
-              <icon value="com/company/Icons/Globular.png"/>
+              <icon value="com/company/Icons/Sphere.png"/>
               <text value=""/>
               <toolTipText value="Draw Globular"/>
             </properties>
           </component>
-          <component id="6350c" class="javax.swing.JButton" binding="conicalButton">
+          <component id="6350c" class="javax.swing.JButton" binding="coneButton">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1118482"/>
-              <icon value="com/company/Icons/Conical.png"/>
+              <icon value="com/company/Icons/Cone.png"/>
               <text value=""/>
               <toolTipText value="Draw conical"/>
             </properties>
           </component>
-          <component id="43369" class="javax.swing.JButton" binding="circularButton">
+          <component id="43369" class="javax.swing.JButton" binding="cylinderButton">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-1118482"/>
-              <icon value="com/company/Icons/Circular.png"/>
+              <icon value="com/company/Icons/Cylinder.png"/>
               <text value=""/>
               <toolTipText value="Draw circular"/>
             </properties>
@@ -801,7 +805,8 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="pyramid"/>
+              <icon value="com/company/Icons/Pyramid.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="90a48" class="javax.swing.JButton" binding="tetrahedronButton">
