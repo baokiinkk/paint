@@ -49,15 +49,17 @@ public class Point2D {
 //    }
 
     public void saveCoord(String[][] coord) {
-        String pos = "";
-        pos = "(" + (X - Paint.OX / Paint.rectSize) + ", " + (-(Y - Paint.OY / Paint.rectSize)) + ")";
-        coord[X][Y] = pos;
+        if (MyFunction.isSafe(Paint.nextPoint, X, Y)) {
+            String pos = "";
+            pos = "(" + (X - Paint.OX / Paint.rectSize) + ", " + (-(Y - Paint.OY / Paint.rectSize)) + ")";
+            coord[X][Y] = pos;
+        }
     }
 
     // xoay điểm hiện tại quanh tâm center với 1 góc alpha
     public Point2D rotatePoint(Point2D center, double alpha) {
         Point2D res = new Point2D();
-        res.set((center.X + (this.X - center.X) * cos(alpha) - (this.Y - center.Y) * sin(alpha) + 0.5), (center.Y + (this.X - center.X) * sin(alpha) + (this.Y - center.Y) * cos(alpha) + 0.5));
+        res.set(Math.round(center.X + (this.X - center.X) * cos(alpha) - (this.Y - center.Y) * sin(alpha)), Math.round(center.Y + (this.X - center.X) * sin(alpha) + (this.Y - center.Y) * cos(alpha)));
         return res;
     }
 

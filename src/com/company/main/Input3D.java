@@ -51,7 +51,7 @@ public class Input3D extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setResizable(false);
-        this.setTitle("Setting");
+        this.setTitle("Custom Shape");
         ButtonGroup myButtonGroup = new ButtonGroup();
         myButtonGroup.add(vectorRadioButton);
         myButtonGroup.add(positionRadioButton);
@@ -226,6 +226,13 @@ public class Input3D extends JDialog {
                             tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z + tmpEnd.Z);
                     break;
                 }
+                case TETRAHEDRON: {
+                    start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + Integer.valueOf(sizeHeight.getText().trim()));
+                    end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()) / 2,
+                            tmpStart.Y - (int) Math.round(Integer.valueOf(sizeWidth.getText().trim()) * Math.sqrt(3) / 6),
+                            tmpStart.Z);
+                    break;
+                }
             }
         }
 
@@ -265,7 +272,8 @@ public class Input3D extends JDialog {
         vectorPanel.setVisible(isVector);
         positionPanel.setVisible(!isVector);
         //System.out.println(shape);
-        if (shape.equals(Button.SPHERE) || shape.equals(Button.CONE) || shape.equals(Button.CYLINDER)) {
+        if (shape.equals(Button.SPHERE) || shape.equals(Button.CONE)
+                || shape.equals(Button.CYLINDER) || shape.equals(Button.TETRAHEDRON)) {
             depthPanel.setVisible(false);
             if (shape.equals(Button.SPHERE)) {
                 heightPanel.setVisible(false);

@@ -47,9 +47,11 @@ public class Point3D extends Point2D {
     @Override
     public void saveCoord(String[][] coord) {
         //super.saveCoord(coord);
-        String pos = "";
-        pos = "(" + X + ", " + Y + ", " + Z + ")";
-        //System.out.println(pos);
-        coord[this.to2D().X][this.to2D().Y] = pos;
+        if (MyFunction.isSafe(Paint.nextPoint, this.to2D().X, this.to2D().Y)) {
+            String pos = "";
+            pos = "(" + X + ", " + Y + ", " + Z + ")";
+            //System.out.println(pos);
+            coord[this.to2D().X][this.to2D().Y] = pos;
+        }
     }
 }

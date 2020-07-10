@@ -10,6 +10,9 @@ public class Board extends JPanel {
 
     private static String[][] coordBoard;  // bảng này sẽ lưu các tọa độ của hình
 
+    private static int width;   // độ rộng của bảng vẽ
+    private static int height;  // độ cao của bảng vẽ
+
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay nháp, tức là xoay làm mẫu để người dùng
     // xác định góc thích hợp
     public static void rotateNow(Point2D start, Point2D end) {
@@ -107,88 +110,20 @@ public class Board extends JPanel {
                 ((Triangle) now).applyMove(a);
                 break;
             }
-            case PARALLELOGRAM:{
+            case PARALLELOGRAM: {
                 ((Parallelogram) now).applyMove(a);
                 break;
             }
-            case SELECT:{
+            case SELECT: {
                 ((Select) now).applyMove(a);
                 break;
             }
         }
     }
-    public static void SymOXNow() {
-        switch (now.tag) {
-            case RECTANGLE: {
-                ((Rectangle) now).draw();
-                ((Rectangle) now).SymOX();
-                break;
-            }
-            case ELLIPSE:{
-                ((Ellipse) now).draw();
-                ((Ellipse) now).SymOX();
-                break;
-            }
-            case TRIANGLE:{
-                ((Triangle) now).draw();
-                ((Triangle) now).SymOX();
-                break;
-            }
-            case PARALLELOGRAM:{
-                ((Parallelogram) now).draw();
-                ((Parallelogram) now).SymOX();
-                break;
-            }
-        }
-    }
-    public static void SymOYNow() {
-        switch (now.tag) {
-            case RECTANGLE: {
-                ((Rectangle) now).draw();
-                ((Rectangle) now).SymOY();
-                break;
-            }
-            case ELLIPSE:{
-                ((Ellipse) now).draw();
-                ((Ellipse) now).SymOY();
-                break;
-            }
-            case TRIANGLE:{
-                ((Triangle) now).draw();
-                ((Triangle) now).SymOY();
-                break;
-            }
-            case PARALLELOGRAM:{
-                ((Parallelogram) now).draw();
-                ((Parallelogram) now).SymOY();
-                break;
-            }
-        }
-    }
-    public static void SymPointNow(Point2D point) {
-            switch (now.tag) {
-                case RECTANGLE: {
-                    ((Rectangle) now).draw();
-                    ((Rectangle) now).SymP(point);
-                    break;
-                }
-                case ELLIPSE:{
-                    ((Ellipse) now).draw();
-                    ((Ellipse) now).SymP(point);
-                    break;
-                }
-                case TRIANGLE:{
-                    ((Triangle) now).draw();
-                    ((Triangle) now).SymP(point);
-                    break;
-                }
-                case PARALLELOGRAM:{
-                    ((Parallelogram) now).draw();
-                    ((Parallelogram) now).SymP(point);
-                    break;
-                }
-            }
-        }
+
+    private static Stack<Color[][]> undoBoard;  // stack lưu các trạng thái của bảng vẽ để undo
+    private static Stack<Color[][]> redoBoard;  // stack lưu .... để redo
+    private static String[][] nextCoord;  // bảng này sẽ lưu các tọa độ của hình
 
     // đặt hình vẽ hiện tại
     // hình vừa vẽ xong sẽ được lưu vào biến now để thao tác xoay, zoom,...
@@ -203,8 +138,6 @@ public class Board extends JPanel {
         drawErase = true;
     }
 
-    private static String[][] nextCoord;  // bảng này sẽ lưu các tọa độ của hình
-    private static Stack<String[][]> undoCoord;  // stack lưu các trạng thái của bảng vẽ để undo
 
     public static void nextDo() {
         Color[][] tmpBoard = new Color[width][height];
@@ -351,10 +284,7 @@ public class Board extends JPanel {
         }
     }
 
-    private static int width;   // độ rộng của bảng vẽ
-    private static int height;  // độ cao của bảng vẽ
-    private static Stack<Color[][]> undoBoard;  // stack lưu các trạng thái của bảng vẽ để undo
-    private static Stack<Color[][]> redoBoard;  // stack lưu .... để redo
+
 
     // đặt trạng thái vừa undo thành trạng thái hiện tại
     public static void redo() {
@@ -370,6 +300,110 @@ public class Board extends JPanel {
             undoCoord.push(tmpCoord);
             MyFunction.storePointColor(redoCoord.pop(), coordBoard);
         }
+    }
+
+    private static Stack<String[][]> undoCoord;  // stack lưu các trạng thái của bảng vẽ để undo
+
+    public static void SymOXNow() {
+        if (now != null) {
+            switch (now.tag) {
+                case RECTANGLE: {
+                    ((Rectangle) now).draw();
+                    ((Rectangle) now).SymOX();
+                    break;
+                }
+                case ELLIPSE: {
+                    ((Ellipse) now).draw();
+                    ((Ellipse) now).SymOX();
+                    break;
+                }
+                case TRIANGLE: {
+                    ((Triangle) now).draw();
+                    ((Triangle) now).SymOX();
+                    break;
+                }
+                case PARALLELOGRAM: {
+                    ((Parallelogram) now).draw();
+                    ((Parallelogram) now).SymOX();
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void SymOYNow() {
+        if (now != null) {
+            switch (now.tag) {
+                case RECTANGLE: {
+                    ((Rectangle) now).draw();
+                    ((Rectangle) now).SymOY();
+                    break;
+                }
+                case ELLIPSE: {
+                    ((Ellipse) now).draw();
+                    ((Ellipse) now).SymOY();
+                    break;
+                }
+                case TRIANGLE: {
+                    ((Triangle) now).draw();
+                    ((Triangle) now).SymOY();
+                    break;
+                }
+                case PARALLELOGRAM: {
+                    ((Parallelogram) now).draw();
+                    ((Parallelogram) now).SymOY();
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void SymPointNow(Point2D point) {
+        if (now != null) {
+            switch (now.tag) {
+                case RECTANGLE: {
+                    ((Rectangle) now).draw();
+                    ((Rectangle) now).SymP(point);
+                    break;
+                }
+                case ELLIPSE: {
+                    ((Ellipse) now).draw();
+                    ((Ellipse) now).SymP(point);
+                    break;
+                }
+                case TRIANGLE: {
+                    ((Triangle) now).draw();
+                    ((Triangle) now).SymP(point);
+                    break;
+                }
+                case PARALLELOGRAM: {
+                    ((Parallelogram) now).draw();
+                    ((Parallelogram) now).SymP(point);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setSpacing(int num) {
+        spacing = num;
+    }
+
+    private static Point2D erase;           // vị trí của cục gôm
+    private static boolean drawErase;       // biến để xác định có hiện cục gôm hay không
+    private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D
+    private static Color gridColor; // biến xác định màu của lưới
+    private int spacing;    // khoảng cách giữa 2 pixel
+    private int rectSize;   // tổng độ rộng của pixel và spacing
+    private int OX;     // trục tọa độ OX
+    private int OY;     // trục tọa độ OY
+    private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
+    private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
+    private static Point2D recStart;   // điểm bắt đầu của vùng chọn
+    private static Point2D recEnd;     // điểm kết thúc của vùng chọn
+
+    public void setRectSize(int num) {
+        rectSize = num;
     }
 
     @Override
@@ -438,8 +472,9 @@ public class Board extends JPanel {
                         int y = spacing + j * rectSize - 2;
                         if (y < 15)
                             y = 15;
-                        if (x + 40 > (width - 4) * rectSize)
-                            x -= 40;
+                        if (x + coordBoard[i][j].length() * 6 > (width) * rectSize) {
+                            x = (width) * rectSize - coordBoard[i][j].length() * 6;
+                        }
                         //System.out.println(x + " " + y);
                         g.drawString(coordBoard[i][j], x, y);
                     }
@@ -466,24 +501,20 @@ public class Board extends JPanel {
         if (!isNotSelecting()) {
             g.setColor(Color.BLACK);
             //System.out.println("ccccccccc");
-            g.drawRect(recStart.X * rectSize, recStart.Y * rectSize,
-                    Math.abs(recStart.X - recEnd.X)*rectSize, Math.abs(recStart.Y - recEnd.Y)*rectSize);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(Color.pink);
+
+            float[] dashingPattern1 = {2f, 2f};
+            Stroke stroke1 = new BasicStroke(2f, BasicStroke.CAP_BUTT,
+                    BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 3.0f);
+
+            g2d.setStroke(stroke1);
+            g2d.drawRect(recStart.X * rectSize, recStart.Y * rectSize,
+                    Math.abs(recStart.X - recEnd.X) * rectSize, Math.abs(recStart.Y - recEnd.Y) * rectSize);
             recStart.set(-1, -1);
             recEnd.set(-1, -1);
 
         }
 
     }
-    private static Point2D erase;           // vị trí của cục gôm
-    private static boolean drawErase;       // biến để xác định có hiện cục gôm hay không
-    private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D
-    private static Color gridColor; // biến xác định màu của lưới
-    private int spacing;    // khoảng cách giữa 2 pixel
-    private int rectSize;   // tổng độ rộng của pixel và spacing
-    private int OX;     // trục tọa độ OX
-    private int OY;     // trục tọa độ OY
-    private boolean showAxis;   // biến xác định hiện/ẩn trục tọa độ
-    private boolean showCoord;  // biến xác định hiện/ẩn tọa độ
-    private static Point2D recStart;   // điểm bắt đầu của vùng chọn
-    private static Point2D recEnd;     // điểm kết thúc của vùng chọn
 }

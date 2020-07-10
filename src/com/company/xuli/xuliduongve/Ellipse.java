@@ -64,25 +64,25 @@ public class Ellipse extends HinhHoc {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
             if (formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
-                y1_c = Math.sqrt(Major_rad * Major_rad -x1_c * x1_c);
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
 
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) (Math.round(y1_c));
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             first = first.rotatePoint(center, this.alpha + alpha);
             second = second.rotatePoint(center, this.alpha + alpha);
@@ -96,7 +96,7 @@ public class Ellipse extends HinhHoc {
         while (y1_r <= Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
@@ -104,17 +104,17 @@ public class Ellipse extends HinhHoc {
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             first = first.rotatePoint(center, this.alpha + alpha);
             second = second.rotatePoint(center, this.alpha + alpha);
@@ -161,26 +161,26 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
-                                    - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
                 y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
 
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             first = first.rotatePoint(center, this.alpha);
             second = second.rotatePoint(center, this.alpha);
@@ -194,25 +194,25 @@ public class Ellipse extends HinhHoc {
         while (y1_r < Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
-                                    - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
 
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             first = first.rotatePoint(center, this.alpha);
             second = second.rotatePoint(center, this.alpha);
@@ -229,23 +229,23 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
-                y1_c = Math.sqrt(Major_rad * Major_rad -x1_c * x1_c);
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
 
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             first = first.rotatePoint(center, this.alpha);
             second = second.rotatePoint(center, this.alpha);
@@ -264,7 +264,7 @@ public class Ellipse extends HinhHoc {
         while (y1_r <= Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
@@ -272,17 +272,17 @@ public class Ellipse extends HinhHoc {
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             first = first.rotatePoint(center, this.alpha);
             second = second.rotatePoint(center, this.alpha);
@@ -320,8 +320,8 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
                 y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
@@ -329,17 +329,17 @@ public class Ellipse extends HinhHoc {
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             first = first.HonrizontalSymetry(first);
             second = second.HonrizontalSymetry(second);
@@ -353,7 +353,7 @@ public class Ellipse extends HinhHoc {
         while (y1_r < Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
@@ -361,17 +361,17 @@ public class Ellipse extends HinhHoc {
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             first = first.HonrizontalSymetry(first);
             second = second.HonrizontalSymetry(second);
@@ -388,8 +388,8 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
                 y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
@@ -397,17 +397,17 @@ public class Ellipse extends HinhHoc {
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             first = first.VerticalSymetry(first);
             second = second.VerticalSymetry(second);
@@ -421,7 +421,7 @@ public class Ellipse extends HinhHoc {
         while (y1_r < Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
@@ -429,17 +429,17 @@ public class Ellipse extends HinhHoc {
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             first = first.VerticalSymetry(first);
             second = second.VerticalSymetry(second);
@@ -458,8 +458,8 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
                 y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
@@ -467,17 +467,17 @@ public class Ellipse extends HinhHoc {
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             first = first.PointSymetry(first, pointSym);
             second = second.PointSymetry(second, pointSym);
@@ -491,7 +491,7 @@ public class Ellipse extends HinhHoc {
         while (y1_r < Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
@@ -499,17 +499,17 @@ public class Ellipse extends HinhHoc {
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             first = first.PointSymetry(first, pointSym);
             second = second.PointSymetry(second, pointSym);
@@ -527,8 +527,8 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else
                 y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
@@ -536,17 +536,17 @@ public class Ellipse extends HinhHoc {
             double y2_c = center.Y - y1_c;
             double tx_c = center.X - x1_c;
 
-            int ty1_c = (int) (y1_c + 0.5);
-            int ty2_c = (int) (y2_c + 0.5);
-            int x2_c = (int) (tx_c + 0.5);
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
 
             //a = (x1_c, ty1_c);
             //b = (x2_c,ty2_c);
 
             first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c,ty2_c);
+            second.set(x2_c, ty2_c);
             third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c +  center.X, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
             ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
@@ -561,7 +561,7 @@ public class Ellipse extends HinhHoc {
         while (y1_r < Minor_rad) {
             double x1_r;
             if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
                         - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
             else
                 x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
@@ -569,17 +569,17 @@ public class Ellipse extends HinhHoc {
             double x2_r = center.X - x1_r;
             double ty_r = center.Y - y1_r;
 
-            int tx1_r = (int) (x1_r + 0.5);
-            int tx2_r = (int) (x2_r + 0.5);
-            int y2_r = (int) (ty_r + 0.5);
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
 
             //a = (tx1_r, y1_r);
             //b = (tx2_r,y2_r);
 
             first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r,y2_r);
+            second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r +  center.X, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
 
             ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
             ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);

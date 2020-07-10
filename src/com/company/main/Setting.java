@@ -17,6 +17,43 @@ public class Setting extends JDialog {
         show3DCoordinatesCheckBox.setEnabled(!is2DBoard);
     }
 
+    private JCheckBox showGridCheckBox;
+
+    public static Color getGridColor() {
+        return gridColor;
+    }
+
+    private void onOK() {
+        // add your code here
+        isChoosing = true;
+        dispose();
+    }
+
+    private void onCancel() {
+        // add your code here if necessary
+        dispose();
+    }
+
+    public boolean getState() {
+        return is2DBoard;
+    }
+
+    public boolean getShow2DAxis() {
+        return show2DAxisCheckBox.isSelected();
+    }
+
+    public boolean getShow2DCoord() {
+        return show2DCoordinatesCheckBox.isSelected();
+    }
+
+    public boolean getShow3DAxis() {
+        return show3DAxisCheckBox.isSelected();
+    }
+
+    public boolean getShow3DCoord() {
+        return show3DCoordinatesCheckBox.isSelected();
+    }
+
     public Setting(boolean boardState) {
         setContentPane(contentPane);
         setModal(true);
@@ -44,7 +81,12 @@ public class Setting extends JDialog {
                 }
             }
         });
+        showGridCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
 
+            }
+        });
         a3DBoardRadioButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
@@ -104,50 +146,12 @@ public class Setting extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public static Color getGridColor() {
-        return gridColor;
-    }
-
-    private void onOK() {
-        // add your code here
-        isChoosing = true;
-        dispose();
-    }
-
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
-
-    public boolean getState() {
-        return is2DBoard;
-    }
-
-    public boolean getShow2DAxis() {
-        return show2DAxisCheckBox.isSelected();
-    }
-
-    public boolean getShow2DCoord() {
-        return show2DCoordinatesCheckBox.isSelected();
-    }
-
-    public boolean getShow3DAxis() {
-        return show3DAxisCheckBox.isSelected();
-    }
-
-    public boolean getShow3DCoord() {
-        return show3DCoordinatesCheckBox.isSelected();
-    }
-
     public boolean getOK() {
         return isChoosing;
     }
 
-    public void setChecker(boolean c2Axis, boolean c2Coord, boolean c3Axis, boolean c3Coord) {
-        show2DAxisCheckBox.setSelected(c2Axis);
-        show3DAxisCheckBox.setSelected(c3Axis);
-        show2DCoordinatesCheckBox.setSelected(c2Coord);
-        show3DCoordinatesCheckBox.setSelected(c3Coord);
+    public boolean getShowGrid() {
+        return showGridCheckBox.isSelected();
     }
 
 
@@ -162,6 +166,15 @@ public class Setting extends JDialog {
     private JCheckBox show3DCoordinatesCheckBox;
     private JButton setColorButton;
     private JButton defaultColorButton;
+
+    public void setChecker(boolean c2Axis, boolean c2Coord, boolean c3Axis, boolean c3Coord, boolean showGrid) {
+        show2DAxisCheckBox.setSelected(c2Axis);
+        show3DAxisCheckBox.setSelected(c3Axis);
+        show2DCoordinatesCheckBox.setSelected(c2Coord);
+        show3DCoordinatesCheckBox.setSelected(c3Coord);
+        showGridCheckBox.setSelected(showGrid);
+    }
+
     private boolean is2DBoard;
 
     public static void setGridColor(Color tmp) {

@@ -67,7 +67,7 @@ public class Paint extends JFrame implements ActionListener {
     private boolean playingAnimation = false;
     private Timer timer;
     private int time = 0;
-    private int sizeLine = 1;          // kích thước nét vẽ
+    public static Color[][] nextPoint = new Color[Width][Height];
     private Color chooseColor = Color.BLACK;    // màu hiện tại đang chọn
     private com.company.Button choose = PENCIL; // nút vừa chọn
     private boolean currentBoardState = true;   // biến chỉ trạng thái bảng vẽ, true là 2D, false là 3D
@@ -87,7 +87,7 @@ public class Paint extends JFrame implements ActionListener {
 
     // ================================== CÁC LOẠI BẢNG ==========================
     private boolean[][] nextDrawing = new boolean[Width][Height];
-    private Color[][] nextPoint = new Color[Width][Height];
+    private boolean showGrid = true;          // hiện lưới
     private Color[][] drawingBoard = new Color[Width][Height];
     private String[][] Coord = new String[Width][Height];
     private String[][] nextCoord = new String[Width][Height];
@@ -148,7 +148,7 @@ public class Paint extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0"); // đặt tiêu đề
 //        this.setSize(1279, 748); // kích thước cửa sổ
-        this.setSize(1279, 780); // kích thước cửa sổ
+        this.setSize(1299, 780); // kích thước cửa sổ
         this.setResizable(false);
         ImageIcon icon = new ImageIcon("/com/company/Icons/Color.png");
         this.setIconImage(icon.getImage());
@@ -566,7 +566,7 @@ public class Paint extends JFrame implements ActionListener {
                     case TETRAHEDRON: {
                         MyFunction.clearArr(nextDrawing);
                         Tetrahedron Tet = new Tetrahedron(nextDrawing, nextPoint, chooseColor);
-                        Tet.setTetrahedron(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
+                        Tet.setTetrahedron3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
                         Tet.draw();
                         Tet.saveCoord(nextCoord);
                         repaint();
@@ -578,7 +578,7 @@ public class Paint extends JFrame implements ActionListener {
         } else if (settingButton.equals(source)) {
             Setting dialog = new Setting(currentBoardState);
             Setting.setGridColor(Board.getGridColor());
-            dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord);
+            dialog.setChecker(show2DAxis, show2DCoord, show3DAxis, show3DCoord, showGrid);
             dialog.pack();
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
@@ -588,6 +588,7 @@ public class Paint extends JFrame implements ActionListener {
                 show3DAxis = dialog.getShow3DAxis();
                 show2DCoord = dialog.getShow2DCoord();
                 show3DCoord = dialog.getShow3DCoord();
+
                 if (currentBoardState != dialog.getState()) {
                     currentBoardState = dialog.getState();
                     ((Board) drawArea).setBoardState(currentBoardState);
@@ -606,6 +607,26 @@ public class Paint extends JFrame implements ActionListener {
                     ((Board) drawArea).setShowAxis(show3DAxis);
                     ((Board) drawArea).setShowCoord(show3DCoord);
                 }
+                if (showGrid != dialog.getShowGrid()) {
+                    //System.out.println(showGrid);
+                    showGrid = dialog.getShowGrid();
+                    if (showGrid) {
+                        spacing = 1;
+                        //rectSize -= 1;
+                    } else {
+                        //rectSize += 1;
+                        spacing = 0;
+                    }
+                    ((Board) drawArea).setSpacing(spacing);
+                    //((Board)drawArea).setRectSize(rectSize);
+                }
+
+                rotateButton.setEnabled(currentBoardState);
+                setCenter.setEnabled(currentBoardState);
+                rotateSymButton.setEnabled(currentBoardState);
+                symetryPointButton.setEnabled(currentBoardState);
+                symOXButton.setEnabled(currentBoardState);
+                symOYButton.setEnabled(currentBoardState);
             }
 
             repaint();
@@ -726,6 +747,7 @@ public class Paint extends JFrame implements ActionListener {
                 timer.removeActionListener(timer.getActionListeners()[0]);
                 playingAnimation = false;
                 Board.setGridColor(new Color(235, 235, 235));
+                MyFunction.clearArr(drawingBoard);
                 MyFunction.clearArr(nextDrawing);
                 MyFunction.clearArr(nextPoint);
                 repaint();
@@ -744,6 +766,8 @@ public class Paint extends JFrame implements ActionListener {
             startXY.set(-1, -1);
             choose = ROTATESYMETRY;
         }
+        undoButton.setEnabled(Board.ableUndo());
+        redoButton.setEnabled(Board.ableRedo());
 
     }
 
