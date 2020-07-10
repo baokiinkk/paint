@@ -41,7 +41,10 @@ public class Parallelogram extends HinhHoc{
         this.start = start;
         this.end = end;
         MODE = mode;
-        center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+//        center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+        // delta (C.Y - A.Y, A.X - C.X)
+        center.Y = (start.Y + end.Y) / 2;
+        center.X = (((C.Y - A.Y)*A.X) + (A.X - C.X)*(A.Y - center.Y)) /(C.Y - A.Y);
     }
 
     public void rotate(double alpha) {
@@ -63,33 +66,6 @@ public class Parallelogram extends HinhHoc{
         this.alpha += alpha;
     }
 
-
-    // set hình vuông, lấy độ dài cạnh bằng min độ dài vector AB và AD
-    // có vector AB và AD => các điểm của hình vuông
-  /*  public void setSquare(Point2D start, Point2D end, lineMode mode) {
-        //end.set();
-        MODE = mode;
-        A.set(start.X, start.Y);              // (start) A-----------------B
-        B.set(end.X, start.Y);                //         |                 |
-        C.set(end.X, end.Y);                  //         |                 |
-        D.set(start.X, end.Y);                //         D-----------------C  (end)
-        Vector2D AB = new Vector2D(A, B);
-        Vector2D AD = new Vector2D(A, D);
-        int d = (int) Math.min(AB.length(), AD.length());
-        AB = AB.kTimesUnit(d);
-        AD = AD.kTimesUnit(d);
-        //System.out.println(AB.X + "-" +AB.Y + "....." + AD.X + "-" + AD.Y);
-        end.set(A.X + AB.X, A.Y + AD.Y);
-        A.set(start.X, start.Y);              // (start) A-----------------B
-        B.set(end.X, start.Y);                //         |                 |
-        C.set(end.X, end.Y);                  //         |                 |
-        D.set(start.X, end.Y);                //         D-----------------C  (end)
-        this.start = start;
-        this.end = end;
-        center.set((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-    }*/
-
-    // vẽ hình chữ nhật dựa vào 4 điểm
     public void draw() {
         Point2D tmpA = A.rotatePoint(center, this.alpha);
         Point2D tmpB = B.rotatePoint(center, this.alpha);
