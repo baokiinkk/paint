@@ -4,11 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Stack;
 
-import com.company.main.Paint;
-
 public class Board extends JPanel {
 
-    private static String[][] coordBoard;  // bảng này sẽ lưu các tọa độ của toàn bộ hình
+    public Board(boolean[][] nextDrawing, Color[][] nextPoint, Color[][] drawingBoard, int width, int height, int spacing, int rectSize) {
+        Board.drawingBoard = drawingBoard;
+        Board.nextDrawing = nextDrawing;
+        Board.nextPoint = nextPoint;
+        this.rectSize = rectSize;
+        this.spacing = spacing;
+        Board.width = width;
+        Board.height = height;
+        OX = spacing + width / 2 * rectSize + (rectSize - spacing) / 2;
+        OY = spacing + height / 2 * rectSize + (rectSize - spacing) / 2;
+        undoBoard = new Stack<Color[][]>();
+        redoBoard = new Stack<Color[][]>();
+        boardState = true;
+        showAxis = false;
+        showCoord = false;
+        gridColor = new Color(235, 235, 235);
+        recStart = new Point2D(-1, -1);
+        recEnd = new Point2D(-1, -1);
+    }
 
     // tính góc tạo bởi 2 vector sau đó xoay, xoay này là xoay nháp, tức là xoay làm mẫu để người dùng
     // xác định góc thích hợp
@@ -203,8 +219,25 @@ public class Board extends JPanel {
         drawErase = true;
     }
 
-    private static String[][] nextCoord;    // bảng này sẽ lưu các tọa độ của hình vừa vẽ
-    private static Stack<String[][]> undoCoord;  // stack lưu các trạng thái tọa độ của bảng vẽ để undo
+    // sau khi xoay xong hình, apply dùng để ghim hình vừa xoay vào drawingBoard
+    public static void applyNow() {
+        redoBoard.clear();
+        Color[][] tmpBoard = new Color[width][height];
+        MyFunction.storePointColor(drawingBoard, tmpBoard);
+        undoBoard.push(tmpBoard);
+        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
+        MyFunction.clearArr(nextDrawing);
+    }
+
+    // mỗi lần vẽ xong sẽ ghim hình vừa vẽ vào drawingBoard, hàm previousDo sẽ gỡ ghim hình vừa
+    // vẽ để có thể mang ra xoay, zoom,..
+    public static void previousDo() {
+        if (!undoBoard.empty()) {
+            Color[][] tmpBoard = new Color[width][height];
+            MyFunction.storePointColor(drawingBoard, tmpBoard);
+            MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
+        }
+    }
 
     public static void nextDo() {
         Color[][] tmpBoard = new Color[width][height];
@@ -212,30 +245,24 @@ public class Board extends JPanel {
         undoBoard.push(tmpBoard);
     }
 
-    private static Stack<String[][]> redoCoord;  // stack lưu .... để redo
+    // quay lại trạng thái trước đó, push trạng thái hiện tại vào redo
+    public static void undo() {
+        if (!undoBoard.empty()) {
+            Color[][] tmpBoard = new Color[width][height];
+            MyFunction.storePointColor(drawingBoard, tmpBoard);
+            redoBoard.push(tmpBoard);
+            MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
+        }
+    }
 
-    public Board(boolean[][] nextDrawing, Color[][] nextPoint, Color[][] drawingBoard, String[][] Coord, String[][] nCoord) {
-        Board.drawingBoard = drawingBoard;
-        Board.nextDrawing = nextDrawing;
-        Board.nextPoint = nextPoint;
-        this.rectSize = Paint.rectSize;
-        this.spacing = Paint.spacing;
-        coordBoard = Coord;
-        nextCoord = nCoord;
-        width = Paint.Width;
-        height = Paint.Height;
-        OX = spacing + width / 2 * rectSize + (rectSize - spacing) / 2;
-        OY = spacing + height / 2 * rectSize + (rectSize - spacing) / 2;
-        undoBoard = new Stack<Color[][]>();
-        redoBoard = new Stack<Color[][]>();
-        undoCoord = new Stack<String[][]>();
-        redoCoord = new Stack<String[][]>();
-        boardState = true;
-        showAxis = false;
-        showCoord = false;
-        gridColor = new Color(235, 235, 235);
-        recStart = new Point2D(-1, -1);
-        recEnd = new Point2D(-1, -1);
+    // đặt trạng thái vừa undo thành trạng thái hiện tại
+    public static void redo() {
+        if (!redoBoard.empty()) {
+            Color[][] tmpBoard = new Color[width][height];
+            MyFunction.storePointColor(drawingBoard, tmpBoard);
+            undoBoard.push(tmpBoard);
+            MyFunction.storePointColor(redoBoard.pop(), drawingBoard);
+        }
     }
 
     //hàm kiểm tra xem có thể Undo nữa hay không
@@ -246,130 +273,6 @@ public class Board extends JPanel {
     // tương tự hàm trên nhưng là redo
     public static boolean ableRedo() {
         return (!redoBoard.empty());
-    }
-
-    // sau khi xoay xong hình, apply dùng để ghim hình vừa xoay vào drawingBoard
-    public static void applyNow() {
-        redoBoard.clear();
-        Color[][] tmpBoard = new Color[width][height];
-        String[][] tmpCoord = new String[width][height];
-        MyFunction.storePointColor(drawingBoard, tmpBoard);
-        MyFunction.storePointColor(coordBoard, tmpCoord);
-        undoBoard.push(tmpBoard);
-        undoCoord.push(tmpCoord);
-        MyFunction.mergePointColor(nextPoint, nextDrawing, drawingBoard);
-        MyFunction.clearArr(nextDrawing);
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (nextCoord[i][j] != null) {
-                    coordBoard[i][j] = nextCoord[i][j];
-                }
-            }
-        }
-        MyFunction.clearArr(nextCoord);
-    }
-
-    // hàm set ẩn/hiện trục tọa độ
-    public void setShowAxis(boolean set) {
-        showAxis = set;
-    }
-
-    public void setShowCoord(boolean set) {
-        showCoord = set;
-    }
-
-    public void setBoardState(boolean set) {
-        boardState = set;
-    }
-
-    private boolean isNotSelecting() {
-        return (recStart.equal(new Point2D(-1, -1)) && recEnd.equal(new Point2D(-1, -1)));
-    }
-
-    public static void select(Point2D start, Point2D end) {
-        recStart.set(start);
-        recEnd.set(end);
-    }
-    // hàm vẽ biến hình hiện tại (now)
-    // hình như bị dư :v
-//    public static void drawNow() {
-//        switch (now.tag) {
-//            case RECTANGLE: {
-//                ((Rectangle) now).draw();
-//                break;
-//            }
-//        }
-//    }
-
-    public static void setGridColor(Color tmp) {
-        gridColor = tmp;
-    }
-
-    public static Color getGridColor() {
-        return gridColor;
-    }
-//    public static void setBackgroundColor(Color tmp)
-//    {
-//
-//    }
-
-    public static HinhHoc now;              // biến lưu hình vừa vẽ xong, khi thực hiện các thao tác move, zoom,... sẽ thực hiện trên biến này
-    private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp, trạng thái nháp là trạng thái lúc kéo vẽ 1 hình nào đó, VD vẽ đường thẳng
-    private static Color[][] nextPoint;     // bảng này lưu màu nháp
-    private static Color[][] drawingBoard;  // bảng vẽ chính thức.
-
-    // mỗi lần vẽ xong sẽ ghim hình vừa vẽ vào drawingBoard, hàm previousDo sẽ gỡ ghim hình vừa
-    // vẽ để có thể mang ra xoay, zoom,..
-    public static void previousDo() {
-        if (!undoBoard.empty()) {
-            Color[][] tmpBoard = new Color[width][height];
-            MyFunction.storePointColor(drawingBoard, tmpBoard);
-            MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
-        }
-        if (!undoCoord.empty()) {
-            String[][] tmpCoord = new String[width][height];
-            MyFunction.storePointColor(coordBoard, tmpCoord);
-            MyFunction.storePointColor(undoCoord.pop(), coordBoard);
-
-        }
-    }
-
-    // quay lại trạng thái trước đó, push trạng thái hiện tại vào redo
-    public static void undo() {
-        if (!undoBoard.empty()) {
-            Color[][] tmpBoard = new Color[width][height];
-
-            MyFunction.storePointColor(drawingBoard, tmpBoard);
-            redoBoard.push(tmpBoard);
-            MyFunction.storePointColor(undoBoard.pop(), drawingBoard);
-        }
-        if (!undoCoord.empty()) {
-            String[][] tmpCoord = new String[width][height];
-            MyFunction.storePointColor(coordBoard, tmpCoord);
-            redoCoord.push(tmpCoord);
-            MyFunction.storePointColor(undoCoord.pop(), coordBoard);
-        }
-    }
-
-    private static int width;   // độ rộng của bảng vẽ
-    private static int height;  // độ cao của bảng vẽ
-    private static Stack<Color[][]> undoBoard;  // stack lưu các trạng thái của bảng vẽ để undo
-    private static Stack<Color[][]> redoBoard;  // stack lưu .... để redo
-
-    // đặt trạng thái vừa undo thành trạng thái hiện tại
-    public static void redo() {
-        if (!redoBoard.empty()) {
-            Color[][] tmpBoard = new Color[width][height];
-            MyFunction.storePointColor(drawingBoard, tmpBoard);
-            undoBoard.push(tmpBoard);
-            MyFunction.storePointColor(redoBoard.pop(), drawingBoard);
-        }
-        if (!redoCoord.empty()) {
-            String[][] tmpCoord = new String[width][height];
-            MyFunction.storePointColor(coordBoard, tmpCoord);
-            undoCoord.push(tmpCoord);
-            MyFunction.storePointColor(redoCoord.pop(), coordBoard);
-        }
     }
 
     @Override
@@ -402,6 +305,24 @@ public class Board extends JPanel {
                 g.drawLine(OX, 0, OX, 800);
             }
 
+//            if (showCoord)  // hiện tọa độ
+//            {
+//                for (int i = 0; i < width; i++) {
+//                    for (int j = 0; j < height; j++) {
+//                        if (coordBoard[i][j] == true) {
+//                            g.setColor(drawingBoard[i][j]);
+//                            int x = spacing + i * rectSize;
+//                            int y = spacing + j * rectSize;
+//                            if (y < 15)
+//                                y = 15;
+//                            if (x + 40 > (width - 4) * rectSize)
+//                                x -= 40;
+//                            //System.out.println(x + " " + y);
+//                            g.drawString("(" + (i - OX / rectSize) + ", " + (-(j - OY / rectSize)) + ")", x, y);
+//                        }
+//                    }
+//                }
+//            }
         } else {
             if (showAxis) {
                 g.setColor(Color.RED);
@@ -423,27 +344,6 @@ public class Board extends JPanel {
 //                g2d.drawLine(OX + 800, OY - 800, OX, OY);
 
 
-            }
-        }
-        if (showCoord)  // hiện tọa độ
-        {
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    if (coordBoard[i][j] != null) {
-                        g.setColor(drawingBoard[i][j]);
-                        if (drawingBoard[i][j].equals(Color.WHITE)) {
-                            g.setColor(Color.BLACK);
-                        }
-                        int x = spacing + i * rectSize + 5;
-                        int y = spacing + j * rectSize - 2;
-                        if (y < 15)
-                            y = 15;
-                        if (x + 40 > (width - 4) * rectSize)
-                            x -= 40;
-                        //System.out.println(x + " " + y);
-                        g.drawString(coordBoard[i][j], x, y);
-                    }
-                }
             }
         }
 
@@ -474,6 +374,60 @@ public class Board extends JPanel {
         }
 
     }
+
+    // hàm set ẩn/hiện trục tọa độ
+    public void setShowAxis(boolean set) {
+        showAxis = set;
+    }
+
+    public void setShowCoord(boolean set) {
+        showCoord = set;
+    }
+
+    public void setBoardState(boolean set) {
+        boardState = set;
+    }
+
+    private boolean isNotSelecting() {
+        return (recStart.equal(new Point2D(-1, -1)) && recEnd.equal(new Point2D(-1, -1)));
+    }
+
+    public static void select(Point2D start, Point2D end){
+        recStart.set(start);
+        recEnd.set(end);
+    }
+    // hàm vẽ biến hình hiện tại (now)
+    // hình như bị dư :v
+//    public static void drawNow() {
+//        switch (now.tag) {
+//            case RECTANGLE: {
+//                ((Rectangle) now).draw();
+//                break;
+//            }
+//        }
+//    }
+
+    public static void setGridColor(Color tmp) {
+        gridColor = tmp;
+    }
+
+    public static Color getGridColor() {
+        return gridColor;
+    }
+//    public static void setBackgroundColor(Color tmp)
+//    {
+//
+//    }
+
+    public static HinhHoc now;              // biến lưu hình vừa vẽ xong, khi thực hiện các thao tác move, zoom,... sẽ thực hiện trên biến này
+    private static boolean[][] nextDrawing; // bảng này và bảng dưới dùng để lưu trạng thái nháp, trạng thái nháp là trạng thái lúc kéo vẽ 1 hình nào đó, VD vẽ đường thẳng
+    private static Color[][] nextPoint;     // bảng này lưu màu nháp
+    private static Color[][] drawingBoard;  // bảng vẽ chính thức.
+    private static boolean[][] coordBoard;  // bảng này sẽ lưu các tọa độ của hình
+    private static int width;   // độ rộng của bảng vẽ
+    private static int height;  // độ cao của bảng vẽ
+    private static Stack<Color[][]> undoBoard;  // stack lưu các trạng thái của bảng vẽ để undo
+    private static Stack<Color[][]> redoBoard;  // stack lưu .... để redo
     private static Point2D erase;           // vị trí của cục gôm
     private static boolean drawErase;       // biến để xác định có hiện cục gôm hay không
     private boolean boardState; // biến xác định trạng thái của bảng vẽ, true là 2D, false là 3D

@@ -26,16 +26,11 @@ public class Ellipse extends HinhHoc {
         this.end = end;
         MODE = mode;
         formula = false;
-        center.set(this.start.X, this.start.Y);
+        center.set(this.start.X,this.start.Y);
         Minor_rad = Math.max(Math.abs(this.start.X - this.end.X), Math.abs(this.start.Y - this.end.Y));
         Major_rad = Minor_rad;
         //pt duong tron (x - a)^2 + (y - b)^2 = r^2 => y = sqrt(r^2 -(x - a)^2) +b
         //tam (a,b)
-    }
-
-    public void saveCoord(String[][] coord) {
-        center.saveCoord(coord);
-        new Point2D((int) Math.round(this.center.X + Major_rad), this.center.Y).saveCoord(coord);
     }
 
     // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
@@ -44,7 +39,7 @@ public class Ellipse extends HinhHoc {
         this.end = end;
         MODE = mode;
         formula = true;
-        center.set(this.start.X, this.start.Y);
+        center.set(this.start.X,this.start.Y);
         Major_rad = Math.abs(this.start.X - this.end.X);
         Minor_rad = Math.abs(this.start.Y - this.end.Y);
         //pt elip (x^2/a^2 + y^2/b^2 = 1) => y = sqrt(1 - (x^2/a^2))* b^2)
