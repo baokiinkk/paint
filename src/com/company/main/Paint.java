@@ -269,8 +269,10 @@ public class Paint extends JFrame implements ActionListener {
             repaint();
         } else if (clearButton.equals(source)) {//choose = Button.CLEAR;
             MyFunction.clearArr(drawingBoard);
+            MyFunction.clearArr(Coord);
             MyFunction.clearArr(nextPoint);
-            pointXY.set(Width/2,Height/2);
+            MyFunction.clearArr(nextCoord);
+            pointXY.set(Width / 2, Height / 2);
             repaint();
         } else if (lineButton.equals(source)) {
             startXY.set(-1, -1);
@@ -339,9 +341,9 @@ public class Paint extends JFrame implements ActionListener {
                 Tree rightCenterBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(188, 61), new Point2D(193, 68));
                 //Tree rightSizeBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(), new Point2D());
                 //listFW.add(base);
-                //Sun sun = new Sun(nextDrawing, nextPoint, Color.YELLOW);
+                Sun sun = new Sun(nextDrawing, nextPoint, Color.YELLOW);
                 //sun.setSun(new Point2D(268, 5), new Point2D(255, 5));
-                //sun.setSun(new Point2D(268, 5), new Point2D(250, 5));
+                sun.setSun(new Point2D(268, 5), new Point2D(250, 5));
                 timer.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
@@ -396,7 +398,7 @@ public class Paint extends JFrame implements ActionListener {
                             en.X = MyFunction.rightSize(en.Y);
                             listTreeRight.set(i, new Tree(nextDrawing, nextPoint, Color.BLACK, str, en));
                         }
-                        //sun.draw(time%360);
+                        sun.draw(time % 360);
                         //repaint();
                         //System.out.println(listTreeLeft.get(0).center.X);
                         if (listTreeLeft.get(0).center.Y > 150) {
@@ -554,11 +556,19 @@ public class Paint extends JFrame implements ActionListener {
                     }
                     case PYRAMID: {
                         MyFunction.clearArr(nextDrawing);
+                        Pyramid Pyr = new Pyramid(nextDrawing, nextPoint, chooseColor);
+                        Pyr.setPyramid3D(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
+                        Pyr.draw();
+                        Pyr.saveCoord(nextCoord);
                         repaint();
                         break;
                     }
                     case TETRAHEDRON: {
                         MyFunction.clearArr(nextDrawing);
+                        Tetrahedron Tet = new Tetrahedron(nextDrawing, nextPoint, chooseColor);
+                        Tet.setTetrahedron(dialog.getStart3D(), dialog.getEnd3D(), chooseLineMode);
+                        Tet.draw();
+                        Tet.saveCoord(nextCoord);
                         repaint();
                         break;
                     }
@@ -573,25 +583,29 @@ public class Paint extends JFrame implements ActionListener {
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
             Board.setGridColor(Setting.getGridColor());
-            show2DAxis = dialog.getShow2DAxis();
-            show3DAxis = dialog.getShow3DAxis();
-            show2DCoord = dialog.getShow2DCoord();
-            show3DCoord = dialog.getShow3DCoord();
-            if (currentBoardState != dialog.getState()) {
-                currentBoardState = dialog.getState();
-                ((Board) drawArea).setBoardState(currentBoardState);
-                MyFunction.clearArr(drawingBoard);
-                MyFunction.clearArr(nextPoint);
-                MyFunction.clearArr(nextDrawing);
-            }
-            Panel2D.setVisible(currentBoardState);
-            Panel3D.setVisible(!currentBoardState);
-            if (currentBoardState) {
-                ((Board) drawArea).setShowAxis(show2DAxis);
-                ((Board) drawArea).setShowCoord(show2DCoord);
-            } else {
-                ((Board) drawArea).setShowAxis(show3DAxis);
-                ((Board) drawArea).setShowCoord(show3DCoord);
+            if (dialog.getOK()) {
+                show2DAxis = dialog.getShow2DAxis();
+                show3DAxis = dialog.getShow3DAxis();
+                show2DCoord = dialog.getShow2DCoord();
+                show3DCoord = dialog.getShow3DCoord();
+                if (currentBoardState != dialog.getState()) {
+                    currentBoardState = dialog.getState();
+                    ((Board) drawArea).setBoardState(currentBoardState);
+                    MyFunction.clearArr(drawingBoard);
+                    MyFunction.clearArr(nextPoint);
+                    MyFunction.clearArr(nextDrawing);
+                    MyFunction.clearArr(Coord);
+                    MyFunction.clearArr(nextCoord);
+                }
+                Panel2D.setVisible(currentBoardState);
+                Panel3D.setVisible(!currentBoardState);
+                if (currentBoardState) {
+                    ((Board) drawArea).setShowAxis(show2DAxis);
+                    ((Board) drawArea).setShowCoord(show2DCoord);
+                } else {
+                    ((Board) drawArea).setShowAxis(show3DAxis);
+                    ((Board) drawArea).setShowCoord(show3DCoord);
+                }
             }
 
             repaint();
@@ -1029,6 +1043,7 @@ public class Paint extends JFrame implements ActionListener {
                             Board.now.saveCoord(nextCoord);
                         }
                         Board.applyNow();
+                        repaint();
                         break;
                     }
                     case MOVE: {
@@ -1095,9 +1110,13 @@ public class Paint extends JFrame implements ActionListener {
                     {
                         // tương tự với pencil, khác ở chỗ điểm bắt đầu không đổi
                         MyFunction.clearArr(nextDrawing); // phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
+                        MyFunction.clearArr(nextCoord);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
-                        if (startXY.X != -1 && startXY.Y != -1)
-                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY, mouseXY, pointXY, chooseLineMode, chooseSideMode);
+                        if (startXY.X != -1 && startXY.Y != -1) {
+                            Line line = new Line(nextDrawing, nextPoint, chooseColor);
+                            line.draw(startXY, mouseXY, pointXY, chooseLineMode, chooseSideMode);
+                            line.saveCoord(nextCoord);
+                        }
                         repaint();
                         break;
                     }
@@ -1127,6 +1146,7 @@ public class Paint extends JFrame implements ActionListener {
 
                         MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
                         MyFunction.clearArr(nextPoint);
+                        MyFunction.clearArr(nextCoord);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         Parallelogram par = new Parallelogram(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
                         if (startXY.X != -1 && startXY.Y != -1) {
@@ -1135,7 +1155,8 @@ public class Paint extends JFrame implements ActionListener {
                             if(startXY.Y == mouseXY.Y)
                                 mouseXY.Y++;
                             par.setParallelogram(startXY, mouseXY, chooseLineMode); //  hàm set HC
-                            par.draw(pointXY,chooseSideMode); // cho vẽ hình
+                            par.saveCoord(nextCoord);
+                            par.draw(pointXY, chooseSideMode); // cho vẽ hình
                             Board.setNowHinhHoc(par); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
                         repaint();
@@ -1146,6 +1167,7 @@ public class Paint extends JFrame implements ActionListener {
 
                         MyFunction.clearArr(nextDrawing);// phải luôn xóa các nét vẽ và cho vẽ lại khi có sự thay đổi
                         MyFunction.clearArr(nextPoint);
+                        MyFunction.clearArr(nextCoord);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         Triangle tri = new Triangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
                         if (startXY.X != -1 && startXY.Y != -1) {
@@ -1158,7 +1180,8 @@ public class Paint extends JFrame implements ActionListener {
                             } else {
                                 tri.setTriangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
                             }
-                            tri.draw(pointXY,chooseSideMode); // cho vẽ hình
+                            tri.saveCoord(nextCoord);
+                            tri.draw(pointXY, chooseSideMode); // cho vẽ hình
                             Board.setNowHinhHoc(tri); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
                         repaint();
@@ -1269,6 +1292,7 @@ public class Paint extends JFrame implements ActionListener {
                     case ELLIPSE: {
                         MyFunction.clearArr(nextDrawing);
                         MyFunction.clearArr(nextPoint);
+                        MyFunction.clearArr(nextCoord);
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         Ellipse elp = new Ellipse(nextDrawing, nextPoint, chooseColor);
                         if (startXY.X != -1 && startXY.Y != -1) {
@@ -1281,7 +1305,8 @@ public class Paint extends JFrame implements ActionListener {
                             } else {
                                 elp.setElip(startXY, mouseXY, chooseLineMode);
                             }
-                            elp.draw(pointXY,chooseSideMode);
+                            elp.saveCoord(nextCoord);
+                            elp.draw(pointXY, chooseSideMode);
                             Board.setNowHinhHoc(elp);
                         }
                         repaint();

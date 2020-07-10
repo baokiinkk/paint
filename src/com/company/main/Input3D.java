@@ -2,6 +2,7 @@ package com.company.main;
 
 import com.company.Button;
 import com.company.xuli.xuliduongve.Point3D;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -199,6 +200,7 @@ public class Input3D extends JDialog {
                             tmpStart.Y - Math.round(tmpEnd.Y / 2), tmpStart.Z - Math.round(tmpEnd.Z / 2));
                     end = new Point3D(tmpStart.X + Math.round(tmpEnd.X / 2),
                             tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z + Math.round(tmpEnd.Z / 2));
+                    System.out.println(start.X + ", " + start.Y + ", " + start.Z);
                     break;
                 }
                 case SPHERE: {
@@ -214,6 +216,14 @@ public class Input3D extends JDialog {
                 case CYLINDER: {
                     start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + Integer.valueOf(sizeHeight.getText().trim()));
                     end = new Point3D(tmpStart.X + Integer.valueOf(sizeWidth.getText().trim()), tmpStart.Y, tmpStart.Z);
+                    break;
+                }
+                case PYRAMID: {
+                    Point3D tmpEnd = new Point3D(Integer.valueOf(sizeWidth.getText().trim()),
+                            Integer.valueOf(sizeDepth.getText().trim()), Integer.valueOf(sizeHeight.getText().trim()));
+                    start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + tmpEnd.Z);
+                    end = new Point3D(tmpStart.X + Math.round(tmpEnd.X / 2),
+                            tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z + tmpEnd.Z);
                     break;
                 }
             }

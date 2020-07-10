@@ -722,6 +722,7 @@
             </constraints>
             <properties>
               <background color="-1118482"/>
+              <focusable value="false"/>
               <icon value="com/company/Icons/Parallelogram.png"/>
               <text value=""/>
               <toolTipText value="Draw Parallelogram"/>
@@ -776,6 +777,7 @@
             </constraints>
             <properties>
               <background color="-1118482"/>
+              <focusable value="false"/>
               <icon value="com/company/Icons/Cone.png"/>
               <text value=""/>
               <toolTipText value="Draw conical"/>
@@ -787,6 +789,7 @@
             </constraints>
             <properties>
               <background color="-1118482"/>
+              <focusable value="false"/>
               <icon value="com/company/Icons/Cylinder.png"/>
               <text value=""/>
               <toolTipText value="Draw circular"/>
@@ -805,6 +808,8 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <background color="-1118482"/>
+              <focusable value="false"/>
               <icon value="com/company/Icons/Pyramid.png"/>
               <text value=""/>
             </properties>
@@ -815,6 +820,7 @@
             </constraints>
             <properties>
               <background color="-1118482"/>
+              <focusable value="false"/>
               <icon value="com/company/Icons/Tetrahedron.png"/>
               <text value=""/>
             </properties>

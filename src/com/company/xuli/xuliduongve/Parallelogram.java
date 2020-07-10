@@ -25,14 +25,22 @@ public class Parallelogram extends HinhHoc{
         Major_egde = new Vector2D();
     }
 
+    @Override
+    public void saveCoord(String[][] coord) {
+        A.saveCoord(coord);
+        B.saveCoord(coord);
+        C.saveCoord(coord);
+        D.saveCoord(coord);
+    }
+
     // set 4 điểm hình chữ nhật
     private void setParallelogram(Point2D start, Point2D end) {
         A.set(start.X, start.Y);
         B.set(end.X, start.Y);
-        Major_egde.set(A,B);                                    // (start)    A-----------------B
-        dis = Major_egde.length()/3.0;                          //           |                 |
-        C.set(end.X - (int) (dis+0.5), end.Y);                  //          |                 |
-        D.set(start.X - (int) (dis+0.5), end.Y);                //         D-----------------C  (end)
+        Major_egde.set(A, B);                                    // (start)    A-----------------B
+        dis = Major_egde.length() / 3.0;                          //           |                 |
+        C.set(end.X - (int) (dis + 0.5), end.Y);                  //          |                 |
+        D.set(start.X - (int) (dis + 0.5), end.Y);                //         D-----------------C  (end)
 //        System.out.println(dis + " " + Major_egde.X + " " + Major_egde.Y + " " + Major_egde.length());
     }
 

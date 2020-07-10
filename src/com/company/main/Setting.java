@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class Setting extends JDialog {
     private static Color gridColor;
+    private boolean isChoosing;
 
     private void refreshState() {
         a2DBoardRadioButton.setSelected(is2DBoard);
@@ -26,6 +27,7 @@ public class Setting extends JDialog {
         myButtonGroup.add(a2DBoardRadioButton);
         myButtonGroup.add(a3DBoardRadioButton);
         this.is2DBoard = boardState;
+        isChoosing = false;
         refreshState();
 
         a2DBoardRadioButton.addItemListener(new ItemListener() {
@@ -108,6 +110,7 @@ public class Setting extends JDialog {
 
     private void onOK() {
         // add your code here
+        isChoosing = true;
         dispose();
     }
 
@@ -134,6 +137,10 @@ public class Setting extends JDialog {
 
     public boolean getShow3DCoord() {
         return show3DCoordinatesCheckBox.isSelected();
+    }
+
+    public boolean getOK() {
+        return isChoosing;
     }
 
     public void setChecker(boolean c2Axis, boolean c2Coord, boolean c3Axis, boolean c3Coord) {

@@ -39,11 +39,20 @@ public class Ellipse extends HinhHoc {
         this.end = end;
         MODE = mode;
         formula = true;
-        center.set(this.start.X,this.start.Y);
+        center.set(this.start.X, this.start.Y);
         Major_rad = Math.abs(this.start.X - this.end.X);
         Minor_rad = Math.abs(this.start.Y - this.end.Y);
         //pt elip (x^2/a^2 + y^2/b^2 = 1) => y = sqrt(1 - (x^2/a^2))* b^2)
         // tam  (xstart;ystart)
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        center.saveCoord(coord);
+        new Point2D((int) Math.round(center.X + Major_rad), center.Y).saveCoord(coord);
+        if (Major_rad > Minor_rad) {
+            new Point2D(center.X, (int) Math.round(center.Y + Minor_rad)).saveCoord(coord);
+        }
     }
 
     // xoay và vẽ hình hiện tại 1 góc alpha
@@ -54,7 +63,7 @@ public class Ellipse extends HinhHoc {
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
             double y1_c;
-            if(formula)
+            if (formula)
                 y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad *Minor_rad
                         - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
             else

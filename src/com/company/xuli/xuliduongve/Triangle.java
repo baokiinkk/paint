@@ -23,8 +23,15 @@ public class Triangle extends HinhHoc {
     // set 4 điểm hình chữ nhật
     private void setTriangle(Point2D start, Point2D end) {
         A.set(start.X, start.Y);
-        B.set(start.X+(start.X-end.X),end.Y );
+        B.set(start.X + (start.X - end.X), end.Y);
         C.set(end.X, end.Y);
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        A.saveCoord(coord);
+        B.saveCoord(coord);
+        C.saveCoord(coord);
     }
 
     // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
@@ -33,7 +40,7 @@ public class Triangle extends HinhHoc {
         this.start = start;
         this.end = end;
         MODE = mode;
-        center.set(start.X,start.Y+( (2.0/3.0)*Math.abs(start.Y-end.Y)));
+        center.set(start.X, start.Y + ((2.0 / 3.0) * Math.abs(start.Y - end.Y)));
     }
 
     // xoay và vẽ hình hiện tại 1 góc alpha

@@ -7,17 +7,33 @@ import com.company.xuli.xuliduongve.Point2D;
 
 
 public class Line extends HinhHoc {
+    private ArrayList<Point2D> BunchOfStart;
+    private ArrayList<Point2D> BunchOfEnd;
+    private Point2D tmpStart;
+    private Point2D tmpEnd;
 
     public Line(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
+        tmpStart = new Point2D();
+        tmpEnd = new Point2D();
+        BunchOfStart = new ArrayList<Point2D>();
+        BunchOfEnd = new ArrayList<Point2D>();
+    }
+
+    @Override
+    public void saveCoord(String[][] coord) {
+        //System.out.println(BunchOfStart.size());
+        for (int i = 0; i < BunchOfStart.size(); i++) {
+            BunchOfStart.get(i).saveCoord(coord);
+            BunchOfEnd.get(i).saveCoord(coord);
+        }
+
     }
 
     public void draw(Point2D start, Point2D end, Point2D centerPoint, lineMode MODE, sideMode SIDEMODE) {
-        Point2D tmpStart = new Point2D();
-        Point2D tmpEnd = new Point2D();
-        ArrayList<Point2D> BunchOfStart = tmpStart.chooseSideMode(centerPoint, start, SIDEMODE);
-        ArrayList<Point2D> BunchOfEnd = tmpEnd.chooseSideMode(centerPoint, end, SIDEMODE);
 
+        BunchOfStart = tmpStart.chooseSideMode(centerPoint, start, SIDEMODE);
+        BunchOfEnd = tmpEnd.chooseSideMode(centerPoint, end, SIDEMODE);
         for (int i = 0; i < BunchOfStart.size(); i++) {
             super.MidpointLine(BunchOfStart.get(i), BunchOfEnd.get(i), MODE);
         }
