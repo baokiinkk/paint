@@ -22,6 +22,10 @@ public class Board extends JPanel {
 
         //System.out.println(alpha);
         switch (now.tag) {
+            case LINE:{
+                ((Line) now).rotate(alpha);
+                break;
+            }
             case RECTANGLE: {
                 ((Rectangle) now).rotate(alpha);
                 break;
@@ -45,6 +49,10 @@ public class Board extends JPanel {
         Vector2D a = new Vector2D(start, end);
         //System.out.println("---" + now.tag);
         switch (now.tag) {
+            case LINE:{
+                ((Line) now).move(a);
+                break;
+            }
             case RECTANGLE: {
                 ((Rectangle) now).move(a);
                 break;
@@ -75,6 +83,10 @@ public class Board extends JPanel {
         double alpha = a.alphaVector(b);
         //System.out.println(alpha);
         switch (now.tag) {
+            case LINE:{
+                ((Line) now).applyRotate(alpha);
+                break;
+            }
             case RECTANGLE: {
                 ((Rectangle) now).applyRotate(alpha);
                 break;
@@ -98,6 +110,10 @@ public class Board extends JPanel {
         Vector2D a = new Vector2D(start, end);
         //System.out.println(alpha);
         switch (now.tag) {
+            case LINE:{
+                ((Line) now).applyMove(a);
+                break;
+            }
             case RECTANGLE: {
                 ((Rectangle) now).applyMove(a);
                 break;
@@ -307,6 +323,11 @@ public class Board extends JPanel {
     public static void SymOXNow() {
         if (now != null) {
             switch (now.tag) {
+                case LINE:{
+                    ((Line) now).draw();
+                    ((Line) now).SymOX();
+                    break;
+                }
                 case RECTANGLE: {
                     ((Rectangle) now).draw();
                     ((Rectangle) now).SymOX();
@@ -334,6 +355,11 @@ public class Board extends JPanel {
     public static void SymOYNow() {
         if (now != null) {
             switch (now.tag) {
+                case LINE:{
+                    ((Line) now).draw();
+                    ((Line) now).SymOY();
+                    break;
+                }
                 case RECTANGLE: {
                     ((Rectangle) now).draw();
                     ((Rectangle) now).SymOY();
@@ -361,6 +387,11 @@ public class Board extends JPanel {
     public static void SymPointNow(Point2D point) {
         if (now != null) {
             switch (now.tag) {
+                case LINE:{
+                    ((Line) now).draw();
+                    ((Line) now).SymP(point);
+                    break;
+                }
                 case RECTANGLE: {
                     ((Rectangle) now).draw();
                     ((Rectangle) now).SymP(point);

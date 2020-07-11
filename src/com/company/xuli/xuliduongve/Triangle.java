@@ -9,6 +9,7 @@ public class Triangle extends HinhHoc {
     private Point2D A;
     private Point2D B;
     private Point2D C;
+    private sideMode SIDEMODE;
     private lineMode MODE;
 
     // khởi tạo hình chữ nhật
@@ -35,11 +36,13 @@ public class Triangle extends HinhHoc {
     }
 
     // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
-    public void setTriangle(Point2D start, Point2D end, lineMode mode) {
+    public void setTriangle(Point2D start, Point2D end, lineMode mode, sideMode SideMode, Point2D centerpoint) {
         this.setTriangle(start, end);
         this.start = start;
         this.end = end;
+        this.centerPoint =centerpoint;
         MODE = mode;
+        SIDEMODE = SideMode;
         center.set(start.X, start.Y + ((2.0 / 3.0) * Math.abs(start.Y - end.Y)));
     }
 
@@ -50,9 +53,19 @@ public class Triangle extends HinhHoc {
         Point2D tmpA = A.rotatePoint(center, this.alpha + alpha);
         Point2D tmpB = B.rotatePoint(center, this.alpha + alpha);
         Point2D tmpC = C.rotatePoint(center, this.alpha + alpha);
-        super.MidpointLine(tmpA, tmpB, MODE);
-        super.MidpointLine(tmpB, tmpC, MODE);
-        super.MidpointLine(tmpC, tmpA, MODE);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBA = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCA = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        /*Point2D tmpA = A.rotatePoint(center, this.alpha);
+        Point2D tmpB = B.rotatePoint(center, this.alpha);
+        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        Point2D tmpD = D.rotatePoint(center, this.alpha);*/
+        for(int i = 0;i<tmpAA.size();i++)
+        {
+            super.MidpointLine(tmpAA.get(i), tmpBA.get(i), MODE);
+            super.MidpointLine(tmpBA.get(i), tmpCA.get(i), MODE);
+            super.MidpointLine(tmpCA.get(i), tmpAA.get(i), MODE);
+        }
     }
 
     // khi xoay nháp sẽ có góc alpha lệch so với góc ban đầu, khi xoay xong, hàm này sẽ + góc vừa xoay vào góc hiện tại
@@ -80,16 +93,16 @@ public class Triangle extends HinhHoc {
 
 
     // vẽ hình chữ nhật dựa vào 4 điểm
-    public void draw() {
+    /*public void draw() {
         Point2D tmpA = A.rotatePoint(center, this.alpha);
         Point2D tmpB = B.rotatePoint(center, this.alpha);
         Point2D tmpC = C.rotatePoint(center, this.alpha);
         super.MidpointLine(tmpA, tmpB, MODE);
         super.MidpointLine(tmpB, tmpC, MODE);
         super.MidpointLine(tmpC, tmpA, MODE);
-    }
+    }*/
 
-    public void draw(Point2D centerPoint, sideMode SIDEMODE){
+    public void draw(){
         ArrayList<Point2D> tmpA = A.chooseSideMode(centerPoint, A, SIDEMODE);
         ArrayList<Point2D> tmpB = B.chooseSideMode(centerPoint, B, SIDEMODE);
         ArrayList<Point2D> tmpC = C.chooseSideMode(centerPoint, C, SIDEMODE);

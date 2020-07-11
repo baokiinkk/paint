@@ -11,6 +11,7 @@ public class HinhHoc {
     public Point2D start;             // điểm bắt đầu để vẽ hình
     public Point2D end;               // điểm kết thúc để vẽ hình
     public Point2D center;            // tâm của hình
+    public Point2D centerPoint;            // tâm của hình
     public lineMode mode;             // chế độ nét vẽ
     public double alpha;              // góc xoay hiện tại của hình so với hình gốc, hình gốc sẽ có góc = 0
     public com.company.Button tag;// loại hình

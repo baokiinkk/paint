@@ -2,7 +2,7 @@ package com.company.main;
 
 import com.company.Button;
 import com.company.xuli.xuliduongve.Point3D;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+
 
 import javax.swing.*;
 import java.awt.event.*;

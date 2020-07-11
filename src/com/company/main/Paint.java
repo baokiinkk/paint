@@ -778,11 +778,11 @@ public class Paint extends JFrame implements ActionListener {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             switch (choose) {
-                case LINE: // vẽ đường thẳng
-                {
-                    // nothing
-                    break;
-                }
+//                case LINE: // vẽ đường thẳng
+//                {
+//                    // nothing
+//                    break;
+//                }
                 case HONRIZONTALSYMETRY:{
 
                     MyFunction.clearArr(nextDrawing);
@@ -1124,7 +1124,9 @@ public class Paint extends JFrame implements ActionListener {
                         // nếu vị trí bắt đầu không phải là (-1,-1) thì vẽ đường thẳng từ điểm đó tới vị trí hiện tại của con trỏ chuột
                         if (startXY.X != -1 && startXY.Y != -1) {
 //                            new Line(nextDrawing, nextPoint, chooseColor).MidpointLine(startXY, mouseXY, lineMode.DEFAULT);
-                            new Line(nextDrawing, nextPoint, chooseColor).draw(startXY, mouseXY, pointXY, lineMode.DEFAULT, chooseSideMode);
+                            Line line = new Line(nextDrawing, nextPoint, chooseColor);
+                            line.setLine(startXY, mouseXY, pointXY, lineMode.DEFAULT, chooseSideMode);
+                            line.draw();
                         }
                         startXY.set(mouseXY); // sau khi vẽ hàm trên thì điểm bắt đầu được set lại
                         drawArea.repaint();
@@ -1138,7 +1140,8 @@ public class Paint extends JFrame implements ActionListener {
                         mouseXY.set(mouseEvent.getX() / rectSize, mouseEvent.getY() / rectSize);
                         if (startXY.X != -1 && startXY.Y != -1) {
                             Line line = new Line(nextDrawing, nextPoint, chooseColor);
-                            line.draw(startXY, mouseXY, pointXY, chooseLineMode, chooseSideMode);
+                            line.setLine(startXY,mouseXY,pointXY, chooseLineMode, chooseSideMode);
+                            line.draw();
                             line.saveCoord(nextCoord);
                         }
                         repaint();
@@ -1202,10 +1205,10 @@ public class Paint extends JFrame implements ActionListener {
                             if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
                                 tri.setTri(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
                             } else {
-                                tri.setTriangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
+                                tri.setTriangle(startXY, mouseXY, chooseLineMode, chooseSideMode, pointXY); //  hàm set HCN
                             }
                             tri.saveCoord(nextCoord);
-                            tri.draw(pointXY, chooseSideMode); // cho vẽ hình
+                            tri.draw(); // cho vẽ hình
                             Board.setNowHinhHoc(tri); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
                         repaint();

@@ -30,9 +30,11 @@ public class Sun extends HinhHoc {
 
     public void draw(int angle) {
         //System.out.println(angle);
-        line1.draw(sLine1.rotatePoint(center, Math.toRadians(angle)),
+        line1.setLine(sLine1.rotatePoint(center, Math.toRadians(angle)),
                 eLine1.rotatePoint(center, Math.toRadians(angle)), center, lineMode.DEFAULT, sideMode.TETRAD);
-        line2.draw(sLine2.rotatePoint(center, Math.toRadians(angle)),
+        line1.draw();
+        line2.setLine(sLine2.rotatePoint(center, Math.toRadians(angle)),
                 eLine2.rotatePoint(center, Math.toRadians(angle)), center, lineMode.DEFAULT, sideMode.TETRAD);
+        line2.draw();
     }
 }

@@ -44,7 +44,7 @@ public class Parallelogram extends HinhHoc{
 //        System.out.println(dis + " " + Major_egde.X + " " + Major_egde.Y + " " + Major_egde.length());
     }
 
-    public void setParallelogram(Point2D start, Point2D end, lineMode mode) {
+    public void setParallelogram(Point2D start, Point2D end,lineMode mode) {
         this.setParallelogram(start, end);
         this.start = start;
         this.end = end;
