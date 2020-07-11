@@ -223,7 +223,7 @@ public class Input3D extends JDialog {
                             Integer.valueOf(sizeDepth.getText().trim()), Integer.valueOf(sizeHeight.getText().trim()));
                     start = new Point3D(tmpStart.X, tmpStart.Y, tmpStart.Z + tmpEnd.Z);
                     end = new Point3D(tmpStart.X + Math.round(tmpEnd.X / 2),
-                            tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z + tmpEnd.Z);
+                            tmpStart.Y + Math.round(tmpEnd.Y / 2), tmpStart.Z - tmpEnd.Z);
                     break;
                 }
                 case TETRAHEDRON: {

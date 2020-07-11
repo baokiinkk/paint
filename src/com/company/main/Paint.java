@@ -148,7 +148,7 @@ public class Paint extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close
         this.setTitle("Paint V1.0"); // đặt tiêu đề
 //        this.setSize(1279, 748); // kích thước cửa sổ
-        this.setSize(1299, 780); // kích thước cửa sổ
+        this.setSize(1289, 780); // kích thước cửa sổ
         this.setResizable(false);
         ImageIcon icon = new ImageIcon("/com/company/Icons/Color.png");
         this.setIconImage(icon.getImage());
