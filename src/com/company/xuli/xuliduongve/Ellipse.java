@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Ellipse extends HinhHoc {
     private lineMode MODE;
+    private sideMode SIDEMODE;
     private Point2D  first;
     private Point2D  second;
     private Point2D  third;
@@ -21,7 +22,9 @@ public class Ellipse extends HinhHoc {
         fourth = new Point2D();
     }
 
-    public void setCircle(Point2D start, Point2D end, lineMode mode) {
+    public void setCircle(Point2D start, Point2D end,Point2D centerPoint, lineMode mode, sideMode SideMode) {
+        this.centerPoint =centerPoint;
+        SIDEMODE =SideMode;
         this.start = start;
         this.end = end;
         MODE = mode;
@@ -33,11 +36,12 @@ public class Ellipse extends HinhHoc {
         //tam (a,b)
     }
 
-    // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
-    public void setElip(Point2D start, Point2D end, lineMode mode) {
+    public void setElip(Point2D start, Point2D end,Point2D centerPoint, lineMode mode, sideMode SideMode) {
+        this.centerPoint =centerPoint;
         this.start = start;
         this.end = end;
         MODE = mode;
+        SIDEMODE = SideMode;
         formula = true;
         center.set(this.start.X, this.start.Y);
         Major_rad = Math.abs(this.start.X - this.end.X);
@@ -88,8 +92,15 @@ public class Ellipse extends HinhHoc {
             second = second.rotatePoint(center, this.alpha + alpha);
             third = third.rotatePoint(center, this.alpha + alpha);
             fourth = fourth.rotatePoint(center, this.alpha + alpha);
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
 
-            Quadrant(first,second,third,fourth, MODE);
+//            Quadrant(first,second,third,fourth, MODE);
             x1_c++;
         }
         int y1_r = 0;
@@ -120,8 +131,15 @@ public class Ellipse extends HinhHoc {
             second = second.rotatePoint(center, this.alpha + alpha);
             third = third.rotatePoint(center, this.alpha + alpha);
             fourth = fourth.rotatePoint(center, this.alpha + alpha);
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
 
-            Quadrant(first, second,third,fourth, MODE);
+//            Quadrant(first, second,third,fourth, MODE);
             y1_r++;
         }
 
@@ -156,7 +174,7 @@ public class Ellipse extends HinhHoc {
         } // IV
     }
 
-    public void draw() {
+   /* public void draw() {
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
@@ -223,7 +241,7 @@ public class Ellipse extends HinhHoc {
             y1_r++;
         }
     }
-
+*/
     public void move(Vector2D a) {
         int x1_c = 0;
         while (Major_rad > x1_c) {
@@ -257,7 +275,13 @@ public class Ellipse extends HinhHoc {
             third = third.moveVector(a);
             fourth = fourth.moveVector(a);
 
-            Quadrant(first,second,third,fourth, MODE);
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
             x1_c++;
         }
         int y1_r = 0;
@@ -294,7 +318,13 @@ public class Ellipse extends HinhHoc {
             third = third.moveVector(a);
             fourth = fourth.moveVector(a);
 
-            Quadrant(first,second,third,fourth, MODE);
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
             y1_r++;
         }
     }
@@ -316,6 +346,7 @@ public class Ellipse extends HinhHoc {
     }
     public void SymOX()
     {
+        draw();
         int x1_c = 0;
         while (Major_rad > x1_c) {
             //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
@@ -345,208 +376,6 @@ public class Ellipse extends HinhHoc {
             second = second.HonrizontalSymetry(second);
             third = third.HonrizontalSymetry(third);
             fourth = fourth.HonrizontalSymetry(fourth);
-
-            Quadrant(first,second,third,fourth, MODE);
-            x1_c++;
-        }
-        int y1_r = 0;
-        while (y1_r < Minor_rad) {
-            double x1_r;
-            if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
-                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
-            else
-                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
-
-            double x2_r = center.X - x1_r;
-            double ty_r = center.Y - y1_r;
-
-            int tx1_r = (int) Math.round(x1_r);
-            int tx2_r = (int) Math.round(x2_r);
-            int y2_r = (int) Math.round(ty_r);
-
-            //a = (tx1_r, y1_r);
-            //b = (tx2_r,y2_r);
-
-            first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r, y2_r);
-            third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r + center.X, y1_r + center.Y);
-
-            first = first.HonrizontalSymetry(first);
-            second = second.HonrizontalSymetry(second);
-            third = third.HonrizontalSymetry(third);
-            fourth = fourth.HonrizontalSymetry(fourth);
-
-            Quadrant(first,second,third,fourth, MODE);
-            y1_r++;
-        }
-    }
-    public void SymOY()
-    {
-        int x1_c = 0;
-        while (Major_rad > x1_c) {
-            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
-            double y1_c;
-            if (formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
-                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
-            else
-                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
-
-            double y2_c = center.Y - y1_c;
-            double tx_c = center.X - x1_c;
-
-            int ty1_c = (int) Math.round(y1_c);
-            int ty2_c = (int) Math.round(y2_c);
-            int x2_c = (int) Math.round(tx_c);
-
-            //a = (x1_c, ty1_c);
-            //b = (x2_c,ty2_c);
-
-            first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c, ty2_c);
-            third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c + center.X, ty1_c + center.Y);
-
-            first = first.VerticalSymetry(first);
-            second = second.VerticalSymetry(second);
-            third = third.VerticalSymetry(third);
-            fourth = fourth.VerticalSymetry(fourth);
-
-            Quadrant(first,second,third,fourth, MODE);
-            x1_c++;
-        }
-        int y1_r = 0;
-        while (y1_r < Minor_rad) {
-            double x1_r;
-            if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
-                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
-            else
-                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
-
-            double x2_r = center.X - x1_r;
-            double ty_r = center.Y - y1_r;
-
-            int tx1_r = (int) Math.round(x1_r);
-            int tx2_r = (int) Math.round(x2_r);
-            int y2_r = (int) Math.round(ty_r);
-
-            //a = (tx1_r, y1_r);
-            //b = (tx2_r,y2_r);
-
-            first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r, y2_r);
-            third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r + center.X, y1_r + center.Y);
-
-            first = first.VerticalSymetry(first);
-            second = second.VerticalSymetry(second);
-            third = third.VerticalSymetry(third);
-            fourth = fourth.VerticalSymetry(fourth);
-
-            Quadrant(first,second,third,fourth, MODE);
-            y1_r++;
-        }
-
-    }
-
-    public void SymP(Point2D pointSym)
-    {
-        int x1_c = 0;
-        while (Major_rad > x1_c) {
-            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
-            double y1_c;
-            if (formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
-                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
-            else
-                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
-
-            double y2_c = center.Y - y1_c;
-            double tx_c = center.X - x1_c;
-
-            int ty1_c = (int) Math.round(y1_c);
-            int ty2_c = (int) Math.round(y2_c);
-            int x2_c = (int) Math.round(tx_c);
-
-            //a = (x1_c, ty1_c);
-            //b = (x2_c,ty2_c);
-
-            first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c, ty2_c);
-            third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c + center.X, ty1_c + center.Y);
-
-            first = first.PointSymetry(first, pointSym);
-            second = second.PointSymetry(second, pointSym);
-            third = third.PointSymetry(third, pointSym);
-            fourth = fourth.PointSymetry(fourth, pointSym);
-
-            Quadrant(first,second,third,fourth, MODE);
-            x1_c++;
-        }
-        int y1_r = 0;
-        while (y1_r < Minor_rad) {
-            double x1_r;
-            if (formula)
-                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
-                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
-            else
-                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
-
-            double x2_r = center.X - x1_r;
-            double ty_r = center.Y - y1_r;
-
-            int tx1_r = (int) Math.round(x1_r);
-            int tx2_r = (int) Math.round(x2_r);
-            int y2_r = (int) Math.round(ty_r);
-
-            //a = (tx1_r, y1_r);
-            //b = (tx2_r,y2_r);
-
-            first.set(tx1_r + center.X, y2_r);
-            second.set(tx2_r, y2_r);
-            third.set(tx2_r, y1_r + center.Y);
-            fourth.set(tx1_r + center.X, y1_r + center.Y);
-
-            first = first.PointSymetry(first, pointSym);
-            second = second.PointSymetry(second, pointSym);
-            third = third.PointSymetry(third, pointSym);
-            fourth = fourth.PointSymetry(fourth, pointSym);
-
-            Quadrant(first,second,third,fourth, MODE);
-            y1_r++;
-        }
-    }
-
-    public void draw(Point2D centerPoint, sideMode SIDEMODE)
-    {
-        int x1_c = 0;
-        while (Major_rad > x1_c) {
-            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
-            double y1_c;
-            if (formula)
-                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
-                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
-            else
-                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
-
-            double y2_c = center.Y - y1_c;
-            double tx_c = center.X - x1_c;
-
-            int ty1_c = (int) Math.round(y1_c);
-            int ty2_c = (int) Math.round(y2_c);
-            int x2_c = (int) Math.round(tx_c);
-
-            //a = (x1_c, ty1_c);
-            //b = (x2_c,ty2_c);
-
-            first.set(x1_c + center.X, ty2_c);
-            second.set(x2_c, ty2_c);
-            third.set(x2_c, ty1_c + center.Y);
-            fourth.set(x1_c + center.X, ty1_c + center.Y);
 
             ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
             ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
@@ -580,6 +409,256 @@ public class Ellipse extends HinhHoc {
             second.set(tx2_r, y2_r);
             third.set(tx2_r, y1_r + center.Y);
             fourth.set(tx1_r + center.X, y1_r + center.Y);
+
+            first = first.HonrizontalSymetry(first);
+            second = second.HonrizontalSymetry(second);
+            third = third.HonrizontalSymetry(third);
+            fourth = fourth.HonrizontalSymetry(fourth);
+
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
+            y1_r++;
+        }
+    }
+    public void SymOY()
+    {
+        draw();
+        int x1_c = 0;
+        while (Major_rad > x1_c) {
+            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
+            double y1_c;
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            else
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
+
+            double y2_c = center.Y - y1_c;
+            double tx_c = center.X - x1_c;
+
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
+
+            //a = (x1_c, ty1_c);
+            //b = (x2_c,ty2_c);
+
+            first.set(x1_c + center.X, ty2_c);
+            second.set(x2_c, ty2_c);
+            third.set(x2_c, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
+
+            first = first.VerticalSymetry(first);
+            second = second.VerticalSymetry(second);
+            third = third.VerticalSymetry(third);
+            fourth = fourth.VerticalSymetry(fourth);
+
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
+            x1_c++;
+        }
+        int y1_r = 0;
+        while (y1_r < Minor_rad) {
+            double x1_r;
+            if (formula)
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+            else
+                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
+
+            double x2_r = center.X - x1_r;
+            double ty_r = center.Y - y1_r;
+
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
+
+            //a = (tx1_r, y1_r);
+            //b = (tx2_r,y2_r);
+
+            first.set(tx1_r + center.X, y2_r);
+            second.set(tx2_r, y2_r);
+            third.set(tx2_r, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
+
+            first = first.VerticalSymetry(first);
+            second = second.VerticalSymetry(second);
+            third = third.VerticalSymetry(third);
+            fourth = fourth.VerticalSymetry(fourth);
+
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
+            y1_r++;
+        }
+
+    }
+
+    public void SymP(Point2D pointSym)
+    {
+        draw();
+        int x1_c = 0;
+        while (Major_rad > x1_c) {
+            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
+            double y1_c;
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            else
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
+
+            double y2_c = center.Y - y1_c;
+            double tx_c = center.X - x1_c;
+
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
+
+            //a = (x1_c, ty1_c);
+            //b = (x2_c,ty2_c);
+
+            first.set(x1_c + center.X, ty2_c);
+            second.set(x2_c, ty2_c);
+            third.set(x2_c, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
+
+            first = first.PointSymetry(first, pointSym);
+            second = second.PointSymetry(second, pointSym);
+            third = third.PointSymetry(third, pointSym);
+            fourth = fourth.PointSymetry(fourth, pointSym);
+
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
+            x1_c++;
+        }
+        int y1_r = 0;
+        while (y1_r < Minor_rad) {
+            double x1_r;
+            if (formula)
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+            else
+                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
+
+            double x2_r = center.X - x1_r;
+            double ty_r = center.Y - y1_r;
+
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
+
+            //a = (tx1_r, y1_r);
+            //b = (tx2_r,y2_r);
+
+            first.set(tx1_r + center.X, y2_r);
+            second.set(tx2_r, y2_r);
+            third.set(tx2_r, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
+
+            first = first.PointSymetry(first, pointSym);
+            second = second.PointSymetry(second, pointSym);
+            third = third.PointSymetry(third, pointSym);
+            fourth = fourth.PointSymetry(fourth, pointSym);
+
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
+            y1_r++;
+        }
+    }
+
+    public void draw()
+    {
+        int x1_c = 0;
+        while (Major_rad > x1_c) {
+            //double y1 = Math.sqrt((1.0 - ((i*i*1.0)/(a*a*1.0)))* (b*b)); //II
+            double y1_c;
+            if (formula)
+                y1_c = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Minor_rad * Minor_rad * x1_c * x1_c) / (Major_rad * Major_rad * 1.0));
+            else
+                y1_c = Math.sqrt(Major_rad * Major_rad - x1_c * x1_c);
+
+            double y2_c = center.Y - y1_c;
+            double tx_c = center.X - x1_c;
+
+            int ty1_c = (int) Math.round(y1_c);
+            int ty2_c = (int) Math.round(y2_c);
+            int x2_c = (int) Math.round(tx_c);
+
+            //a = (x1_c, ty1_c);
+            //b = (x2_c,ty2_c);
+
+            first.set(x1_c + center.X, ty2_c);
+            second.set(x2_c, ty2_c);
+            third.set(x2_c, ty1_c + center.Y);
+            fourth.set(x1_c + center.X, ty1_c + center.Y);
+
+            first = first.rotatePoint(center, this.alpha);
+            second = second.rotatePoint(center, this.alpha);
+            third = third.rotatePoint(center, this.alpha);
+            fourth = fourth.rotatePoint(center, this.alpha);
+
+            ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
+            ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);
+            ArrayList<Point2D> tmpThird = third.chooseSideMode(centerPoint, third, SIDEMODE);
+            ArrayList<Point2D> tmpFourth = fourth.chooseSideMode(centerPoint, fourth, SIDEMODE);
+            for(int i = 0;i<tmpFirst.size();i++) {
+                Quadrant(tmpFirst.get(i), tmpSecond.get(i), tmpThird.get(i), tmpFourth.get(i), MODE);
+            }
+            x1_c++;
+        }
+        int y1_r = 0;
+        while (y1_r < Minor_rad) {
+            double x1_r;
+            if (formula)
+                x1_r = Math.sqrt((Major_rad * Major_rad * Minor_rad * Minor_rad
+                        - Major_rad * Major_rad * y1_r * y1_r) / (Minor_rad * Minor_rad * 1.0));
+            else
+                x1_r = Math.sqrt(Minor_rad * Minor_rad - y1_r * y1_r);
+
+            double x2_r = center.X - x1_r;
+            double ty_r = center.Y - y1_r;
+
+            int tx1_r = (int) Math.round(x1_r);
+            int tx2_r = (int) Math.round(x2_r);
+            int y2_r = (int) Math.round(ty_r);
+
+            //a = (tx1_r, y1_r);
+            //b = (tx2_r,y2_r);
+
+            first.set(tx1_r + center.X, y2_r);
+            second.set(tx2_r, y2_r);
+            third.set(tx2_r, y1_r + center.Y);
+            fourth.set(tx1_r + center.X, y1_r + center.Y);
+
+            first = first.rotatePoint(center, this.alpha);
+            second = second.rotatePoint(center, this.alpha);
+            third = third.rotatePoint(center, this.alpha);
+            fourth = fourth.rotatePoint(center, this.alpha);
 
             ArrayList<Point2D> tmpFirst = first.chooseSideMode(centerPoint, first, SIDEMODE);
             ArrayList<Point2D> tmpSecond = second.chooseSideMode(centerPoint, second, SIDEMODE);

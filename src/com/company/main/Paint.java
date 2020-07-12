@@ -334,7 +334,7 @@ public class Paint extends JFrame implements ActionListener {
                 java.util.List<Tree> listTreeRight = new ArrayList<>();
                 int pos = 64, len = 3, spc = 3, spd = 1;
                 Rectangle base = new Rectangle(nextDrawing, nextPoint, Color.WHITE);
-                base.setRectangle(new Point2D(138, pos), new Point2D(139, pos + len), lineMode.DEFAULT);
+                base.setRectangle(new Point2D(138, pos), new Point2D(139, pos + len), new Point2D(Width/2, Height/2), lineMode.DEFAULT, sideMode.DEFAULT);
 
                 Tree leftCenterBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(89, 60), new Point2D(91, 67));
                 //Tree leftSizeBase = new Tree(nextDrawing, nextPoint, Color.BLACK, new Point2D(), new Point2D());
@@ -353,7 +353,7 @@ public class Paint extends JFrame implements ActionListener {
                         if (time % 75 == 0) {
                             Rectangle now = new Rectangle(nextDrawing, nextPoint, Color.WHITE);
                             now.setRectangle(new Point2D(base.start.X, base.start.Y),
-                                    new Point2D(base.end.X, base.end.Y), lineMode.DEFAULT);
+                                    new Point2D(base.end.X, base.end.Y), new Point2D(Width/2, Height/2), lineMode.DEFAULT, sideMode.DEFAULT);
                             listFW.add(now);
 
                             Tree leftNow = new Tree(nextDrawing, nextPoint, Color.BLACK,
@@ -370,7 +370,7 @@ public class Paint extends JFrame implements ActionListener {
                             Point2D en = now.end;
                             str.set(str.X, str.Y + 1);
                             en.set(en.X, en.Y + 2);
-                            now.setRectangle(str, en, lineMode.DEFAULT);
+                            now.setRectangle(str, en,new Point2D(Width/2, Height/2), lineMode.DEFAULT,sideMode.DEFAULT);
                             listFW.set(i, now);
                         }
 
@@ -1156,11 +1156,11 @@ public class Paint extends JFrame implements ActionListener {
                         if (startXY.X != -1 && startXY.Y != -1) {
                             Rectangle rec = new Rectangle(nextDrawing, nextPoint, chooseColor); // khởi tạo class HCN
                             if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
-                                rec.setSquare(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
+                                rec.setSquare(startXY, mouseXY,pointXY, chooseLineMode,chooseSideMode); // hàm set hình vuông
                             } else {
-                                rec.setRectangle(startXY, mouseXY, chooseLineMode); //  hàm set HCN
+                                rec.setRectangle(startXY, mouseXY,pointXY, chooseLineMode,chooseSideMode); //  hàm set HCN
                             }
-                            rec.draw(pointXY, chooseSideMode); // cho vẽ hình
+                            rec.draw(); // cho vẽ hình
                             MyFunction.clearArr(nextCoord);
                             rec.saveCoord(nextCoord);
                             Board.setNowHinhHoc(rec); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
@@ -1181,9 +1181,9 @@ public class Paint extends JFrame implements ActionListener {
                                 mouseXY.X++;
                             if(startXY.Y == mouseXY.Y)
                                 mouseXY.Y++;
-                            par.setParallelogram(startXY, mouseXY, chooseLineMode); //  hàm set HC
+                            par.setParallelogram(startXY, mouseXY, pointXY, chooseLineMode, chooseSideMode); //  hàm set HC
                             par.saveCoord(nextCoord);
-                            par.draw(pointXY, chooseSideMode); // cho vẽ hình
+                            par.draw(); // cho vẽ hình
                             Board.setNowHinhHoc(par); // vẽ xong sẽ được đưa vào chế độ được chọn, để xoay zoom...
                         }
                         repaint();
@@ -1203,7 +1203,7 @@ public class Paint extends JFrame implements ActionListener {
                             if(startXY.Y == mouseXY.Y)
                                 mouseXY.Y++;
                             if (mouseEvent.isShiftDown()) { // nếu có sự kiện phím shift
-                                tri.setTri(startXY, mouseXY, chooseLineMode); // hàm set hình vuông
+                                tri.setTri(startXY, mouseXY, chooseLineMode, chooseSideMode, pointXY); // hàm set hình vuông
                             } else {
                                 tri.setTriangle(startXY, mouseXY, chooseLineMode, chooseSideMode, pointXY); //  hàm set HCN
                             }
@@ -1328,12 +1328,12 @@ public class Paint extends JFrame implements ActionListener {
                             if(startXY.Y == mouseXY.Y)
                                 mouseXY.Y++;
                             if (mouseEvent.isShiftDown()) {
-                                elp.setCircle(startXY, mouseXY, chooseLineMode);
+                                elp.setCircle(startXY, mouseXY,pointXY, chooseLineMode, chooseSideMode);
                             } else {
-                                elp.setElip(startXY, mouseXY, chooseLineMode);
+                                elp.setElip(startXY, mouseXY,pointXY, chooseLineMode,chooseSideMode);
                             }
                             elp.saveCoord(nextCoord);
-                            elp.draw(pointXY, chooseSideMode);
+                            elp.draw();
                             Board.setNowHinhHoc(elp);
                         }
                         repaint();

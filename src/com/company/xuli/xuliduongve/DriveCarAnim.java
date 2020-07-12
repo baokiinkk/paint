@@ -4,8 +4,11 @@ import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.company.main.Paint;
 
 public class DriveCarAnim extends HinhHoc{
+    public static int Width = 282;     // độ rộng bảng vẽ
+    public static int Height = 181;    // độ cao
 
     public DriveCarAnim(boolean[][] nextDrawing, Color[][] nextPoint, Color chooseColor) {
         super(nextDrawing, nextPoint, chooseColor);
@@ -23,10 +26,10 @@ public class DriveCarAnim extends HinhHoc{
         Ellipse may3 = new Ellipse(nextDrawing, nextPoint, Color.WHITE);
         Ellipse sun = new Ellipse(nextDrawing, nextPoint, Color.RED);
 
-        may1.setElip(new Point2D(6, 10), new Point2D(19, 15), lineMode.DEFAULT);
-        may2.setElip(new Point2D(68, 5), new Point2D(84, 8), lineMode.DEFAULT);
-        may3.setElip(new Point2D(179, 3), new Point2D(197, 6), lineMode.DEFAULT);
-        sun.setCircle(new Point2D(268, 5), new Point2D(280, 10), lineMode.DEFAULT);
+        may1.setElip(new Point2D(6, 10), new Point2D(19, 15), new Point2D(Width/2, Height/2), lineMode.DEFAULT, sideMode.DEFAULT);
+        may2.setElip(new Point2D(68, 5), new Point2D(84, 8), new Point2D(Width/2, Height/2), lineMode.DEFAULT, sideMode.DEFAULT);
+        may3.setElip(new Point2D(179, 3), new Point2D(197, 6), new Point2D(Width/2, Height/2), lineMode.DEFAULT, sideMode.DEFAULT);
+        sun.setCircle(new Point2D(268, 5), new Point2D(280, 10), new Point2D(Width/2, Height/2), lineMode.DEFAULT, sideMode.DEFAULT);
 
         Car chon = new Car(nextDrawing, nextPoint, chooseColor);
         chon.create(new Point2D(183, 137), new Point2D(-1, -1), lineMode.DEFAULT);

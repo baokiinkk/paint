@@ -56,7 +56,7 @@ public class Sphere extends HinhHoc {
     }
 
     public void draw() {
-        elp.setCircle(this.start, this.end,MODE);
+        elp.setCircle(this.start, this.end,this.centerPoint, MODE, sideMode.DEFAULT);
         elp.draw();
 
         int x1_c = 0;

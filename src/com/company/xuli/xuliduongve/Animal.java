@@ -13,7 +13,7 @@ public class Animal extends HinhHoc {
 
     }
     public void create(Point2D start,Point2D end, lineMode mode){
-        this.mode = mode;
+        this.mode = lineMode.DEFAULT;
         this.start = start;
         this.end = end;
         diem =  new ArrayList<>();

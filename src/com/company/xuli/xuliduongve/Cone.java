@@ -36,6 +36,7 @@ public class Cone extends HinhHoc {
         centerElip.set(start.X,end.Y);
         Major_rad = Math.abs(centerElip.X - this.end.X);
         Minor_rad = Math.abs(start.Y - end.Y)/8;
+        //Minor_rad = Math.abs(start.Y - end.Y)/8;
     }
 
     public void setCone3D(Point3D Start, Point3D End, lineMode mode) {
@@ -49,7 +50,8 @@ public class Cone extends HinhHoc {
         this.rad3D = new Point3D(center3D.X + dis, center3D.Y, center3D.Z);
         this.end = rad3D.to2D();
         Major_rad = dis;
-        Minor_rad = Math.abs(Start.Z - End.Z) / 8;
+        Minor_rad = dis*Math.sin(Math.toRadians(45));
+        //Minor_rad = Math.abs(Start.Z - End.Z) / 8Math.abs(Start.Z - End.Z) / 8;
     }
 
     public void saveCoord(String[][] coord) {

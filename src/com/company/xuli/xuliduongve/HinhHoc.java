@@ -2,9 +2,11 @@ package com.company.xuli.xuliduongve;
 
 import java.awt.*;
 import java.util.ArrayList;
-import com.company.xuli.xuliduongve.Point2D;
+import com.company.main.Paint;
 
 public class HinhHoc {
+    public static int Width = 282;     // độ rộng bảng vẽ
+    public static int Height = 181;    // độ cao
     public boolean[][] nextDrawing;
     public Color[][] nextPoint;
     public Color chooseColor;

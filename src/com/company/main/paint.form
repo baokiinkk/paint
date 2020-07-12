@@ -35,7 +35,9 @@
                     <minimum-size width="50" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <toolTipText value="Y Coordinate"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="4282f" class="javax.swing.JLabel" binding="yCoord2D">
@@ -58,7 +60,9 @@
                     <minimum-size width="50" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <toolTipText value="X Coordinate"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="ec594" class="javax.swing.JLabel" binding="xCoord2D">
@@ -349,7 +353,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Undo.png"/>
               <text value=""/>
-              <toolTipText value="Undo"/>
+              <toolTipText value="Undo "/>
             </properties>
           </component>
           <component id="9a9e3" class="javax.swing.JButton" binding="redoButton">
@@ -389,7 +393,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Rotate.png"/>
               <text value=""/>
-              <toolTipText value="Rotate"/>
+              <toolTipText value="Rotate (Xoay quanh tâm)"/>
             </properties>
           </component>
           <component id="623b" class="javax.swing.JButton" binding="symetryPointButton">
@@ -403,7 +407,7 @@
               <hideActionText value="false"/>
               <icon value="com/company/Icons/Symetry.png"/>
               <text value=""/>
-              <toolTipText value="Symetry"/>
+              <toolTipText value="chọn điểm đối xứng (đối xứng điểm)"/>
             </properties>
           </component>
           <component id="40424" class="javax.swing.JButton" binding="setCenter">
@@ -416,7 +420,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/SetCenter.png"/>
               <text value=""/>
-              <toolTipText value="Set center"/>
+              <toolTipText value="Chọn tâm để xoay"/>
             </properties>
           </component>
           <component id="6eaf9" class="javax.swing.JButton" binding="symOXButton" default-binding="true">
@@ -429,7 +433,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/SymOX.png"/>
               <text value=""/>
-              <toolTipText value="Horizontal Symetry"/>
+              <toolTipText value="Horizontal Symetry (đối xứng trục OX)"/>
             </properties>
           </component>
           <component id="2be07" class="javax.swing.JButton" binding="symOYButton" default-binding="true">
@@ -442,7 +446,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/SymOY.png"/>
               <text value=""/>
-              <toolTipText value="Vertical Symetry"/>
+              <toolTipText value="Vertical Symetry (Đối xứng trục OY)"/>
             </properties>
           </component>
           <component id="69ff" class="javax.swing.JButton" binding="clearButton">
@@ -505,7 +509,7 @@
                   <focusable value="false"/>
                   <inheritsPopupMenu value="true"/>
                   <lightWeightPopupEnabled value="true"/>
-                  <toolTipText value="Choose Style"/>
+                  <toolTipText value="Choose Style (chọn kiểu đường vẽ)"/>
                 </properties>
               </component>
             </children>
@@ -527,7 +531,7 @@
                   <focusable value="false"/>
                   <inheritsPopupMenu value="true"/>
                   <lightWeightPopupEnabled value="true"/>
-                  <toolTipText value="Choose side to rotate symetry"/>
+                  <toolTipText value="Chọn số lượng đối xứng xoay (1-10)"/>
                 </properties>
               </component>
             </children>
@@ -542,7 +546,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Paint.png"/>
               <text value=""/>
-              <toolTipText value="Paint"/>
+              <toolTipText value="Paint (tô màu)"/>
             </properties>
           </component>
           <component id="64e5f" class="javax.swing.JButton" binding="selectButton">
@@ -585,7 +589,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/RotationSym.png"/>
               <text value=""/>
-              <toolTipText value="Rotate Symetry Point"/>
+              <toolTipText value="Chọn tâm để đối xứng xoay (mặc định là gốc tọa độ)"/>
             </properties>
           </component>
         </children>
@@ -618,7 +622,7 @@
               <hideActionText value="false"/>
               <icon value="com/company/Icons/Rec.png"/>
               <text value=""/>
-              <toolTipText value="Draw Rectangle"/>
+              <toolTipText value="Draw rectangle"/>
             </properties>
           </component>
           <component id="dd27" class="javax.swing.JButton" binding="ellipseButton">
@@ -632,7 +636,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Ellipse.png"/>
               <text value=""/>
-              <toolTipText value="Draw Ellipse"/>
+              <toolTipText value="Draw ellipse (press shift for circle)"/>
             </properties>
           </component>
           <component id="5b632" class="javax.swing.JButton" binding="lineButton">
@@ -646,7 +650,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Line.png"/>
               <text value=""/>
-              <toolTipText value="Draw Line"/>
+              <toolTipText value="Draw line"/>
             </properties>
           </component>
           <component id="4d7a" class="javax.swing.JButton" binding="pencilButton">
@@ -683,7 +687,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Raccoon.png"/>
               <text value=""/>
-              <toolTipText value="Draw Bear"/>
+              <toolTipText value="Draw Raccoon"/>
             </properties>
           </component>
           <component id="79912" class="javax.swing.JButton" binding="button2" default-binding="true">
@@ -698,7 +702,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Actionfilm.png"/>
               <text value=""/>
-              <toolTipText value="Auto rotate"/>
+              <toolTipText value="Play GIF"/>
             </properties>
             <clientProperties>
               <hideActionText class="java.lang.Boolean" value="false"/>
@@ -725,7 +729,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Parallelogram.png"/>
               <text value=""/>
-              <toolTipText value="Draw Parallelogram"/>
+              <toolTipText value="Draw parallelogram"/>
             </properties>
           </component>
         </children>
@@ -755,7 +759,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Cubee.png"/>
               <text value=""/>
-              <toolTipText value="Draw Cube"/>
+              <toolTipText value="Draw Cube "/>
             </properties>
           </component>
           <component id="6d2e2" class="javax.swing.JButton" binding="sphereButton">
@@ -768,7 +772,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Sphere.png"/>
               <text value=""/>
-              <toolTipText value="Draw Globular"/>
+              <toolTipText value="Draw Sphere"/>
             </properties>
           </component>
           <component id="6350c" class="javax.swing.JButton" binding="coneButton">
@@ -780,7 +784,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Cone.png"/>
               <text value=""/>
-              <toolTipText value="Draw conical"/>
+              <toolTipText value="Draw cone"/>
             </properties>
           </component>
           <component id="43369" class="javax.swing.JButton" binding="cylinderButton">
@@ -792,7 +796,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Cylinder.png"/>
               <text value=""/>
-              <toolTipText value="Draw circular"/>
+              <toolTipText value="Draw cylinder"/>
             </properties>
           </component>
           <component id="fafec" class="javax.swing.JButton" binding="customButton">
@@ -805,6 +809,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Custom.png"/>
               <text value="Custom"/>
+              <toolTipText value="Input parameters to draw"/>
             </properties>
           </component>
           <component id="78d4d" class="javax.swing.JButton" binding="pyramidButton">
@@ -816,6 +821,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Pyramid.png"/>
               <text value=""/>
+              <toolTipText value="Draw pyramid"/>
             </properties>
           </component>
           <component id="90a48" class="javax.swing.JButton" binding="tetrahedronButton">
@@ -827,6 +833,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Tetrahedron.png"/>
               <text value=""/>
+              <toolTipText value="Draw tetrahedron"/>
             </properties>
           </component>
         </children>
@@ -866,7 +873,7 @@
               <focusable value="false"/>
               <icon value="com/company/Icons/Car.png"/>
               <text value=""/>
-              <toolTipText value="Nothing"/>
+              <toolTipText value="Paysage Animation"/>
             </properties>
           </component>
         </children>

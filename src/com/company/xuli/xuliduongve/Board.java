@@ -324,27 +324,27 @@ public class Board extends JPanel {
         if (now != null) {
             switch (now.tag) {
                 case LINE:{
-                    ((Line) now).draw();
+//                    ((Line) now).draw();
                     ((Line) now).SymOX();
                     break;
                 }
                 case RECTANGLE: {
-                    ((Rectangle) now).draw();
+//                    ((Rectangle) now).draw();
                     ((Rectangle) now).SymOX();
                     break;
                 }
                 case ELLIPSE: {
-                    ((Ellipse) now).draw();
+//                    ((Ellipse) now).draw();
                     ((Ellipse) now).SymOX();
                     break;
                 }
                 case TRIANGLE: {
-                    ((Triangle) now).draw();
+//                    ((Triangle) now).draw();
                     ((Triangle) now).SymOX();
                     break;
                 }
                 case PARALLELOGRAM: {
-                    ((Parallelogram) now).draw();
+//                    ((Parallelogram) now).draw();
                     ((Parallelogram) now).SymOX();
                     break;
                 }
@@ -356,27 +356,27 @@ public class Board extends JPanel {
         if (now != null) {
             switch (now.tag) {
                 case LINE:{
-                    ((Line) now).draw();
+//                    ((Line) now).draw();
                     ((Line) now).SymOY();
                     break;
                 }
                 case RECTANGLE: {
-                    ((Rectangle) now).draw();
+//                    ((Rectangle) now).draw();
                     ((Rectangle) now).SymOY();
                     break;
                 }
                 case ELLIPSE: {
-                    ((Ellipse) now).draw();
+//                    ((Ellipse) now).draw();
                     ((Ellipse) now).SymOY();
                     break;
                 }
                 case TRIANGLE: {
-                    ((Triangle) now).draw();
+//                    ((Triangle) now).draw();
                     ((Triangle) now).SymOY();
                     break;
                 }
                 case PARALLELOGRAM: {
-                    ((Parallelogram) now).draw();
+//                    ((Parallelogram) now).draw();
                     ((Parallelogram) now).SymOY();
                     break;
                 }
@@ -388,27 +388,27 @@ public class Board extends JPanel {
         if (now != null) {
             switch (now.tag) {
                 case LINE:{
-                    ((Line) now).draw();
+//                    ((Line) now).draw();
                     ((Line) now).SymP(point);
                     break;
                 }
                 case RECTANGLE: {
-                    ((Rectangle) now).draw();
+//                    ((Rectangle) now).draw();
                     ((Rectangle) now).SymP(point);
                     break;
                 }
                 case ELLIPSE: {
-                    ((Ellipse) now).draw();
+//                    ((Ellipse) now).draw();
                     ((Ellipse) now).SymP(point);
                     break;
                 }
                 case TRIANGLE: {
-                    ((Triangle) now).draw();
+//                    ((Triangle) now).draw();
                     ((Triangle) now).SymP(point);
                     break;
                 }
                 case PARALLELOGRAM: {
-                    ((Parallelogram) now).draw();
+//                    ((Parallelogram) now).draw();
                     ((Parallelogram) now).SymP(point);
                     break;
                 }
