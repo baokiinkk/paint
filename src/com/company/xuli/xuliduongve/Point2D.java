@@ -33,8 +33,8 @@ public class Point2D {
     }
 
     public void set(double X, double Y) {
-        this.X = (int) X;
-        this.Y = (int) Y;
+        this.X = (int) Math.round(X);
+        this.Y = (int) Math.round(Y);
     }
 
     public void set(Point2D other) {
@@ -59,7 +59,7 @@ public class Point2D {
     // xoay điểm hiện tại quanh tâm center với 1 góc alpha
     public Point2D rotatePoint(Point2D center, double alpha) {
         Point2D res = new Point2D();
-        res.set(Math.round(center.X + (this.X - center.X) * cos(alpha) - (this.Y - center.Y) * sin(alpha)), Math.round(center.Y + (this.X - center.X) * sin(alpha) + (this.Y - center.Y) * cos(alpha)));
+        res.set(center.X + (this.X - center.X) * cos(alpha) - (this.Y - center.Y) * sin(alpha), center.Y + (this.X - center.X) * sin(alpha) + (this.Y - center.Y) * cos(alpha));
         return res;
     }
 
