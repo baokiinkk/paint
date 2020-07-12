@@ -9,6 +9,9 @@ public class Triangle extends HinhHoc {
     private Point2D A;
     private Point2D B;
     private Point2D C;
+    private Point2D tmpA;
+    private Point2D tmpB;
+    private Point2D tmpC;
     private sideMode SIDEMODE;
     private lineMode MODE;
 
@@ -18,6 +21,9 @@ public class Triangle extends HinhHoc {
         A = new Point2D();
         B = new Point2D();
         C = new Point2D();
+        tmpA = new Point2D();
+        tmpB = new Point2D();
+        tmpC = new Point2D();
     }
 
     private void setTriangle(Point2D start, Point2D end) {
@@ -47,9 +53,9 @@ public class Triangle extends HinhHoc {
     // đây là xoay nháp, tức là chỉ xoay hình ảo để người dùng canh góc xoay, khi nhả chuột sẽ áp dụng vào hình gốc
     public void rotate(double alpha) {
 
-        Point2D tmpA = A.rotatePoint(center, this.alpha + alpha);
-        Point2D tmpB = B.rotatePoint(center, this.alpha + alpha);
-        Point2D tmpC = C.rotatePoint(center, this.alpha + alpha);
+        tmpA = A.rotatePoint(center, this.alpha + alpha);
+        tmpB = B.rotatePoint(center, this.alpha + alpha);
+        tmpC = C.rotatePoint(center, this.alpha + alpha);
         ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
         ArrayList<Point2D> tmpBA = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
         ArrayList<Point2D> tmpCA = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
@@ -96,9 +102,9 @@ public class Triangle extends HinhHoc {
     }*/
 
     public void draw(){
-        Point2D tmpA = A.rotatePoint(center, this.alpha);
-        Point2D tmpB = B.rotatePoint(center, this.alpha);
-        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        tmpA = A.rotatePoint(center, this.alpha);
+        tmpB = B.rotatePoint(center, this.alpha);
+        tmpC = C.rotatePoint(center, this.alpha);
         ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
         ArrayList<Point2D> tmpBA = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
         ArrayList<Point2D> tmpCA = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
@@ -111,9 +117,10 @@ public class Triangle extends HinhHoc {
     }
 
     public void move(Vector2D a) {
-        Point2D tmpA = A.rotatePoint(center, this.alpha);
-        Point2D tmpB = B.rotatePoint(center, this.alpha);
-        Point2D tmpC = C.rotatePoint(center, this.alpha);
+        tmpA = A.rotatePoint(center, this.alpha);
+        tmpB = B.rotatePoint(center, this.alpha);
+        tmpC = C.rotatePoint(center, this.alpha);
+
         tmpA = tmpA.moveVector(a);
         tmpB = tmpB.moveVector(a);
         tmpC = tmpC.moveVector(a);
@@ -132,56 +139,59 @@ public class Triangle extends HinhHoc {
         A = A.moveVector(a);
         B = B.moveVector(a);
         C = C.moveVector(a);
+        tmpA = tmpA.moveVector(a);
+        tmpB = tmpB.moveVector(a);
+        tmpC = tmpC.moveVector(a);
         center = center.moveVector(a);
         draw();
     }
     public void SymOY()
     {
-        draw();
-        A = A.VerticalSymetry(A);
-        B = B.VerticalSymetry(B);
-        C = C.VerticalSymetry(C);
-        ArrayList<Point2D> tmpA = A.chooseSideMode(centerPoint, A, SIDEMODE);
-        ArrayList<Point2D> tmpB = B.chooseSideMode(centerPoint, B, SIDEMODE);
-        ArrayList<Point2D> tmpC = C.chooseSideMode(centerPoint, C, SIDEMODE);
-        for(int i = 0;i<tmpA.size();i++)
+        tmpA = tmpA.VerticalSymetry(tmpA);
+        tmpB = tmpB.VerticalSymetry(tmpB);
+        tmpC = tmpC.VerticalSymetry(tmpC);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        for(int i = 0;i<tmpAA.size();i++)
         {
-            super.MidpointLine(tmpA.get(i), tmpB.get(i), MODE);
-            super.MidpointLine(tmpB.get(i), tmpC.get(i), MODE);
-            super.MidpointLine(tmpC.get(i), tmpA.get(i), MODE);
+            super.MidpointLine(tmpAA.get(i), tmpBB.get(i), MODE);
+            super.MidpointLine(tmpBB.get(i), tmpCC.get(i), MODE);
+            super.MidpointLine(tmpCC.get(i), tmpAA.get(i), MODE);
         }
+        draw();
     }
     public void SymOX()
     {
-        draw();
-        A = A.HonrizontalSymetry(A);
-        B = B.HonrizontalSymetry(B);
-        C = C.HonrizontalSymetry(C);
-        ArrayList<Point2D> tmpA = A.chooseSideMode(centerPoint, A, SIDEMODE);
-        ArrayList<Point2D> tmpB = B.chooseSideMode(centerPoint, B, SIDEMODE);
-        ArrayList<Point2D> tmpC = C.chooseSideMode(centerPoint, C, SIDEMODE);
-        for(int i = 0;i<tmpA.size();i++)
+        tmpA = tmpA.HonrizontalSymetry(tmpA);
+        tmpB = tmpB.HonrizontalSymetry(tmpB);
+        tmpC = tmpC.HonrizontalSymetry(tmpC);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        for(int i = 0;i<tmpAA.size();i++)
         {
-            super.MidpointLine(tmpA.get(i), tmpB.get(i), MODE);
-            super.MidpointLine(tmpB.get(i), tmpC.get(i), MODE);
-            super.MidpointLine(tmpC.get(i), tmpA.get(i), MODE);
+            super.MidpointLine(tmpAA.get(i), tmpBB.get(i), MODE);
+            super.MidpointLine(tmpBB.get(i), tmpCC.get(i), MODE);
+            super.MidpointLine(tmpCC.get(i), tmpAA.get(i), MODE);
         }
+        draw();
     }
     public void SymP(Point2D pointSym)
     {
-        draw();
-        A = A.PointSymetry(A,pointSym);
-        B = B.PointSymetry(B,pointSym);
-        C = C.PointSymetry(C,pointSym);
-        ArrayList<Point2D> tmpA = A.chooseSideMode(centerPoint, A, SIDEMODE);
-        ArrayList<Point2D> tmpB = B.chooseSideMode(centerPoint, B, SIDEMODE);
-        ArrayList<Point2D> tmpC = C.chooseSideMode(centerPoint, C, SIDEMODE);
-        for(int i = 0;i<tmpA.size();i++)
+        tmpA = tmpA.PointSymetry(tmpA,pointSym);
+        tmpB = tmpB.PointSymetry(tmpB,pointSym);
+        tmpC = tmpC.PointSymetry(tmpC,pointSym);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        for(int i = 0;i<tmpAA.size();i++)
         {
-            super.MidpointLine(tmpA.get(i), tmpB.get(i), MODE);
-            super.MidpointLine(tmpB.get(i), tmpC.get(i), MODE);
-            super.MidpointLine(tmpC.get(i), tmpA.get(i), MODE);
+            super.MidpointLine(tmpAA.get(i), tmpBB.get(i), MODE);
+            super.MidpointLine(tmpBB.get(i), tmpCC.get(i), MODE);
+            super.MidpointLine(tmpCC.get(i), tmpAA.get(i), MODE);
         }
+        draw();
     }
 
     public void draw(Color color){

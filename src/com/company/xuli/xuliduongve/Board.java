@@ -352,6 +352,7 @@ public class Board extends JPanel {
         }
     }
 
+
     public static void SymOYNow() {
         if (now != null) {
             switch (now.tag) {

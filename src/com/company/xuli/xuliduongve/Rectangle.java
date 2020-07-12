@@ -10,6 +10,10 @@ public class Rectangle extends HinhHoc {
     private Point2D B;
     private Point2D C;
     private Point2D D;
+    private Point2D tmpA;
+    private Point2D tmpB;
+    private Point2D tmpC;
+    private Point2D tmpD;
     private lineMode MODE;
     private sideMode SIDEMODE;
 
@@ -21,6 +25,10 @@ public class Rectangle extends HinhHoc {
         B = new Point2D();
         C = new Point2D();
         D = new Point2D();
+        tmpA = new Point2D();
+        tmpB = new Point2D();
+        tmpC = new Point2D();
+        tmpC = new Point2D();
     }
 
     // set 4 điểm hình chữ nhật
@@ -37,6 +45,7 @@ public class Rectangle extends HinhHoc {
         B.rotatePoint(center, this.alpha).saveCoord(coord);
         C.rotatePoint(center, this.alpha).saveCoord(coord);
         D.rotatePoint(center, this.alpha).saveCoord(coord);
+
     }
 
     // set đầy đủ thông hình chữ nhật, gồm loại nét vẽ, các đỉnh, và tâm HCN
@@ -54,10 +63,10 @@ public class Rectangle extends HinhHoc {
     // đây là xoay nháp, tức là chỉ xoay hình ảo để người dùng canh góc xoay, khi nhả chuột sẽ áp dụng vào hình gốc
     public void rotate(double alpha) {
 
-        Point2D tmpA = A.rotatePoint(center, this.alpha + alpha);
-        Point2D tmpB = B.rotatePoint(center, this.alpha + alpha);
-        Point2D tmpC = C.rotatePoint(center, this.alpha + alpha);
-        Point2D tmpD = D.rotatePoint(center, this.alpha + alpha);
+        tmpA = A.rotatePoint(center, this.alpha + alpha);
+        tmpB = B.rotatePoint(center, this.alpha + alpha);
+        tmpC = C.rotatePoint(center, this.alpha + alpha);
+        tmpD = D.rotatePoint(center, this.alpha + alpha);
         ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
         ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
         ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
@@ -119,10 +128,10 @@ public class Rectangle extends HinhHoc {
     }*/
 
     public void draw(){
-        Point2D tmpA = A.rotatePoint(center, this.alpha);
-        Point2D tmpB = B.rotatePoint(center, this.alpha);
-        Point2D tmpC = C.rotatePoint(center, this.alpha);
-        Point2D tmpD = D.rotatePoint(center, this.alpha);
+        tmpA = A.rotatePoint(center, this.alpha);
+        tmpB = B.rotatePoint(center, this.alpha);
+        tmpC = C.rotatePoint(center, this.alpha);
+        tmpD = D.rotatePoint(center, this.alpha);
         ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
         ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
         ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
@@ -137,10 +146,10 @@ public class Rectangle extends HinhHoc {
     }
 
     public void move(Vector2D a) {
-        Point2D tmpA = A.rotatePoint(center, this.alpha);
-        Point2D tmpB = B.rotatePoint(center, this.alpha);
-        Point2D tmpC = C.rotatePoint(center, this.alpha);
-        Point2D tmpD = D.rotatePoint(center, this.alpha);
+        tmpA = A.rotatePoint(center, this.alpha);
+        tmpB = B.rotatePoint(center, this.alpha);
+        tmpC = C.rotatePoint(center, this.alpha);
+        tmpD = D.rotatePoint(center, this.alpha);
         tmpA = tmpA.moveVector(a);
         tmpB = tmpB.moveVector(a);
         tmpC = tmpC.moveVector(a);
@@ -163,20 +172,23 @@ public class Rectangle extends HinhHoc {
         B = B.moveVector(a);
         C = C.moveVector(a);
         D = D.moveVector(a);
+        tmpA = tmpA.moveVector(a);
+        tmpB = tmpB.moveVector(a);
+        tmpC = tmpC.moveVector(a);
+        tmpD = tmpD.moveVector(a);
         center = center.moveVector(a);
         draw();
     }
     public void SymOY()
     {
-        draw();
-        A = A.VerticalSymetry(A);
-        B = B.VerticalSymetry(B);
-        C = C.VerticalSymetry(C);
-        D = D.VerticalSymetry(D);
-        ArrayList<Point2D> tmpAA = A.chooseSideMode(centerPoint, A, SIDEMODE);
-        ArrayList<Point2D> tmpBB = B.chooseSideMode(centerPoint, B, SIDEMODE);
-        ArrayList<Point2D> tmpCC = C.chooseSideMode(centerPoint, C, SIDEMODE);
-        ArrayList<Point2D> tmpDD = D.chooseSideMode(centerPoint, D, SIDEMODE);
+        tmpA = tmpA.VerticalSymetry(tmpA);
+        tmpB = tmpB.VerticalSymetry(tmpB);
+        tmpC = tmpC.VerticalSymetry(tmpC);
+        tmpD = tmpD.VerticalSymetry(tmpD);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        ArrayList<Point2D> tmpDD = tmpD.chooseSideMode(centerPoint, tmpD, SIDEMODE);
         for(int i = 0;i<tmpAA.size();i++)
         {
             super.MidpointLine(tmpAA.get(i), tmpBB.get(i), MODE);
@@ -184,19 +196,18 @@ public class Rectangle extends HinhHoc {
             super.MidpointLine(tmpCC.get(i), tmpDD.get(i), MODE);
             super.MidpointLine(tmpDD.get(i), tmpAA.get(i), MODE);
         }
+        draw();
     }
     public void SymOX()
     {
-        draw();
-        A = A.HonrizontalSymetry(A);
-        B = B.HonrizontalSymetry(B);
-        C = C.HonrizontalSymetry(C);
-        D = D.HonrizontalSymetry(D);
-
-        ArrayList<Point2D> tmpAA = A.chooseSideMode(centerPoint, A, SIDEMODE);
-        ArrayList<Point2D> tmpBB = B.chooseSideMode(centerPoint, B, SIDEMODE);
-        ArrayList<Point2D> tmpCC = C.chooseSideMode(centerPoint, C, SIDEMODE);
-        ArrayList<Point2D> tmpDD = D.chooseSideMode(centerPoint, D, SIDEMODE);
+        tmpA = tmpA.HonrizontalSymetry(tmpA);
+        tmpB = tmpB.HonrizontalSymetry(tmpB);
+        tmpC = tmpC.HonrizontalSymetry(tmpC);
+        tmpD = tmpD.HonrizontalSymetry(tmpD);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        ArrayList<Point2D> tmpDD = tmpD.chooseSideMode(centerPoint, tmpD, SIDEMODE);
         for(int i = 0;i<tmpAA.size();i++)
         {
             super.MidpointLine(tmpAA.get(i), tmpBB.get(i), MODE);
@@ -204,18 +215,19 @@ public class Rectangle extends HinhHoc {
             super.MidpointLine(tmpCC.get(i), tmpDD.get(i), MODE);
             super.MidpointLine(tmpDD.get(i), tmpAA.get(i), MODE);
         }
+        draw();
     }
     public void SymP(Point2D pointSym)
     {
-        draw();
-        A = A.PointSymetry(A,pointSym);
-        B = B.PointSymetry(B,pointSym);
-        C = C.PointSymetry(C,pointSym);
-        D = D.PointSymetry(D,pointSym);
-        ArrayList<Point2D> tmpAA = A.chooseSideMode(centerPoint, A, SIDEMODE);
-        ArrayList<Point2D> tmpBB = B.chooseSideMode(centerPoint, B, SIDEMODE);
-        ArrayList<Point2D> tmpCC = C.chooseSideMode(centerPoint, C, SIDEMODE);
-        ArrayList<Point2D> tmpDD = D.chooseSideMode(centerPoint, D, SIDEMODE);
+
+        tmpA = tmpA.PointSymetry(tmpA,pointSym);
+        tmpB = tmpB.PointSymetry(tmpB,pointSym);
+        tmpC = tmpC.PointSymetry(tmpC,pointSym);
+        tmpD = tmpD.PointSymetry(tmpD,pointSym);
+        ArrayList<Point2D> tmpAA = tmpA.chooseSideMode(centerPoint, tmpA, SIDEMODE);
+        ArrayList<Point2D> tmpBB = tmpB.chooseSideMode(centerPoint, tmpB, SIDEMODE);
+        ArrayList<Point2D> tmpCC = tmpC.chooseSideMode(centerPoint, tmpC, SIDEMODE);
+        ArrayList<Point2D> tmpDD = tmpD.chooseSideMode(centerPoint, tmpD, SIDEMODE);
         for(int i = 0;i<tmpAA.size();i++)
         {
             super.MidpointLine(tmpAA.get(i), tmpBB.get(i), MODE);
@@ -223,6 +235,7 @@ public class Rectangle extends HinhHoc {
             super.MidpointLine(tmpCC.get(i), tmpDD.get(i), MODE);
             super.MidpointLine(tmpDD.get(i), tmpAA.get(i), MODE);
         }
+        draw();
     }
 
     public void draw(Color color){
