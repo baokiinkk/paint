@@ -47,7 +47,7 @@ public class Sphere extends HinhHoc {
         System.out.println(start.X + "," + start.Y);
         System.out.println(end.X + "," + end.Y);
         Major_rad = dis;
-        Minor_rad = dis / 2;
+        Minor_rad = dis * Math.sin(Math.toRadians(45));
     }
 
     public void saveCoord(String[][] coord) {
@@ -102,7 +102,7 @@ public class Sphere extends HinhHoc {
             third.set(tx2_r, y1_r + center.Y);
             fourth.set(tx1_r +  center.X, y1_r + center.Y);
 
-            QuadrantEllipse(first,second,third,fourth, MODE);;
+            QuadrantEllipse(first, second, third, fourth, MODE);
             y1_r++;
         }
 

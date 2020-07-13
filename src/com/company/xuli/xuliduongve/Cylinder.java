@@ -56,7 +56,7 @@ public class Cylinder extends HinhHoc {
         this.end = rad3D.to2D();
 
         Major_rad = dis;
-        Minor_rad = Major_rad / 3;
+        Minor_rad = dis * Math.sin(Math.toRadians(45));
     }
 
     public void saveCoord(String[][] coord) {
