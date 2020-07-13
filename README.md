@@ -42,6 +42,10 @@ Nhóm quyết định thực hiện **Đồ Án** giống một chương trình 
   - Load ảnh động (Đang phát triển) dùng để đọc và in ra màn hình 1 loạt các hình ảnh giống một bộ phim. Hiện tại chức năng này sẽ đọc các frame hình có sẵn trong folder đồ án. Dự kiến sẽ phát triển để đọc 1 file Gif tự chọn.
 
 #### III. Ảnh Demo
+![2D](https://github.com/baokiinkk/paint/blob/master/2D.png)
+
+![3D](https://github.com/baokiinkk/paint/blob/master/3D.png)
+
 ![Impossible Triangle](https://github.com/baokiinkk/paint/blob/master/ImpossibleTri.png)
 
 ![Flower](https://github.com/baokiinkk/paint/blob/master/Flower.png)
