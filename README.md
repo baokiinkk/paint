@@ -1,6 +1,9 @@
 # Đồ Án Kỹ Thuật Đồ Họa
 #### Giảng Viên: Dương Thanh Thảo
 ![Authors](https://github.com/baokiinkk/paint/blob/master/Authors.png)
+
+[Video Demo](https://youtu.be/x4vbZMLNG8M)
+
 ### Thực Hiện:
 - **Hồ Minh Quốc Bảo** 
 - **Lê Khắc Duy** 
