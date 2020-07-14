@@ -2,7 +2,8 @@
 #### Giảng Viên: Dương Thanh Thảo
 ![Authors](https://github.com/baokiinkk/paint/blob/master/Authors.png)
 
-[Video Demo](https://youtu.be/x4vbZMLNG8M)
+{@youtube: https://youtu.be/x4vbZMLNG8M}
+
 
 ### Thực Hiện:
 - **Hồ Minh Quốc Bảo** 
